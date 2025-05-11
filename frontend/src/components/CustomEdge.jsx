@@ -1,8 +1,8 @@
 import React from 'react';
 import { EdgeProps } from 'reactflow';
 
-const CustomEdge = ({ id, source, target, sourceNode, targetNode, style, data }: EdgeProps) => {
-  const isRunning = (node: any) => node.data.status === 'running';
+const CustomEdge = ({ id, source, target, sourceNode, targetNode, style, data }) => {
+  const isRunning = (node) => node.data.status === 'running';
 
   const edgeStyle = {
     stroke: isRunning(sourceNode) && isRunning(targetNode) ? 'green' : '#3b78e7',

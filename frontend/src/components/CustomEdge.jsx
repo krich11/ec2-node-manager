@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseEdge, getStraightPath } from '@xyflow/react';
+import { BaseEdge, getStraightPath } from 'reactflow';
 
 export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
   const [edgePath] = getStraightPath({

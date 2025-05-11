@@ -1,0 +1,63 @@
+import React from 'react';
+import * as ContextMenu from '@radix-ui/react-context-menu';
+import { Handle, Position } from 'reactflow';
+import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal } from 'lucide-react';
+
+const stateStyles = {
+  idle: 'border border-gray-600 bg-gray-800 text-gray-300',
+  running: 'border border-green-500 bg-green-900 text-green-200',
+  warning: 'border border-yellow-500 bg-yellow-900 text-yellow-200',
+  error: 'border border-red-500 bg-red-900 text-red-900',
+};
+
+const icons = {
+  idle:    <PauseCircle size={14} />,
+  running: <PlayCircle size={14} />,
+  warning: <AlertCircle size={14} />,
+  error:    <XCircle size={14} />,
+};
+
+const handleStyle = { width: 10, height: 10, backgroundColor: '#555', cursor: 'crosshair' };
+
+export default function CustomNode({ id, data, selected }) {
+  const status = data.status || 'idle';
+
+  return (
+    <div
+      data-drag-handle
+      className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
+        selected ? 'shadow-outline-blue' : 'shadow-sm'
+      } cursor-grab`}
+      style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
+    >
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-1">
+          {icons[status]}
+          <span className="truncate font-medium">{data.label}</span>
+        </div>
+        <ContextMenu.Root>
+          <ContextMenu.Trigger asChild>
+            <div className="p-1">
+              <MoreHorizontal size={12} className="opacity-60 cursor-pointer" />
+            </div>
+          </ContextMenu.Trigger>
+          <ContextMenu.Portal>
+            <ContextMenu.Content side="right" align="start" className="bg-gray-800 text-white rounded shadow-lg">
+              {['Start', 'Stop', 'Reboot', 'Terminate'].map((action) => (
+                <ContextMenu.Item
+                  key={action}
+                  onClick={() => console.log(`Node ${id} action: ${action}`)}
+                  className="px-2 py-1 hover:bg-gray-700 cursor-pointer"
+                >
+                  {action}
+                </ContextMenu.Item>
+              ))}
+            </ContextMenu.Content>
+          </ContextMenu.Portal>
+        </ContextMenu.Root>
+      </div>
+      <Handle type="source" position={Position.Right} id="sourceHandle" style={handleStyle} />
+      <Handle type="target" position={Position.Left} id="targetHandle" style={handleStyle} />
+    </div>
+  );
+}

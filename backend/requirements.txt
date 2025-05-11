@@ -1,0 +1,5 @@
+fastapi
+uvicorn[basic]
+boto3
+httpx
+sqlalchemy

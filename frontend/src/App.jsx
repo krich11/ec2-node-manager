@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   useNodesState,
@@ -23,9 +23,7 @@ const initialNodes = [
   { id: 'error-4', type: 'custom', data: { label: 'Error Node', status: 'error' }, position: { x: 650, y: 100 }, style: { width: 150 } },
 ];
 
-// Initial edges with correct handle IDs
 const initialEdges = [
-  // Standard right-to-left connection
   { 
     id: 'e1-2', 
     source: 'idle-1', 
@@ -34,7 +32,6 @@ const initialEdges = [
     targetHandle: 'leftHandle',
     type: 'custom',
   },
-  // Left-to-left connection
   {
     id: 'e3-1',
     source: 'warning-3',
@@ -51,37 +48,14 @@ const snapToGrid = true;
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  
-  // This trick lets us be able to connect from any handle to any handle
-  // Handle can be source or target interchangeably
+
   const isValidConnection = useCallback((connection) => {
-    // Prevent connecting a node to itself
     if (connection.source === connection.target) {
       return false;
     }
-    
-    // Check if this exact connection already exists
-    const connectionExists = edges.some(
-      edge => 
-        (edge.source === connection.source && 
-         edge.target === connection.target &&
-         edge.sourceHandle === connection.sourceHandle &&
-         edge.targetHandle === connection.targetHandle) ||
-        (edge.source === connection.target && 
-         edge.target === connection.source &&
-         edge.sourceHandle === connection.targetHandle &&
-         edge.targetHandle === connection.sourceHandle)
-    );
-    
-    if (connectionExists) {
-      return false;
-    }
-    
-    // Allow all other connections
     return true;
-  }, [edges]);
-  
-  // Handle new connections
+  }, []);
+
   const onConnect = useCallback((params) => {
     console.log('Creating connection:', params);
     const newEdge = {
@@ -91,9 +65,7 @@ function Flow() {
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
 
-  // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {
-    // Update the node status
     const newStatus = ['idle', 'running', 'warning', 'error'][
       (['idle', 'running', 'warning', 'error'].indexOf(node.data.status) + 1) % 4
     ];
@@ -104,13 +76,11 @@ function Flow() {
       )
     );
     
-    // Force edge refresh by creating a shallow copy with a slight delay
     setTimeout(() => {
       setEdges((eds) => [...eds.map(e => ({...e}))]);
     }, 50);
   }, [setNodes, setEdges]);
-  
-  // Effect to periodically refresh edges to ensure they reflect current node states
+
   useEffect(() => {
     const interval = setInterval(() => {
       setEdges((eds) => [...eds.map(e => ({...e}))]);
@@ -119,7 +89,6 @@ function Flow() {
     return () => clearInterval(interval);
   }, [setEdges]);
 
-  // Add a demo left-to-left connection
   const addLeftToLeftDemo = useCallback(() => {
     const newEdge = {
       id: `e-left-to-left-${Date.now()}`,

@@ -94,7 +94,7 @@
         ];
 
 	// Capitalize the first letter of the new status for the label.
-	const newLabel = newStatus.charAt(0).toUppercase() + newStatus.slice(1);
+	const newLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
 
         setNodes((nds) =>
           nds.map((n) =>

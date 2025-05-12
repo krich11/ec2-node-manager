@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getBezierPath, useReactFlow } from 'reactflow';
+import { getStraightPath, useReactFlow } from 'reactflow';
 
 // Define the CSS animation for the dashed line
 const dashAnimation = `

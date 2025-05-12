@@ -128,7 +128,7 @@ function Flow() {
       target: 'error-4',
       sourceHandle: 'leftHandle',
       targetHandle: 'leftHandle',
-      type: 'custom',
+      //type: 'custom',
     };
     
     setEdges((eds) => [...eds, newEdge]);
@@ -145,7 +145,7 @@ function Flow() {
       //edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
-        type: 'custom',
+        //type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
       snapGrid={snapGrid}

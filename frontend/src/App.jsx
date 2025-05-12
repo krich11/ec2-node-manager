@@ -17,10 +17,10 @@
     const edgeTypes = { custom: CustomEdge };
 
     const initialNodes = [
-      { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 } },
-      { id: 'running-2', type: 'custom', data: { label: 'Running Node', status: 'running' }, position: { x: 250, y: 100 }, style: { width: 150 } },
-      { id: 'warning-3', type: 'custom', data: { label: 'Warning Node', status: 'running' }, position: { x: 450, y: 100 }, style: { width: 150 } },
-      { id: 'error-4', type: 'custom', data: { label: 'Error Node', status: 'error' }, position: { x: 650, y: 100 }, style: { width: 150 } },
+      { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 }, isConnectable: true },
+      { id: 'running-2', type: 'custom', data: { label: 'Running Node', status: 'running' }, position: { x: 250, y: 100 }, style: { width: 150 }, isConnectable: true },
+      { id: 'warning-3', type: 'custom', data: { label: 'Warning Node', status: 'running' }, position: { x: 450, y: 100 }, style: { width: 150 }, isConnectable: true },
+      { id: 'error-4', type: 'custom', data: { label: 'Error Node', status: 'error' }, position: { x: 650, y: 100 }, style: { width: 150 }, isConnectable: true },
     ];
 
     // Initial edges with correct handle IDs

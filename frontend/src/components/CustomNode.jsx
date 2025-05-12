@@ -118,7 +118,7 @@ export default function CustomNode({ id, data, selected }) {
         </div>
       </div>
       
-      {// Handle on left side }
+      {/* Handle on left side */}
       <Handle 
         type="source" 
         position={Position.Left} 
@@ -128,7 +128,7 @@ export default function CustomNode({ id, data, selected }) {
         ref={data.leftHandleRef}
       />
       
-      {//Handle on right side }
+      {/* Handle on right side */ }
       <Handle 
         type="target" 
         position={Position.Right} 

@@ -49,26 +49,25 @@ export default function CustomEdge({
     targetX,
     targetY,
     targetPosition,
+    curvature: 0.5, // Default curvature for splines
   };
   
   // Add special handling for same-side connections
   if (isSameSide) {
     // For left-left or right-right connections, create more pronounced curve
     edgeParams.curvature = 0.8;
-    
+  
     if (sourcePosition === 'left' && targetPosition === 'left') {
       // For left-to-left connections, provide offset to left
       edgeParams.centerX = Math.min(sourceX, targetX) - 80;
-      edgeParams.curvature = 0.8;
     } else if (sourcePosition === 'right' && targetPosition === 'right') {
       // For right-to-right connections, provide offset to right
       edgeParams.centerX = Math.max(sourceX, targetX) + 80;
-      edgeParams.curvature = 0.8;
     }
   }
 
   // Get the path using the modified parameters
-  const [edgePath] = getSmoothStepPath(edgeParams);
+  const [edgePath] = getBezierPath(edgeParams);
 
   // Effect to check both nodes' status and update edge styling
   useEffect(() => {
@@ -103,7 +102,7 @@ export default function CustomEdge({
         style={{
           ...style,
           stroke: '#888',
-          strokeWidth: 1.5,
+          strokeWidth: 2.5,
           transition: 'stroke 0.3s ease'
         }}
         className={`react-flow__edge-path ${isActive ? 'active-edge animated-edge' : ''}`}

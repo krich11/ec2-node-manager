@@ -145,13 +145,14 @@ function Flow() {
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
         type: 'custom',
+        style: { strokeWidth: 2.5 },
       }}
       snapGrid={snapGrid}
       snapToGrid={snapToGrid}
       onNodeDoubleClick={onNodeDoubleClick}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      connectionLineType={ConnectionLineType.Spline}
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
       <Background color="#aaa" size={1} />

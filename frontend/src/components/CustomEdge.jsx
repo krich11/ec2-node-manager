@@ -2,12 +2,7 @@ import React from 'react';
 import { BaseEdge } from 'reactflow';
 
 export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
-  const [edgePath] = getStraightPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-  });
+  const edgePath = `M ${sourceX},${sourceY} L ${targetX},${targetY}`;
 
   return (
     <BaseEdge

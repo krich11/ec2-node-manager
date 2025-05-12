@@ -73,8 +73,11 @@ function Flow() {
          edge.sourceHandle === connection.targetHandle &&
          edge.targetHandle === connection.sourceHandle)
     );
+
+    console.log('connectionExists:', connectionExists);
     
     if (connectionExists) {
+      console.log('Connection exists, not creating connection.');
       return false;
     }
     

@@ -52,6 +52,7 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   
+/*
   // This trick lets us be able to connect from any handle to any handle
   // Handle can be source or target interchangeably
   const isValidConnection = useCallback((connection) => {
@@ -90,6 +91,7 @@ function Flow() {
     };
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
+  */
 
   // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {

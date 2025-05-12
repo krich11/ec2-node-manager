@@ -52,7 +52,7 @@ export default function CustomEdge({
   const [isActive, setIsActive] = useState(false);
   
   // Customize path based on handle positions
-  const isSameSide = sourcePosition === targetPosition;
+	//const isSameSide = sourcePosition === targetPosition;
   
   // Calculate path based on handle positions
   const edgeParams = {

@@ -143,6 +143,7 @@ function Flow() {
       onConnect={onConnect}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
+      fitView
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
         type: 'custom',

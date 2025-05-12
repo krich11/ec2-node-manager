@@ -21,7 +21,7 @@ const handleStyle = {
   width: 15, 
   height: 15, 
   backgroundColor: '#6366f1', // Indigo color for all handles
-  border: '2px solid white',
+  border: '1px solid white',
   cursor: 'crosshair',
 };
 

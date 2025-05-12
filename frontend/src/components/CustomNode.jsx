@@ -122,7 +122,7 @@ export default function CustomNode({ id, data, selected }) {
       <Handle 
         type="source" 
         position={Position.Center} 
-        id="sourceHandle" 
+        id="sourceCenterHandle" 
         style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
         ref={data.leftHandleRef}
@@ -132,7 +132,7 @@ export default function CustomNode({ id, data, selected }) {
       <Handle 
         type="target" 
         position={Position.Center} 
-        id="targetHandle" 
+        id="targetCenterHandle" 
         style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
         ref={data.rightHandleRef}

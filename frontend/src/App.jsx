@@ -14,7 +14,7 @@ import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 
 const nodeTypes = { custom: CustomNode };
-const edgeTypes = { custom: CustomEdge };
+//const edgeTypes = { custom: CustomEdge };
 
 const initialNodes = [
   { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 } },
@@ -141,7 +141,7 @@ function Flow() {
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
+      //edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
         type: 'custom',

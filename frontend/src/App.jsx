@@ -39,7 +39,7 @@ const initialEdges = [
     id: 'e3-1',
     source: 'warning-3',
     target: 'idle-1', 
-    sourceHandle: 'leftHandle',
+    sourceHandle: 'rightHandle',
     targetHandle: 'leftHandle',
     type: 'custom',
   }

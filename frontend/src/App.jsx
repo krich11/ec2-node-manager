@@ -82,17 +82,15 @@ function Flow() {
     return true;
   }, [edges]);
   
-	/*
   // Handle new connections
   const onConnect = useCallback((params) => {
     console.log('Creating connection:', params);
     const newEdge = {
       ...params,
-      type: 'custom',
+      //type: 'custom',
     };
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
-  */
 
   // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {

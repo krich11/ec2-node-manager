@@ -59,6 +59,8 @@ function Flow() {
     if (connection.source === connection.target) {
       return false;
     }
+    console.log("Edges: ", edges);
+    console.log("Connection: ", connection);
     
     // Check if this exact connection already exists
     const connectionExists = edges.some(

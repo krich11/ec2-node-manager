@@ -30,8 +30,8 @@ const initialEdges = [
     id: 'e1-2', 
     source: 'idle-1', 
     target: 'running-2', 
-    sourceHandle: 'sourceHandle',
-    targetHandle: 'targetHandle',
+    sourceHandle: 'sourceCenterHandle',
+    targetHandle: 'targetCenterHandle',
     type: 'custom',
   },
   // Left-to-left connection
@@ -39,8 +39,8 @@ const initialEdges = [
     id: 'e3-1',
     source: 'warning-3',
     target: 'idle-1', 
-    sourceHandle: 'sourceHandle',
-    targetHandle: 'targetHandle',
+    sourceHandle: 'sourceCenterHandle',
+    targetHandle: 'targetCenterHandle',
     type: 'custom',
   }
 ];
@@ -124,8 +124,8 @@ function Flow() {
       id: `e-left-to-left-${Date.now()}`,
       source: 'idle-1',
       target: 'error-4',
-      sourceHandle: 'sourceHandle',
-      targetHandle: 'targetHandle',
+      sourceHandle: 'sourceCenterHandle',
+      targetHandle: 'targetCenterHandle',
       type: 'custom',
     };
     

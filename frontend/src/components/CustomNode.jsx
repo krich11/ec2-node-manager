@@ -123,7 +123,8 @@ export default function CustomNode({ id, data, selected }) {
         type="source" 
         position={Position.Center} 
         id="sourceCenterHandle" 
-        style={{...handleStyle, top: '50%'}} 
+	className="center-handle source-handle-style"
+        //style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
         ref={data.leftHandleRef}
       />
@@ -133,7 +134,8 @@ export default function CustomNode({ id, data, selected }) {
         type="target" 
         position={Position.Center} 
         id="targetCenterHandle" 
-        style={{...handleStyle, top: '50%'}} 
+	className="center-handle target-handle-style"
+        //style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
         ref={data.rightHandleRef}
       />

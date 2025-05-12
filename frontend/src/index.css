@@ -2,8 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-.react-flow__handle-middle {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    /* Basic styling for all centered handles */
+    .react-flow__handle.center-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center both vertically and horizontally */
+      border: 1px solid #555; /* Example border */
+      background-color: #fff; /* Default background */
+      z-index: 1000; /* Ensure handles are above node content */
+      /* You might want to remove default React Flow handle size/background if they interfere */
+      width: auto; /* Reset default width/height if needed */
+      height: auto; /* Reset default width/height if needed */
+    }
+
+    /* Styling for the source handle (smaller, visible) */
+    .react-flow__handle.center-handle.source-handle-style {
+      width: 10px;  /* Set desired small size */
+      height: 10px; /* Set desired small size */
+      background-color: #228be6; /* Example color */
+      z-index: 1001; /* Ensure source is visibly on top of target */
+      /* You could add a border-radius: 50%; to make it round */
+      border-radius: 50%;
+    }
+
+    /* Styling for the target handle (larger, easier target) */
+    .react-flow__handle.center-handle.target-handle-style {
+      width: 30px; /* Set desired large size */
+      height: 30px; /* Set desired large size */
+      background-color: rgba(100, 100, 100, 0.2); /* Semi-transparent background */
+      border-color: #555; /* Example border */
+      z-index: 1000; /* Ensure target is below source visually, but still clickable */
+      /* Make it round if desired */
+      border-radius: 50%;
+    }
+
+    /* Optional: Style the handle when a connection is being dragged over it */
+    .react-flow__handle.react-flow__handle-connecting {
+       background-color: #ff6600; /* Example color when connecting */
+    }
+
+    .react-flow__handle.react-flow__handle-valid {
+       background-color: #00ff00; /* Example color when a valid connection is possible */
+    }
+    

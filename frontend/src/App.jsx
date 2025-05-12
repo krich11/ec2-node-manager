@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   useNodesState,
@@ -49,6 +49,14 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEdges((eds) => [...eds.map(e => ({...e}))]);
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [setEdges]);
+
   const isValidConnection = useCallback((connection) => {
     if (connection.source === connection.target) {
       return false;
@@ -80,14 +88,6 @@ function Flow() {
       setEdges((eds) => [...eds.map(e => ({...e}))]);
     }, 50);
   }, [setNodes, setEdges]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEdges((eds) => [...eds.map(e => ({...e}))]);
-    }, 1000);
-    
-    return () => clearInterval(interval);
-  }, [setEdges]);
 
   const addLeftToLeftDemo = useCallback(() => {
     const newEdge = {

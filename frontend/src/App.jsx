@@ -6,39 +6,19 @@ import ReactFlow, {
   addEdge,
   MiniMap,
   Background,
-  ConnectionLineType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import CustomNode from './components/CustomNode';
-import CustomEdge from './components/CustomEdge';
-
-const nodeTypes = { custom: CustomNode };
-const edgeTypes = { custom: CustomEdge };
 
 const initialNodes = [
-  { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 } },
-  { id: 'running-2', type: 'custom', data: { label: 'Running Node', status: 'running' }, position: { x: 250, y: 100 }, style: { width: 150 } },
-  { id: 'warning-3', type: 'custom', data: { label: 'Warning Node', status: 'running' }, position: { x: 450, y: 100 }, style: { width: 150 } },
-  { id: 'error-4', type: 'custom', data: { label: 'Error Node', status: 'error' }, position: { x: 650, y: 100 }, style: { width: 150 } },
+  { id: 'idle-1', data: { label: 'Idle Node' }, position: { x: 50, y: 100 } },
+  { id: 'running-2', data: { label: 'Running Node' }, position: { x: 250, y: 100 } },
+  { id: 'warning-3', data: { label: 'Warning Node' }, position: { x: 450, y: 100 } },
+  { id: 'error-4', data: { label: 'Error Node' }, position: { x: 650, y: 100 } },
 ];
 
 const initialEdges = [
-  { 
-    id: 'e1-2', 
-    source: 'idle-1', 
-    target: 'running-2', 
-    sourceHandle: 'rightHandle',
-    targetHandle: 'leftHandle',
-    type: 'custom',
-  },
-  {
-    id: 'e3-1',
-    source: 'warning-3',
-    target: 'idle-1', 
-    sourceHandle: 'leftHandle',
-    targetHandle: 'leftHandle',
-    type: 'custom',
-  }
+  { id: 'e1-2', source: 'idle-1', target: 'running-2' },
+  { id: 'e3-1', source: 'warning-3', target: 'idle-1' }
 ];
 
 const snapGrid = [15, 15];
@@ -69,11 +49,7 @@ function Flow() {
 
   const onConnect = useCallback((params) => {
     console.log('Creating connection:', params);
-    const newEdge = {
-      ...params,
-      type: 'custom',
-    };
-    setEdges((eds) => addEdge(newEdge, eds));
+    setEdges((eds) => addEdge(params, eds));
   }, [setEdges]);
 
   const onNodeDoubleClick = useCallback((event, node) => {
@@ -99,13 +75,7 @@ function Flow() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
-      defaultEdgeOptions={{ 
-        type: 'custom',
-        connectionLineType: ConnectionLineType.Spline,
-      }}
       snapGrid={snapGrid}
       snapToGrid={snapToGrid}
       onNodeDoubleClick={onNodeDoubleClick}

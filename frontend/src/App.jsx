@@ -82,6 +82,7 @@ function Flow() {
     return true;
   }, [edges]);
   
+	/*
   // Handle new connections
   const onConnect = useCallback((params) => {
     console.log('Creating connection:', params);
@@ -91,6 +92,7 @@ function Flow() {
     };
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
+  */
 
   // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {

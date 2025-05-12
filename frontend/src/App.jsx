@@ -14,7 +14,7 @@ import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 
 const nodeTypes = { custom: CustomNode };
-//const edgeTypes = { custom: CustomEdge };
+const edgeTypes = { custom: CustomEdge };
 
 const initialNodes = [
   { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 } },
@@ -32,7 +32,7 @@ const initialEdges = [
     target: 'running-2', 
     sourceHandle: 'rightHandle',
     targetHandle: 'leftHandle',
-    //type: 'custom',
+    type: 'custom',
   },
   // Left-to-left connection
   {
@@ -41,7 +41,7 @@ const initialEdges = [
     target: 'idle-1', 
     sourceHandle: 'rightHandle',
     targetHandle: 'leftHandle',
-    //type: 'custom',
+    type: 'custom',
   }
 ];
 
@@ -87,7 +87,7 @@ function Flow() {
     console.log('Creating connection:', params);
     const newEdge = {
       ...params,
-      //type: 'custom',
+      type: 'custom',
     };
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
@@ -128,7 +128,7 @@ function Flow() {
       target: 'error-4',
       sourceHandle: 'leftHandle',
       targetHandle: 'leftHandle',
-      //type: 'custom',
+      type: 'custom',
     };
     
     setEdges((eds) => [...eds, newEdge]);
@@ -145,7 +145,7 @@ function Flow() {
       //edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
-        //type: 'custom',
+        type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
       snapGrid={snapGrid}

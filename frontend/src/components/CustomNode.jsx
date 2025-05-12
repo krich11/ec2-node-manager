@@ -140,6 +140,7 @@ export default function CustomNode({ id, data, selected }) {
       />
 
       {/* For backward compatibility */}
+	  /*
       <Handle 
         type="target" 
         position={Position.Left} 
@@ -156,6 +157,7 @@ export default function CustomNode({ id, data, selected }) {
         isConnectable={false}
         ref={data.rightHandleRef}
       />
+      */
 
       {contextMenuVisible && (
         <div

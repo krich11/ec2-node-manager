@@ -22,9 +22,9 @@
 
 /* Styling for the source handle (smaller, visible, can initiate drags) */
 .react-flow__handle.center-handle.source-handle-style {
-  width: 10px;  /* Set desired small size */
-  height: 10px; /* Set desired small size */
-  background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
+  width: 15px;  /* Set desired small size */
+  height: 15px; /* Set desired small size */
+  background-color: rgba(34, 139, 230, 0.4); /* Example semi-transparent color */
   border-radius: 50%; /* Make it round */
   z-index: 1004; /* <-- Increased z-index to be above the base handle z-index */
   /* pointer-events: all; is inherited from .react-flow__handle.center-handle */

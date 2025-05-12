@@ -148,7 +148,7 @@
           onNodeDoubleClick={onNodeDoubleClick}
           zoomOnDoubleClick={false}
           isValidConnection={isValidConnection}
-          connectionLineType={ConnectionLineType.Spline}
+          connectionLineType={ConnectionLineType.Straight}
         >
           <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
           <Background color="#aaa" size={1} />

@@ -1,6 +1,6 @@
 import React from 'react';
-import { MiniMap, Background } from 'reactflow';
-import 'reactflow/dist/style.css';
+import ReactFlow, { MiniMap, Background } from 'react-flow-renderer';
+import 'react-flow-renderer/dist/style.css';
 
 const nodeTypes = {}; // Add your custom nodes here if any
 

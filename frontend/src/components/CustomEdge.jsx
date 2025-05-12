@@ -56,12 +56,14 @@ export default function CustomEdge({
     // For left-left or right-right connections, create more pronounced curve
     edgeParams.curvature = 0.8;
     
-    if (sourcePosition === 'left') {
+    if (sourcePosition === 'left' && targetPosition === 'left') {
       // For left-to-left connections, provide offset to left
       edgeParams.centerX = Math.min(sourceX, targetX) - 80;
-    } else if (sourcePosition === 'right') {
+      edgeParams.curvature = 0.8;
+    } else if (sourcePosition === 'right' && targetPosition === 'right') {
       // For right-to-right connections, provide offset to right
       edgeParams.centerX = Math.max(sourceX, targetX) + 80;
+      edgeParams.curvature = 0.8;
     }
   }
 

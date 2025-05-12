@@ -77,6 +77,7 @@ export default function CustomEdge({
   const targetHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
 
+	/*
   useEffect(() => {
     console.log(`useEffect triggered for Edge ID: ${id}`);
 
@@ -110,6 +111,7 @@ export default function CustomEdge({
         console.log(`Edge Path: ${edgePath}`);
       }
     }
+    */
 
     // Effect to check both nodes' status and update edge styling
     const checkConnectionStatus = () => {
@@ -135,7 +137,7 @@ export default function CustomEdge({
 
   return (
     <>
-      {/* Include the animation styles */}
+      // Include the animation styles
       <style>{dashAnimation}</style>
       
       <path
@@ -152,10 +154,10 @@ export default function CustomEdge({
       />
     </>
   );
-
+/*
   return (
     <>
-      {/* Include the animation styles */}
+      // Include the animation styles
       <style>{dashAnimation}</style>
       
       <path
@@ -172,4 +174,5 @@ export default function CustomEdge({
       />
     </>
   );
+*/
 }

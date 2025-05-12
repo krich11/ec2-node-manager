@@ -130,6 +130,35 @@
         setEdges((eds) => [...eds, newEdge]);
       }, [setEdges]);
 
+      // Function to add a new node
+      const addNewNode = useCallback(() => {
+        // 1. Generate a unique ID
+        // Using Date.now() is a simple way for demos, but consider a more robust method for production
+        const newNodeId = `node-${Date.now()}`;
+
+        // 2. Define the new node object
+        const newNode = {
+          id: newNodeId, // The unique ID
+          type: 'custom', // Use your custom node type
+          data: { label: 'New Node', status: 'idle' }, // Initial data for the node
+          position: {
+            // 3. Set an initial position for the new node
+            // You can place it anywhere, e.g., a fixed spot, or randomly
+            x: Math.random() * 500 + 50, // Example: random X between 50 and 550
+            y: Math.random() * 200 + 200, // Example: random Y below the initial nodes
+          },
+          style: { width: 150 }, // Apply the same style as your initial nodes
+          isConnectable: true, // Make the new node connectable (important for your setup)
+        };
+
+        // 4. Update the nodes state
+        // Use setNodes with a function that takes the current nodes array (nds)
+        // and returns a *new* array with the newNode added.
+        setNodes((nds) => nds.concat(newNode)); // concat creates a new array
+        // Alternatively, using spread syntax: setNodes((nds) => [...nds, newNode]);
+
+      }, [setNodes]); // Include setNodes in the dependency array for useCallback
+
       return (
         <ReactFlow
           nodes={nodes}
@@ -158,14 +187,14 @@
           <Panel position="top-left">
             <div className="flex flex-col gap-2">
               <button
-                onClick={addLeftToLeftDemo}
+                onClick={addNewNode}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                Connect Idle's Left to Error's Left
+                Add New Node
               </button>
               <div className="bg-gray-800 text-white p-2 rounded">
                 <p>Double-click on node to change status</p>
-                <p>Connect any handle to any other handle</p>
+                <p>Connect any node to any other node.</p>
               </div>
             </div>
           </Panel>

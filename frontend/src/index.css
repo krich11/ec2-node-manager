@@ -37,7 +37,7 @@
   top: 0; /* Position from top edge of parent */
   left: 0; /* Position from left edge of parent */
   transform: none; /* Remove the centering transform */
-  background-color: rgba(100, 100, 100, 0.1); /* Very light semi-transparent background */
+  background-color: rgba(100, 100, 100, 0.8); /* Very light semi-transparent background */
   border: none; /* Remove border if you want it to blend with node */
   /* Match node's border-radius if the node is rounded */
   border-radius: 8px; /* Replace with actual value for Tailwind's 'rounded-lg' */

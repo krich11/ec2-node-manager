@@ -142,7 +142,7 @@ function Flow() {
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       nodeTypes={nodeTypes}
-      //edgeTypes={edgeTypes}
+      edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
         type: 'custom',

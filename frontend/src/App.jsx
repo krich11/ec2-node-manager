@@ -6,8 +6,11 @@ import ReactFlow, {
   addEdge,
   MiniMap,
   Background,
++ NodeTypes,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+
++ import CustomNode from './components/CustomNode';
 
 const initialNodes = [
   { id: 'idle-1', data: { label: 'Idle Node' }, position: { x: 50, y: 100 } },
@@ -27,6 +30,10 @@ const snapToGrid = true;
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
++ const nodeTypes: NodeTypes = {
++   custom: CustomNode,
++ };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,6 +88,7 @@ function Flow() {
       onNodeDoubleClick={onNodeDoubleClick}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
++     nodeTypes={nodeTypes}
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
       <Background color="#aaa" size={1} />

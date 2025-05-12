@@ -55,6 +55,7 @@ function Flow() {
   // This trick lets us be able to connect from any handle to any handle
   // Handle can be source or target interchangeably
   const isValidConnection = useCallback((connection) => {
+    return true;
     // Prevent connecting a node to itself
     if (connection.source === connection.target) {
       return false;

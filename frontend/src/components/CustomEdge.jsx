@@ -71,12 +71,20 @@ export default function CustomEdge({
 
   // Debugging: Output the assigned endpoint coordinates and handle coordinates
   useEffect(() => {
+    console.log(`useEffect triggered for Edge ID: ${id}`);
+
     const sourceNode = getNode(source);
     const targetNode = getNode(target);
+
+    console.log(`Source Node:`, sourceNode);
+    console.log(`Target Node:`, targetNode);
 
     if (sourceNode && targetNode) {
       const sourceHandleElement = document.querySelector(`[data-id="${source}-${sourceHandle}"]`);
       const targetHandleElement = document.querySelector(`[data-id="${target}-${targetHandle}"]`);
+
+      console.log(`Source Handle Element:`, sourceHandleElement);
+      console.log(`Target Handle Element:`, targetHandleElement);
 
       if (sourceHandleElement && targetHandleElement) {
         const sourceHandleRect = sourceHandleElement.getBoundingClientRect();

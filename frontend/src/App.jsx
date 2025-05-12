@@ -31,7 +31,7 @@ const snapGrid = [15, 15];
 const snapToGrid = true;
 
 function Flow() {
-  // ... rest of code...
+  // … rest of code...
 }
 
 export default function App() {

@@ -136,6 +136,7 @@ function Flow() {
       onConnect={onConnect}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
+      dragHandle=".react-flow__node-drag-handle"
       fitView
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 

@@ -43,15 +43,15 @@
 }
 
 /* Ensure node content is clickable and the node is draggable */
-/* The node's main drag handle is typically the node element itself. */
-/* Ensure your node content (labels, buttons, etc.) and the node container */
-/* have a higher z-index than the target handle so clicks interact with them. */
-.custom-node {
+/* Add the 'react-flow__node-drag-handle' class to the element you want to drag */
+.custom-node.react-flow__node-drag-handle { /* <-- Modified rule */
   position: relative; /* Needed for absolute positioning of handles */
   /* Ensure the node container itself can receive pointer events for dragging */
   pointer-events: auto; /* <-- Add this line */
   /* Add a z-index if necessary to ensure it's above the target handle */
   z-index: 1000; /* <-- Add a z-index higher than the target handle */
+  /* Optional: Change cursor to indicate it's draggable */
+  cursor: grab;
 }
 
 /* Example of ensuring node text/labels are clickable (already had high z-index) */

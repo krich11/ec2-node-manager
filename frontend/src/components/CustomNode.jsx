@@ -104,7 +104,7 @@ export default function CustomNode({ id, data, selected }) {
       data-drag-handle
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
-      } cursor-grab`}
+      } cursor-grab react-flow__node-drag-handle custom-node`}
       style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
     >

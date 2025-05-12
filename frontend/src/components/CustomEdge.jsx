@@ -52,6 +52,11 @@ export default function CustomEdge({
     targetPosition,
     curvature: 0.5, // Default curvature for splines
   };
+
+
+  // Get the path using the modified parameters
+  const [edgePath] = getBezierPath(edgeParams);
+
 	/*
   
   // Add special handling for same-side connections
@@ -69,9 +74,6 @@ export default function CustomEdge({
       edgeParams.centerX = Math.max(sourceX, targetX);
     }
   }
-
-  // Get the path using the modified parameters
-  const [edgePath] = getBezierPath(edgeParams);
 
   // Debugging: Output the assigned endpoint coordinates and handle coordinates
   const sourceHandleRef = useRef(null);

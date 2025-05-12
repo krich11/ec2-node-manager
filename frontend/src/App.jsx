@@ -141,7 +141,7 @@ function Flow() {
       edges={edges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
+      //onConnect={onConnect}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}

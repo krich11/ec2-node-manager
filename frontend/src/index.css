@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* In your CSS file (e.g., index.css or App.css) */
+
 /* Basic styling for centered handles (adjust as needed) */
 .react-flow__handle.center-handle {
   position: absolute;
@@ -21,6 +23,7 @@
   background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
   border-radius: 50%; /* Make it round */
   z-index: 1001; /* Ensure source is visibly on top of the large target */
+  pointer-events: all; /* Ensure it can initiate drags */
 }
 
 /* Styling for the target handle (fills the node, underneath source) */
@@ -36,26 +39,28 @@
   border-radius: 8px; /* <-- Add border-radius here */
   /* Replace '8px' with the actual value for Tailwind's 'rounded-lg' in your project */
   z-index: 999; /* Lower z-index than source handle and node content */
+  pointer-events: all; /* Ensure it functions as a drop target */
 }
 
-/* Ensure node content is clickable */
-/* You might need to add z-index to your node's content elements */
-/* or use pointer-events: none on the target handle if z-index isn't enough */
+/* Ensure node content is clickable and the node is draggable */
+/* The node's main drag handle is typically the node element itself. */
+/* Ensure your node content (labels, buttons, etc.) and the node container */
+/* have a higher z-index than the target handle so clicks interact with them. */
 .custom-node {
   position: relative; /* Needed for absolute positioning of handles */
-  /* Add z-index to node content elements if needed */
+  /* Ensure the node container itself can receive pointer events for dragging */
+  pointer-events: auto; /* <-- Add this line */
+  /* Add a z-index if necessary to ensure it's above the target handle */
+  z-index: 1000; /* <-- Add a z-index higher than the target handle */
 }
 
-/* Example of ensuring node text/labels are clickable */
+/* Example of ensuring node text/labels are clickable (already had high z-index) */
 .custom-node .node-label { /* Assuming you have a class for your label */
     z-index: 1002; /* Higher than both handles */
     position: relative; /* Ensure z-index works */
+    pointer-events: auto; /* Ensure it receives pointer events */
 }
 
-/* If z-index alone isn't sufficient for clickability on node content */
-.react-flow__handle.center-handle.target-handle-style {
-    /* ... other styles ... */
-    pointer-events: all; /* Ensure it's a drop target */
-}
-/* And potentially set pointer-events: auto; on node content */
+/* You might need to apply pointer-events: auto; to other interactive elements */
+/* within your node component as well. */
 

@@ -119,7 +119,6 @@ function Flow() {
     return () => clearInterval(interval);
   }, [setEdges]);
 
-/*
   const addLeftToLeftDemo = useCallback(() => {
     const newEdge = {
       id: `e-left-to-left-${Date.now()}`,
@@ -129,7 +128,6 @@ function Flow() {
       targetHandle: 'targetHandle',
       type: 'custom',
     };
-    */
     
     setEdges((eds) => [...eds, newEdge]);
   }, [setEdges]);

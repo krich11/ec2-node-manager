@@ -74,10 +74,12 @@ function Flow() {
     );
     
     if (connectionExists) {
+      console.log("Connection Exists, returning false");
       return false;
     }
     
     // Allow all other connections
+    console.log("Connection Doesn't Exist, returning true");
     return true;
   }, [edges]);
   

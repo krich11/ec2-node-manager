@@ -101,7 +101,6 @@ export default function CustomNode({ id, data, selected }) {
   return (
     <div
       ref={nodeRef}
-      data-drag-handle
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
       } cursor-grab react-flow__node-drag-handle custom-node`}

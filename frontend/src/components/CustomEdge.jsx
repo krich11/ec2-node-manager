@@ -60,10 +60,12 @@ export default function CustomEdge({
   
     if (sourcePosition === 'left' && targetPosition === 'left') {
       // For left-to-left connections, provide offset to left
-      edgeParams.centerX = Math.min(sourceX, targetX) - 80;
+      //edgeParams.centerX = Math.min(sourceX, targetX) - 80;
+      edgeParams.centerX = Math.min(sourceX, targetX);
     } else if (sourcePosition === 'right' && targetPosition === 'right') {
       // For right-to-right connections, provide offset to right
-      edgeParams.centerX = Math.max(sourceX, targetX) + 80;
+      //edgeParams.centerX = Math.max(sourceX, targetX) + 80;
+      edgeParams.centerX = Math.max(sourceX, targetX);
     }
   }
 

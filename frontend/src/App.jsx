@@ -52,7 +52,6 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   
-/*
   // This trick lets us be able to connect from any handle to any handle
   // Handle can be source or target interchangeably
   const isValidConnection = useCallback((connection) => {
@@ -81,9 +80,7 @@ function Flow() {
     // Allow all other connections
     return true;
   }, [edges]);
-  */
   
-/*
   // Handle new connections
   const onConnect = useCallback((params) => {
     console.log('Creating connection:', params);
@@ -93,8 +90,6 @@ function Flow() {
     };
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
-
-*/
 
   // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {
@@ -144,7 +139,7 @@ function Flow() {
       edges={edges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      //onConnect={onConnect}
+      onConnect={onConnect}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       style={{ width: '100%', height: '100%' }}
@@ -156,7 +151,7 @@ function Flow() {
       snapToGrid={snapToGrid}
       onNodeDoubleClick={onNodeDoubleClick}
       zoomOnDoubleClick={false}
-      //isValidConnection={isValidConnection}
+      isValidConnection={isValidConnection}
       connectionLineType={ConnectionLineType.Spline}
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />

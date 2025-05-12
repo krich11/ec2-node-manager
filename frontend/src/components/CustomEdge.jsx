@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getBezierPath, useReactFlow } from 'reactflow';
 
 // Define the CSS animation for the dashed line

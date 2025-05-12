@@ -137,6 +137,7 @@ export default function CustomNode({ id, data, selected }) {
 	className="center-handle target-handle-style"
         //style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
+	isConnectableStart={false}
         ref={data.rightHandleRef}
       />
 

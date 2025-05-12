@@ -52,6 +52,7 @@ export default function CustomEdge({
     targetPosition,
     curvature: 0.5, // Default curvature for splines
   };
+	/*
   
   // Add special handling for same-side connections
   if (isSameSide) {
@@ -76,6 +77,7 @@ export default function CustomEdge({
   const sourceHandleRef = useRef(null);
   const targetHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
+  */
 
 	/*
   useEffect(() => {

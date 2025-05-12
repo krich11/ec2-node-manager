@@ -32,7 +32,7 @@ const initialEdges = [
     target: 'running-2', 
     sourceHandle: 'rightHandle',
     targetHandle: 'leftHandle',
-    type: 'custom',
+    //type: 'custom',
   },
   // Left-to-left connection
   {
@@ -41,7 +41,7 @@ const initialEdges = [
     target: 'idle-1', 
     sourceHandle: 'rightHandle',
     targetHandle: 'leftHandle',
-    type: 'custom',
+    //type: 'custom',
   }
 ];
 

@@ -36,24 +36,11 @@ export default function CustomEdge({
   markerEnd
 }) {
 
-
-
-  console.log(`Source X:`, sourceX);
-  console.log(`Source Y:`, sourceY);
-  console.log(`Target X:`, targetX);
-  console.log(`Target Y:`, targetY);
-  console.log(`Source Handle:`, sourceHandle);
-  console.log(`Target Handle:`, targetHandle);
-
-
-
-
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
   // Customize path based on handle positions
-  const isSameSide = false;
-	//const isSameSide = sourcePosition === targetPosition;
+  const isSameSide = sourcePosition === targetPosition;
   
   // Calculate path based on handle positions
   const edgeParams = {

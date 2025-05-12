@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.react-flow__handle-middle {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

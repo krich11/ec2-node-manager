@@ -144,7 +144,7 @@ function Flow() {
       fitView
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{ 
-        type: 'custom',
+        type: 'straight',
         style: { strokeWidth: 2.5 },
       }}
       snapGrid={snapGrid}

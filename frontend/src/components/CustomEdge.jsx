@@ -69,8 +69,28 @@ export default function CustomEdge({
   // Get the path using the modified parameters
   const [edgePath] = getBezierPath(edgeParams);
 
-  // Effect to check both nodes' status and update edge styling
+  // Debugging: Output the assigned endpoint coordinates and handle coordinates
   useEffect(() => {
+    const sourceNode = getNode(source);
+    const targetNode = getNode(target);
+
+    if (sourceNode && targetNode) {
+      const sourceHandleElement = document.querySelector(`[data-id="${source}-${sourceHandle}"]`);
+      const targetHandleElement = document.querySelector(`[data-id="${target}-${targetHandle}"]`);
+
+      if (sourceHandleElement && targetHandleElement) {
+        const sourceHandleRect = sourceHandleElement.getBoundingClientRect();
+        const targetHandleRect = targetHandleElement.getBoundingClientRect();
+
+        console.log(`Edge ID: ${id}`);
+        console.log(`Source Node ID: ${source}, Target Node ID: ${target}`);
+        console.log(`Source Handle Coordinates: (${sourceHandleRect.x}, ${sourceHandleRect.y})`);
+        console.log(`Target Handle Coordinates: (${targetHandleRect.x}, ${targetHandleRect.y})`);
+        console.log(`Edge Path: ${edgePath}`);
+      }
+    }
+
+    // Effect to check both nodes' status and update edge styling
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
       const targetNode = getNode(target);
@@ -90,7 +110,7 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [source, target, getNode]);
+  }, [source, target, getNode, id, sourceHandle, targetHandle]);
 
   return (
     <>

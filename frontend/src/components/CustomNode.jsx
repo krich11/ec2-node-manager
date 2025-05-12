@@ -18,8 +18,8 @@ const icons = {
 
 // Common handle style 
 const handleStyle = { 
-  width: 10, 
-  height: 10, 
+  width: 15, 
+  height: 15, 
   backgroundColor: '#6366f1', // Indigo color for all handles
   border: '2px solid white',
   cursor: 'crosshair',
@@ -118,7 +118,7 @@ export default function CustomNode({ id, data, selected }) {
         </div>
       </div>
       
-      {/* Handle on left side */}
+      {// Handle on left side }
       <Handle 
         type="source" 
         position={Position.Left} 
@@ -128,7 +128,7 @@ export default function CustomNode({ id, data, selected }) {
         ref={data.leftHandleRef}
       />
       
-      // Handle on right side 
+      {//Handle on right side }
       <Handle 
         type="target" 
         position={Position.Right} 

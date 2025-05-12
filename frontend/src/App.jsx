@@ -61,8 +61,6 @@ function Flow() {
     }
     
     // Check if this exact connection already exists
-    console.log('Connection:', connection);
-    console.log('Edges', edges);
     const connectionExists = edges.some(
       edge => 
         (edge.source === connection.source && 
@@ -74,11 +72,8 @@ function Flow() {
          edge.sourceHandle === connection.targetHandle &&
          edge.targetHandle === connection.sourceHandle)
     );
-
-    console.log('connectionExists:', connectionExists);
     
     if (connectionExists) {
-      console.log('Connection exists, not creating connection.');
       return false;
     }
     

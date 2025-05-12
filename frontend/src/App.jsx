@@ -63,8 +63,10 @@
         // Check if this exact connection already exists
         const connectionExists = edges.some(
           edge =>
-            (edge.source === connection.source && edge.target === connection.target && edge.sourceHandle === connection.sourceHandle && edge.targetHandle === connection.targetHandle) ||
-            (edge.source === connection.target && edge.target === connection.source && edge.sourceHandle === connection.targetHandle && edge.targetHandle === connection.sourceHandle)
+	    (edge.source === connection.source && edge.target === connection.target && edge.sourceHandle === connection.sourceHandle && edge.targetHandle === connection.targetHandle) ||
+            (edge.source === connection.target && edge.target === connection.source && edge.sourceHandle === connection.targetHandle && edge.targetHandle === connection.sourceHandle) ||
+            (edge.source === connection.source && edge.target === connection.target && edge.sourceHandle === connection.targetHandle && edge.targetHandle === connection.sourceHandle) ||
+            (edge.source === connection.target && edge.target === connection.source && edge.sourceHandle === connection.sourceHandle && edge.targetHandle === connection.targetHandle)
         );
 
         if (connectionExists) {

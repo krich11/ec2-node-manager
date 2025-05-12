@@ -111,7 +111,6 @@ export default function CustomEdge({
         console.log(`Edge Path: ${edgePath}`);
       }
     }
-    */
 
     // Effect to check both nodes' status and update edge styling
     const checkConnectionStatus = () => {
@@ -134,6 +133,7 @@ export default function CustomEdge({
     
     return () => clearInterval(interval);
   }, [source, target, getNode, id, sourceHandle, targetHandle]);
+    */
 
   return (
     <>

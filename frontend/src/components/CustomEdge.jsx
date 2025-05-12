@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edge } from 'reactflow';
+import { EdgeProps } from 'reactflow';
 
 const CustomEdge = ({ id, source, target, sourceNode, targetNode, style, data }) => {
   const isRunning = (node) => node.data.status === 'running';

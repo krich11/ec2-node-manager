@@ -60,9 +60,6 @@ function Flow() {
       return false;
     }
 
-    console.log("Edges: ", edges);
-    console.log("Connection: ", connection);
-    
     // Check if this exact connection already exists
     const connectionExists = edges.some(
       edge => 
@@ -73,18 +70,15 @@ function Flow() {
     );
     
     if (connectionExists) {
-      console.log("Connection Exists, returning false");
       return false;
     }
     
     // Allow all other connections
-    console.log("Connection Doesn't Exist, returning true");
     return true;
   }, [edges]);
   
   // Handle new connections
   const onConnect = useCallback((params) => {
-    console.log('Creating connection:', params);
     const newEdge = {
       ...params,
       type: 'custom',

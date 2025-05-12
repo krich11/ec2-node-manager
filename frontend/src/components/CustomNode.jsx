@@ -25,27 +25,32 @@
       cursor: 'crosshair',
     };
 
-    const handleStartAction = (nodeId) => {
-      console.log(`[STUB] Start action for node ${nodeId}`);
+    const handleProvisionAction = (nodeId) => {
+      console.log(`[STUB] Provision action for node ${nodeId}`);
     };
 
-    const handleStopAction = (nodeId) => {
-      console.log(`[STUB] Stop action for node ${nodeId}`);
+    const handleStartAction = (nodeId) => {
+      console.log(`[STUB] Start action for node ${nodeId}`);
     };
 
     const handleRebootAction = (nodeId) => {
       console.log(`[STUB] Reboot action for node ${nodeId}`);
     };
 
-    const handleTerminateAction = (nodeId) => {
-      console.log(`[STUB] Terminate action for node ${nodeId}`);
+    const handleStopAction = (nodeId) => {
+      console.log(`[STUB] Stop action for node ${nodeId}`);
+    };
+
+    const handleConfigureAction = (nodeId) => {
+      console.log(`[STUB] Configure action for node ${nodeId}`);
     };
 
     const actionHandlers = {
+      Provision: handleProvisionAction,
       Start: handleStartAction,
-      Stop: handleStopAction,
       Reboot: handleRebootAction,
-      Terminate: handleTerminateAction,
+      Stop: handleStopAction,
+      Configure: handleConfigureAction,
     };
 
     export default function CustomNode({ id, data, selected }) {
@@ -149,7 +154,7 @@
                 position: 'absolute'
               }}
             >
-              {['Start', 'Stop', 'Reboot', 'Terminate'].map((action) => (
+              {['Provision', 'Run', 'Reboot', 'Stop', 'Configure'].map((action) => (
                 <div
                   key={action}
                   onClick={() => handleMenuItemClick(action)}

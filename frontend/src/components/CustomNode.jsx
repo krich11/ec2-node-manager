@@ -53,8 +53,6 @@ export default function CustomNode({ id, data, selected }) {
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
-  //const sourceHandleRef = useRef(null);
-  //const targetHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
   const leftHandleRef = useRef(null);
   const { getNode } = useReactFlow();
@@ -130,35 +128,15 @@ export default function CustomNode({ id, data, selected }) {
         ref={data.leftHandleRef}
       />
       
-      {/* Handle on right side */}
+      // Handle on right side 
       <Handle 
-        type="source" 
+        type="target" 
         position={Position.Right} 
         id="rightHandle" 
         style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
         ref={data.rightHandleRef}
       />
-
-      {/* For backward compatibility */}
-	  /*
-      <Handle 
-        type="target" 
-        position={Position.Left} 
-        id="targetHandle" 
-        style={{...handleStyle, display: 'none'}} 
-        isConnectable={false}
-        ref={data.targetHandleRef}
-      />
-      <Handle 
-        type="source" 
-        position={Position.Right} 
-        id="sourceHandle" 
-        style={{...handleStyle, display: 'none'}} 
-        isConnectable={false}
-        ref={data.rightHandleRef}
-      />
-      */
 
       {contextMenuVisible && (
         <div

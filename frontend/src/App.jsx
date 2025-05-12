@@ -93,9 +93,12 @@
           (['idle', 'running', 'warning', 'error'].indexOf(node.data.status) + 1) % 4
         ];
 
+	// Capitalize the first letter of the new status for the label.
+	const newLabel = newStatus.charAt(0).toUppercase() + newStatus.slice(1);
+
         setNodes((nds) =>
           nds.map((n) =>
-            n.id === node.id ? { ...n, data: { ...n.data, status: newStatus } } : n
+            n.id === node.id ? { ...n, data: { ...n.data, status: newStatus, label: newLabel } } : n
           )
         );
 

@@ -17,6 +17,7 @@
   width: auto;
   height: auto;
   pointer-events: all; /* Ensure handles are interactive for connecting */
+  z-index: 1003; /* <-- Increased z-index to be above text/icons (1002) */
 }
 
 /* Styling for the source handle (smaller, visible, can initiate drags) */
@@ -25,7 +26,7 @@
   height: 10px; /* Set desired small size */
   background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
   border-radius: 50%; /* Make it round */
-  z-index: 1001; /* Ensure source is visibly on top */
+  z-index: 1004; /* <-- Increased z-index to be above the base handle z-index */
   /* pointer-events: all; is inherited from .react-flow__handle.center-handle */
 }
 
@@ -40,8 +41,8 @@
   border: none; /* Remove border if you want it to blend with node */
   /* Match node's border-radius if the node is rounded */
   border-radius: 8px; /* Replace with actual value for Tailwind's 'rounded-lg' */
-  z-index: 999; /* Lower z-index than node container and source handle */
-  pointer-events: none; /* <-- Prevent this handle from blocking node dragging */
+  z-index: 1003; /* <-- Set z-index to be same as base handle, still above text/icons */
+  pointer-events: none; /* Prevent this handle from blocking node dragging */
 }
 
 /* Ensure node content is clickable and the node is draggable */
@@ -49,21 +50,21 @@
 /* Ensure your node container and interactive content have pointer-events: auto */
 .custom-node {
   position: relative; /* Needed for absolute positioning of handles */
-  pointer-events: auto; /* <-- Ensure the node container receives pointer events for dragging */
-  z-index: 1000; /* Ensure it's above the target handle */
+  pointer-events: auto; /* Ensure the node container receives pointer events for dragging */
+  z-index: 1000; /* <-- Keep node container z-index lower than handles */
   cursor: grab; /* Indicate draggable area */
 }
 
 /* Example of ensuring node text/labels are clickable */
 .custom-node .node-label {
-    z-index: 1002; /* Higher than both handles and node container */
+    z-index: 1002; /* <-- Keep text z-index, now lower than handles */
     position: relative; /* Ensure z-index works */
     pointer-events: auto; /* Ensure it receives pointer events */
 }
 
 /* Ensure the MoreHorizontal icon is clickable */
 .custom-node .p-1 .opacity-60.cursor-pointer { /* Targeting the icon container and icon */
-    z-index: 1002; /* Higher than handles and node container */
+    z-index: 1002; /* <-- Keep icon z-index, now lower than handles */
     position: relative; /* Ensure z-index works */
     pointer-events: auto; /* Ensure it receives pointer events */
 }

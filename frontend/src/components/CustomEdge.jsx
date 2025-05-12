@@ -83,6 +83,12 @@ export default function CustomEdge({
     console.log(`Target Node:`, targetNode);
 
     if (sourceNode && targetNode) {
+      // Pass refs to the node data
+      sourceNode.data.leftHandleRef = sourceHandleRef;
+      sourceNode.data.rightHandleRef = rightHandleRef;
+      targetNode.data.leftHandleRef = targetHandleRef;
+      targetNode.data.rightHandleRef = rightHandleRef;
+
       const sourceHandleElement = sourceHandleRef.current;
       const targetHandleElement = targetHandleRef.current;
 

@@ -126,7 +126,7 @@ export default function CustomNode({ id, data, selected }) {
         id="leftHandle" 
         style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
-        ref={sourceHandleRef}
+        ref={data.leftHandleRef}
       />
       
       {/* Handle on right side */}
@@ -136,7 +136,7 @@ export default function CustomNode({ id, data, selected }) {
         id="rightHandle" 
         style={{...handleStyle, top: '50%'}} 
         isConnectable={true}
-        ref={rightHandleRef}
+        ref={data.rightHandleRef}
       />
 
       {/* For backward compatibility */}
@@ -146,7 +146,7 @@ export default function CustomNode({ id, data, selected }) {
         id="targetHandle" 
         style={{...handleStyle, display: 'none'}} 
         isConnectable={false}
-        ref={targetHandleRef}
+        ref={data.targetHandleRef}
       />
       <Handle 
         type="source" 
@@ -154,7 +154,7 @@ export default function CustomNode({ id, data, selected }) {
         id="sourceHandle" 
         style={{...handleStyle, display: 'none'}} 
         isConnectable={false}
-        ref={rightHandleRef}
+        ref={data.rightHandleRef}
       />
 
       {contextMenuVisible && (

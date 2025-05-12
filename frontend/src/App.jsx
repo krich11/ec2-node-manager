@@ -7,7 +7,6 @@ import ReactFlow, {
   MiniMap,
   Background,
   ConnectionLineType,
-  Panel,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
@@ -61,6 +60,10 @@ function Flow() {
     if (connection.source === connection.target) {
       return false;
     }
+    // Prevent left to left connections
+    if (connection.sourceHandle === 'leftHandle' && connection.targetHandle === 'leftHandle') {
+      return false;
+    }
     return true;
   }, []);
 
@@ -89,19 +92,6 @@ function Flow() {
     }, 50);
   }, [setNodes, setEdges]);
 
-  const addLeftToLeftDemo = useCallback(() => {
-    const newEdge = {
-      id: `e-left-to-left-${Date.now()}`,
-      source: 'idle-1',
-      target: 'error-4',
-      sourceHandle: 'leftHandle',
-      targetHandle: 'leftHandle',
-      type: 'custom',
-    };
-    
-    setEdges((eds) => [...eds, newEdge]);
-  }, [setEdges]);
-
   return (
     <ReactFlow
       nodes={nodes}
@@ -124,20 +114,6 @@ function Flow() {
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
       <Background color="#aaa" size={1} />
-      <Panel position="top-left">
-        <div className="flex flex-col gap-2">
-          <button 
-            onClick={addLeftToLeftDemo}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Connect Idle's Left to Error's Left
-          </button>
-          <div className="bg-gray-800 text-white p-2 rounded">
-            <p>Double-click on node to change status</p>
-            <p>Connect any handle to any other handle</p>
-          </div>
-        </div>
-      </Panel>
     </ReactFlow>
   );
 }

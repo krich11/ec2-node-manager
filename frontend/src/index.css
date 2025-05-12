@@ -1,66 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+    /* In your CSS file (e.g., index.css or App.css) */
 
-/* In your CSS file (e.g., index.css or App.css) */
+    /* Basic styling for centered handles (adjust as needed) */
+    .react-flow__handle.center-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center both vertically and horizontally */
+      border: 1px solid #555; /* Example border */
+      /* Remove default React Flow handle size/background if they interfere */
+      width: auto;
+      height: auto;
+    }
 
-/* Basic styling for centered handles (adjust as needed) */
-.react-flow__handle.center-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Center both vertically and horizontally */
-  border: 1px solid #555; /* Example border */
-  /* Remove default React Flow handle size/background if they interfere */
-  width: auto;
-  height: auto;
-}
+    /* Styling for the source handle (smaller, visible, on top) */
+    .react-flow__handle.center-handle.source-handle-style {
+      width: 10px;  /* Set desired small size */
+      height: 10px; /* Set desired small size */
+      background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
+      border-radius: 50%; /* Make it round */
+      z-index: 1001; /* Ensure source is visibly on top of the large target */
+      pointer-events: all; /* Ensure it can initiate drags */
+    }
 
-/* Styling for the source handle (smaller, visible, on top) */
-.react-flow__handle.center-handle.source-handle-style {
-  width: 10px;  /* Set desired small size */
-  height: 10px; /* Set desired small size */
-  background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
-  border-radius: 50%; /* Make it round */
-  z-index: 1001; /* Ensure source is visibly on top of the large target */
-  pointer-events: all; /* Ensure it can initiate drags */
-}
+    /* Styling for the target handle (fills the node, underneath source) */
+    .react-flow__handle.center-handle.target-handle-style {
+      width: 100%; /* Make it fill the parent node horizontally */
+      height: 100%; /* Make it fill the parent node vertically */
+      top: 0; /* Position from top edge of parent */
+      left: 0; /* Position from left edge of parent */
+      transform: none; /* Remove the centering transform */
+      background-color: rgba(100, 100, 100, 0.1); /* Very light semi-transparent background */
+      border: none; /* Remove border if you want it to blend with node */
+      /* Match node's border-radius if the node is rounded */
+      border-radius: 8px; /* <-- Add border-radius here */
+      /* Replace '8px' with the actual value for Tailwind's 'rounded-lg' in your project */
+      z-index: 999; /* Lower z-index than source handle and node content */
+      pointer-events: all; /* Ensure it functions as a drop target */
+    }
 
-/* Styling for the target handle (fills the node, underneath source) */
-.react-flow__handle.center-handle.target-handle-style {
-  width: 100%; /* Make it fill the parent node horizontally */
-  height: 100%; /* Make it fill the parent node vertically */
-  top: 0; /* Position from top edge of parent */
-  left: 0; /* Position from left edge of parent */
-  transform: none; /* Remove the centering transform */
-  background-color: rgba(100, 100, 100, 0.1); /* Very light semi-transparent background */
-  border: none; /* Remove border if you want it to blend with node */
-  /* Match node's border-radius if the node is rounded */
-  border-radius: 8px; /* <-- Add border-radius here */
-  /* Replace '8px' with the actual value for Tailwind's 'rounded-lg' in your project */
-  z-index: 999; /* Lower z-index than source handle and node content */
-  pointer-events: all; /* Ensure it functions as a drop target */
-}
+    /* Ensure node content is clickable and the node is draggable */
+    /* Add the 'react-flow__node-drag-handle' class to the element you want to drag */
+    .custom-node.react-flow__node-drag-handle { /* <-- Modified rule */
+      position: relative; /* Needed for absolute positioning of handles */
+      /* Ensure the node container itself can receive pointer events for dragging */
+      pointer-events: auto; /* <-- Add this line */
+      /* Add a z-index if necessary to ensure it's above the target handle */
+      z-index: 1000; /* <-- Add a z-index higher than the target handle */
+      /* Optional: Change cursor to indicate it's draggable */
+      cursor: grab;
+    }
 
-/* Ensure node content is clickable and the node is draggable */
-/* Add the 'react-flow__node-drag-handle' class to the element you want to drag */
-.custom-node.react-flow__node-drag-handle { /* <-- Modified rule */
-  position: relative; /* Needed for absolute positioning of handles */
-  /* Ensure the node container itself can receive pointer events for dragging */
-  pointer-events: auto; /* <-- Add this line */
-  /* Add a z-index if necessary to ensure it's above the target handle */
-  z-index: 1000; /* <-- Add a z-index higher than the target handle */
-  /* Optional: Change cursor to indicate it's draggable */
-  cursor: grab;
-}
+    /* Example of ensuring node text/labels are clickable (already had high z-index) */
+    .custom-node .node-label { /* Assuming you have a class for your label */
+        z-index: 1002; /* Higher than both handles */
+        position: relative; /* Ensure z-index works */
+        pointer-events: auto; /* Ensure it receives pointer events */
+    }
 
-/* Example of ensuring node text/labels are clickable (already had high z-index) */
-.custom-node .node-label { /* Assuming you have a class for your label */
-    z-index: 1002; /* Higher than both handles */
-    position: relative; /* Ensure z-index works */
-    pointer-events: auto; /* Ensure it receives pointer events */
-}
-
-/* You might need to apply pointer-events: auto; to other interactive elements */
-/* within your node component as well. */
-
+    /* You might need to apply pointer-events: auto; to other interactive elements */
+    /* within your node component as well. */
+    

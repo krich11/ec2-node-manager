@@ -53,9 +53,10 @@ export default function CustomNode({ id, data, selected }) {
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
-  const sourceHandleRef = useRef(null);
-  const targetHandleRef = useRef(null);
+  //const sourceHandleRef = useRef(null);
+  //const targetHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
+  const leftHandleRef = useRef(null);
   const { getNode } = useReactFlow();
   const status = data.status || 'idle';
 

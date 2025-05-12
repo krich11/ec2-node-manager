@@ -70,6 +70,9 @@ export default function CustomEdge({
   const [edgePath] = getBezierPath(edgeParams);
 
   // Debugging: Output the assigned endpoint coordinates and handle coordinates
+  const sourceHandleRef = useRef(null);
+  const targetHandleRef = useRef(null);
+
   useEffect(() => {
     console.log(`useEffect triggered for Edge ID: ${id}`);
 
@@ -80,8 +83,8 @@ export default function CustomEdge({
     console.log(`Target Node:`, targetNode);
 
     if (sourceNode && targetNode) {
-      const sourceHandleElement = document.querySelector(`[data-id="${source}-${sourceHandle}"]`);
-      const targetHandleElement = document.querySelector(`[data-id="${target}-${targetHandle}"]`);
+      const sourceHandleElement = sourceHandleRef.current;
+      const targetHandleElement = targetHandleRef.current;
 
       console.log(`Source Handle Element:`, sourceHandleElement);
       console.log(`Target Handle Element:`, targetHandleElement);
@@ -119,6 +122,26 @@ export default function CustomEdge({
     
     return () => clearInterval(interval);
   }, [source, target, getNode, id, sourceHandle, targetHandle]);
+
+  return (
+    <>
+      {/* Include the animation styles */}
+      <style>{dashAnimation}</style>
+      
+      <path
+        id={id}
+        style={{
+          ...style,
+          stroke: '#888',
+          strokeWidth: 2.5,
+          transition: 'stroke 0.3s ease'
+        }}
+        className={`react-flow__edge-path ${isActive ? 'active-edge animated-edge' : ''}`}
+        d={edgePath}
+        markerEnd={markerEnd}
+      />
+    </>
+  );
 
   return (
     <>

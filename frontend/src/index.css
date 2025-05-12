@@ -2,47 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-    /* Basic styling for all centered handles */
-    .react-flow__handle.center-handle {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); /* Center both vertically and horizontally */
-      border: 1px solid #555; /* Example border */
-      background-color: #fff; /* Default background */
-      z-index: 1000; /* Ensure handles are above node content */
-      /* You might want to remove default React Flow handle size/background if they interfere */
-      width: auto; /* Reset default width/height if needed */
-      height: auto; /* Reset default width/height if needed */
-    }
+/* Basic styling for centered handles (adjust as needed) */
+.react-flow__handle.center-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center both vertically and horizontally */
+  border: 1px solid #555; /* Example border */
+  /* Remove default React Flow handle size/background if they interfere */
+  width: auto;
+  height: auto;
+}
 
-    /* Styling for the source handle (smaller, visible) */
-    .react-flow__handle.center-handle.source-handle-style {
-      width: 10px;  /* Set desired small size */
-      height: 10px; /* Set desired small size */
-      background-color: #228be6; /* Example color */
-      z-index: 1001; /* Ensure source is visibly on top of target */
-      /* You could add a border-radius: 50%; to make it round */
-      border-radius: 50%;
-    }
+/* Styling for the source handle (smaller, visible, on top) */
+.react-flow__handle.center-handle.source-handle-style {
+  width: 10px;  /* Set desired small size */
+  height: 10px; /* Set desired small size */
+  background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
+  border-radius: 50%; /* Make it round */
+  z-index: 1001; /* Ensure source is visibly on top of the large target */
+}
 
-    /* Styling for the target handle (larger, easier target) */
-    .react-flow__handle.center-handle.target-handle-style {
-      width: 30px; /* Set desired large size */
-      height: 30px; /* Set desired large size */
-      background-color: rgba(100, 100, 100, 0.2); /* Semi-transparent background */
-      border-color: #555; /* Example border */
-      z-index: 1000; /* Ensure target is below source visually, but still clickable */
-      /* Make it round if desired */
-      border-radius: 50%;
-    }
+/* Styling for the target handle (fills the node, underneath source) */
+.react-flow__handle.center-handle.target-handle-style {
+  width: 100%; /* Make it fill the parent node horizontally */
+  height: 100%; /* Make it fill the parent node vertically */
+  top: 0; /* Position from top edge of parent */
+  left: 0; /* Position from left edge of parent */
+  transform: none; /* Remove the centering transform */
+  background-color: rgba(100, 100, 100, 0.1); /* Very light semi-transparent background */
+  border: none; /* Remove border if you want it to blend with node */
+  /* Match node's border-radius if the node is rounded */
+  border-radius: 8px; /* <-- Add border-radius here */
+  /* Replace '8px' with the actual value for Tailwind's 'rounded-lg' in your project */
+  z-index: 999; /* Lower z-index than source handle and node content */
+}
 
-    /* Optional: Style the handle when a connection is being dragged over it */
-    .react-flow__handle.react-flow__handle-connecting {
-       background-color: #ff6600; /* Example color when connecting */
-    }
+/* Ensure node content is clickable */
+/* You might need to add z-index to your node's content elements */
+/* or use pointer-events: none on the target handle if z-index isn't enough */
+.custom-node {
+  position: relative; /* Needed for absolute positioning of handles */
+  /* Add z-index to node content elements if needed */
+}
 
-    .react-flow__handle.react-flow__handle-valid {
-       background-color: #00ff00; /* Example color when a valid connection is possible */
-    }
-    
+/* Example of ensuring node text/labels are clickable */
+.custom-node .node-label { /* Assuming you have a class for your label */
+    z-index: 1002; /* Higher than both handles */
+    position: relative; /* Ensure z-index works */
+}
+
+/* If z-index alone isn't sufficient for clickability on node content */
+.react-flow__handle.center-handle.target-handle-style {
+    /* ... other styles ... */
+    pointer-events: all; /* Ensure it's a drop target */
+}
+/* And potentially set pointer-events: auto; on node content */
+

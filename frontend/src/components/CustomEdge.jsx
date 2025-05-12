@@ -55,9 +55,11 @@ export default function CustomEdge({
 
 
   // Get the path using the modified parameters
-  const [edgePath] = getBezierPath(edgeParams);
+  const [edgePath] = getStraightPath(edgeParams);
 
   
+	/*
+
   // Add special handling for same-side connections
   if (isSameSide) {
     // For left-left or right-right connections, create more pronounced curve
@@ -71,6 +73,7 @@ export default function CustomEdge({
       edgeParams.centerX = Math.max(sourceX, targetX) + 80;
     }
   }
+  */
 
   // Debugging: Output the assigned endpoint coordinates and handle coordinates
   const sourceHandleRef = useRef(null);

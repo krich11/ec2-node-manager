@@ -57,7 +57,6 @@ export default function CustomEdge({
   // Get the path using the modified parameters
   const [edgePath] = getBezierPath(edgeParams);
 
-	/*
   
   // Add special handling for same-side connections
   if (isSameSide) {
@@ -79,9 +78,7 @@ export default function CustomEdge({
   const sourceHandleRef = useRef(null);
   const targetHandleRef = useRef(null);
   const rightHandleRef = useRef(null);
-  */
 
-	/*
   useEffect(() => {
     console.log(`useEffect triggered for Edge ID: ${id}`);
 
@@ -137,7 +134,6 @@ export default function CustomEdge({
     
     return () => clearInterval(interval);
   }, [source, target, getNode, id, sourceHandle, targetHandle]);
-    */
 
   return (
     <>
@@ -158,25 +154,4 @@ export default function CustomEdge({
       />
     </>
   );
-/*
-  return (
-    <>
-      // Include the animation styles
-      <style>{dashAnimation}</style>
-      
-      <path
-        id={id}
-        style={{
-          ...style,
-          stroke: '#888',
-          strokeWidth: 2.5,
-          transition: 'stroke 0.3s ease'
-        }}
-        className={`react-flow__edge-path ${isActive ? 'active-edge animated-edge' : ''}`}
-        d={edgePath}
-        markerEnd={markerEnd}
-      />
-    </>
-  );
-*/
 }

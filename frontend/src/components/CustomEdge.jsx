@@ -57,7 +57,7 @@ export default function CustomEdge({
   });
 
   useEffect(() => {
-    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
+    //console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
     
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -75,7 +75,8 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [id, source, target, sourceX, sourceY, adjustedTargetX, adjustedTargetY, targetX, targetY, getNode]);
+  //}, [id, source, target, sourceX, sourceY, adjustedTargetX, adjustedTargetY, targetX, targetY, getNode]);
+  }, [id, source, target, sourceX, sourceY, targetX, targetY, targetX, targetY, getNode]);
 
   return (
     <>

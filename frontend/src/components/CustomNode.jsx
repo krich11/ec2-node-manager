@@ -17,116 +17,74 @@ const icons = {
   error: <XCircle size={14} />,
 };
 
-const handleProvisionAction = (nodeId) => {
-  console.log(`[STUB] Provision action for node ${nodeId}`);
-};
-
-const handleStartAction = (nodeId) => {
-  console.log(`[STUB] Start action for node ${nodeId}`);
-};
-
-const handleRebootAction = (nodeId) => {
-  console.log(`[STUB] Reboot action for node ${nodeId}`);
-};
-
-const handleStopAction = (nodeId) => {
-  console.log(`[STUB] Stop action for node ${nodeId}`);
-};
-
-const handleConfigureAction = (nodeId) => {
-  console.log(`[STUB] Configure action for node ${nodeId}`);
-};
-
-const actionHandlers = {
-  Provision: handleProvisionAction,
-  Start: handleStartAction,
-  Reboot: handleRebootAction,
-  Stop: handleStopAction,
-  Configure: handleConfigureAction,
-};
-
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
-  const { getNode, getViewport } = useReactFlow();
+  const { getNode, getViewport, setNodes } = useReactFlow();
   const status = data.status || 'idle';
 
-  // Fixed handle position: center of node (width: 150px, height: 40px)
   const handlePosition = {
     top: 20, // Center (40px height / 2)
     left: 75, // Center (150px width / 2)
   };
 
-  // Debug node dimensions
-  useEffect(() => {
-    if (nodeRef.current) {
-      const { width, height } = nodeRef.current.getBoundingClientRect();
-      console.log(`Node ${id}: width=${width}, height=${height}`);
-    }
-  }, [id, selected, data]);
-
-  const handleContextMenu = useCallback((event) => {
+  // Custom drag handler for target handle
+  const onDragStart = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
-    
-    const { zoom, x: viewportX, y: viewportY } = getViewport();
-    
-    setContextMenuPosition({
-      x: event.clientX,
-      y: event.clientY
-    });
-    
+
+    const node = getNode(id);
+    if (!node) return;
+
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startPos = { x: node.position.x, y: node.position.y };
+
+    const onMouseMove = (moveEvent) => {
+      const { zoom } = getViewport();
+      const dx = (moveEvent.clientX - startX) / zoom;
+      const dy = (moveEvent.clientY - startY) / zoom;
+
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === id ? { ...n, position: { x: startPos.x + dx, y: startPos.y + dy } } : n
+        )
+      );
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }, [id, getNode, getViewport, setNodes]);
+
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+    const rect = nodeRef.current.getBoundingClientRect();
+    setContextMenuPosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
     setContextMenuVisible(true);
-  }, [getViewport]);
-
-  const handleMenuItemClick = useCallback((action) => {
-    actionHandlers[action](id);
-    setContextMenuVisible(false);
-  }, [id]);
-
-  const handleClickOutside = useCallback((event) => {
-    if (contextMenuVisible && contextMenuRef.current && !contextMenuRef.current.contains(event.target)) {
-      setContextMenuVisible(false);
-    }
-  }, [contextMenuVisible]);
+  };
 
   useEffect(() => {
-    const handleMouseMove = () => {
-      if (contextMenuVisible) {
+    const handleClickOutside = (event) => {
+      if (contextMenuRef.current && !contextMenuRef.current.contains(event.target)) {
         setContextMenuVisible(false);
       }
     };
-
-    if (contextMenuVisible) {
-      window.addEventListener('dragstart', handleMouseMove);
-      document.addEventListener('mousedown', handleMouseMove, { capture: true });
-    }
-
-    return () => {
-      window.removeEventListener('dragstart', handleMouseMove);
-      document.removeEventListener('mousedown', handleMouseMove, { capture: true });
-    };
-  }, [contextMenuVisible]);
-
-  useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [handleClickOutside]);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <div
       ref={nodeRef}
-      className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
-        selected ? 'shadow-outline-blue' : 'shadow-sm'
-      } custom-node`}
-      style={{ width: 150, height: 40, cursor: 'grab' }}
+      className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow custom-node`}
+      style={{ width: 150, height: 40 }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >
@@ -140,60 +98,54 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         </div>
       </div>
 
-      {/* Source handle centered */}
-      <Handle
-        type="source"
-        id="sourceCenterHandle"
-        className="center-handle source-handle-style"
-        isConnectable={true}
-        isConnectableStart={true}
-        style={{ top: handlePosition.top, left: handlePosition.left }}
-      />
-
-      {/* Target handle covering the node, transparent */}
+      {/* Target handle covering the entire node, just under source handle */}
       <Handle
         type="target"
         id="targetCenterHandle"
         className="center-handle target-handle-style"
         isConnectable={true}
         isConnectableStart={false}
-        style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          width: '100%', 
-          height: '100%', 
-          background: 'transparent', 
-          borderRadius: '0.5rem', // Matches rounded-lg (approx. 8px)
-	  border: 'none',
-	  zIndex: 10,
-	  pointerEvents: 'none'
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'transparent',
+          border: 'none',
+          borderRadius: '0.5rem',
+          zIndex: 10, // Just under source handle
+          cursor: 'grab',
+        }}
+        onMouseDown={onDragStart} // Enable dragging
+      />
+
+      {/* Source handle centered, on top */}
+      <Handle
+        type="source"
+        id="sourceCenterHandle"
+        className="center-handle source-handle-style"
+        isConnectable={true}
+        isConnectableStart={true}
+        style={{
+          top: handlePosition.top,
+          left: handlePosition.left,
+          zIndex: 20, // On top of target handle
         }}
       />
 
-      {contextMenuVisible && ReactDOM.createPortal(
-        <div
-          ref={contextMenuRef}
-          className="fixed bg-gray-800 text-white rounded shadow-lg z-50"
-          style={{
-            left: contextMenuPosition.x,
-            top: contextMenuPosition.y,
-            transform: 'translate(0px, 0px)'
-          }}
-        >
-          {['Provision', 'Start', 'Reboot', 'Stop', 'Configure'].map((action) => (
-            <div
-              key={action}
-              onClick={() => handleMenuItemClick(action)}
-              className="px-2 py-1 hover:bg-gray-700 cursor-pointer"
-            >
-              {action}
-            </div>
-          ))}
-        </div>,
-        document.body
-      )}
+      {contextMenuVisible &&
+        ReactDOM.createPortal(
+          <div
+            ref={contextMenuRef}
+            className="absolute bg-gray-700 text-white text-xs rounded shadow-lg p-2"
+            style={{ top: contextMenuPosition.y, left: contextMenuPosition.x }}
+          >
+            <div className="cursor-pointer hover:bg-gray-600 p-1 rounded">Edit</div>
+            <div className="cursor-pointer hover:bg-gray-600 p-1 rounded">Delete</div>
+          </div>,
+          nodeRef.current
+        )}
     </div>
   );
 }

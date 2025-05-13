@@ -48,28 +48,16 @@ const actionHandlers = {
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-  const [handlePosition, setHandlePosition] = useState({ top: 0, left: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
   const { getNode, getViewport } = useReactFlow();
   const status = data.status || 'idle';
 
-  // Calculate handle position based on node dimensions
-  useEffect(() => {
-    const updateHandlePosition = () => {
-      if (nodeRef.current) {
-        const { width, height } = nodeRef.current.getBoundingClientRect();
-        setHandlePosition({
-          top: height / 2, // Center vertically
-          left: width / 2, // Center horizontally
-        });
-      }
-    };
-
-    updateHandlePosition();
-    window.addEventListener('resize', updateHandlePosition);
-    return () => window.removeEventListener('resize', updateHandlePosition);
-  }, [data, selected]);
+  // Fixed handle position: center of node (width: 150px, height: ~40px)
+  const handlePosition = {
+    top: 20, // Approximate center (40px height / 2)
+    left: 75, // Center (150px width / 2)
+  };
 
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
@@ -130,11 +118,11 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
       } custom-node`}
-      style={{ width: 150, cursor: 'grab' }}
+      style={{ width: 150, height: 40, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center h-full">
         <div className="flex items-center gap-1">
           {icons[status]}
           <span className="truncate font-medium node-label">{data.label}</span>
@@ -161,7 +149,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         className="center-handle target-handle-style"
         isConnectable={true}
         isConnectableStart={false}
-        style={{ top: 0, left: 0, width: '100%', height: '100%' }}
+        style={{ top: 0, left: 0, width: '100%', height: '100%', background: 'transparent' }}
       />
 
       {contextMenuVisible && ReactDOM.createPortal(

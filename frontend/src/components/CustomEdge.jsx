@@ -37,17 +37,26 @@ export default function CustomEdge({
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
+  // Adjust coordinates to node centers
+  const sourceNode = getNode(source);
+  const targetNode = getNode(target);
+  
+  const adjustedSourceX = sourceNode ? sourceNode.position.x + 75 : sourceX; // Center of 150px width
+  const adjustedSourceY = sourceNode ? sourceNode.position.y + 20 : sourceY; // Center of 40px height
+  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX;
+  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY;
+
   const [edgePath] = getStraightPath({
-    sourceX,
-    sourceY,
+    sourceX: adjustedSourceX,
+    sourceY: adjustedSourceY,
     sourcePosition,
-    targetX,
-    targetY,
+    targetX: adjustedTargetX,
+    targetY: adjustedTargetY,
     targetPosition
   });
 
   useEffect(() => {
-    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${targetX}, targetY=${targetY}`);
+    console.log(`Edge ${id}: sourceX=${adjustedSourceX}, sourceY=${adjustedSourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}`);
     
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -65,7 +74,7 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [id, source, target, sourceX, sourceY, targetX, targetY, getNode]);
+  }, [id, source, target, adjustedSourceX, adjustedSourceY, adjustedTargetX, adjustedTargetY, getNode]);
 
   return (
     <>

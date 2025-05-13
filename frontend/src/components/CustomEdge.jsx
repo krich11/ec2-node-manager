@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getStraightPath, useReactFlow, useViewport } from 'reactflow';
+import { getStraightPath, useReactFlow } from 'reactflow';
 
 const dashAnimation = `
 @keyframes dashedLineAnimation {
@@ -35,36 +35,27 @@ export default function CustomEdge({
   markerEnd
 }) {
   const { getNode } = useReactFlow();
-  const { zoom } = useViewport();
   const [isActive, setIsActive] = useState(false);
   
+  // Use raw sourceX/Y (should match source handle position)
   const sourceNode = getNode(source);
   const targetNode = getNode(target);
   
-  // Base node dimensions
-  const baseWidth = 300;
-  const baseHeight = 80;
-
-  // Adjust coordinates to node centers in base dimensions
-  const adjustedSourceX = sourceNode ? sourceNode.position.x + (baseWidth / 2) : sourceX; // 150px in base
-  const adjustedSourceY = sourceNode ? sourceNode.position.y + (baseHeight / 2) : sourceY; // 40px in base
-  const adjustedTargetX = targetNode ? targetNode.position.x + (baseWidth / 2) : targetX; // 150px in base
-  const adjustedTargetY = targetNode ? targetNode.position.y + (baseHeight / 2) : targetY; // 40px in base
-
-  // Apply correction for target handle Y-offset (~39px upward in rawTargetY)
-  const targetYCorrection = 39 / zoom; // Adjust correction based on zoom
+  // Adjust target coordinates to node center (width: 150px, height: 40px)
+  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX; // Center of 150px width
+  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY; // Center of 40px height
 
   const [edgePath] = getStraightPath({
-    sourceX: adjustedSourceX,
-    sourceY: adjustedSourceY,
+    sourceX,
+    sourceY,
     sourcePosition,
     targetX: adjustedTargetX,
-    targetY: adjustedTargetY + targetYCorrection,
+    targetY: adjustedTargetY,
     targetPosition
   });
 
   useEffect(() => {
-    console.log(`Edge ${id}: sourceX=${adjustedSourceX}, sourceY=${adjustedSourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY + targetYCorrection}, rawSourceX=${sourceX}, rawSourceY=${sourceY}, rawTargetX=${targetX}, rawTargetY=${targetY}, zoom=${zoom}`);
+    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
     
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -82,7 +73,7 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [id, source, target, adjustedSourceX, adjustedSourceY, adjustedTargetX, adjustedTargetY, sourceX, sourceY, targetX, targetY, zoom, getNode]);
+  }, [id, source, target, sourceX, sourceY, adjustedTargetX, adjustedTargetY, targetX, targetY, getNode]);
 
   return (
     <>

@@ -91,10 +91,10 @@ function Flow() {
 
     setNodes((nds) => [...nds, newNode]);
 
-    setTimeout(() => {
-      setEdges((eds) => [...eds]);
-      setNodes((nds) => [...nds]);
-    }, 50);
+    //setTimeout(() => {
+    //  setEdges((eds) => [...eds]);
+    //  setNodes((nds) => [...nds]);
+    //}, 50);
   }, [setNodes]);
 
   useEffect(() => {
@@ -120,8 +120,8 @@ function Flow() {
         type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
-      snapGrid={snapGrid}
-      snapToGrid={snapToGrid}
+      //snapGrid={snapGrid}
+      //snapToGrid={snapToGrid}
       onNodeDoubleClick={onNodeDoubleClick}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}

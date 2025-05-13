@@ -32,7 +32,9 @@
   z-index: 20;
   pointer-events: all;
   cursor: crosshair;
-  transform: translate(-50%, -50%); /* Center the handle itself */
+  transform: none;
+  top: 20px;
+  left: 75px;
 }
 
 /* Style for the target handle that covers the node */

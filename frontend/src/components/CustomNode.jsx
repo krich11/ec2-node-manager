@@ -132,6 +132,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           left: handlePosition.left,
           zIndex: 20, // On top of target handle
         }}
+	onMouseDown={() => console.log(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`)}
       />
 
       {contextMenuVisible &&

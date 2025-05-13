@@ -68,14 +68,11 @@ export default function CustomNode({ id, data, selected }) {
     event.preventDefault();
     event.stopPropagation();
     
-    // Position the menu relative to the click within the node
-    const nodeRect = nodeRef.current.getBoundingClientRect();
-    const offsetX = event.clientX - nodeRect.left;
-    const offsetY = event.clientY - nodeRect.top;
-    
+    // Instead of calculating offsets, place the menu directly at the mouse position
+    // But position it relative to the viewport using fixed positioning
     setContextMenuPosition({
-      x: offsetX,
-      y: offsetY
+      x: event.clientX,
+      y: event.clientY
     });
     setContextMenuVisible(true);
   }, []);
@@ -145,7 +142,7 @@ export default function CustomNode({ id, data, selected }) {
       {contextMenuVisible && (
         <div
           ref={contextMenuRef}
-          className="absolute bg-gray-800 text-white rounded shadow-lg z-10"
+          className="fixed bg-gray-800 text-white rounded shadow-lg z-50"
           style={{
             left: contextMenuPosition.x,
             top: contextMenuPosition.y
@@ -165,4 +162,3 @@ export default function CustomNode({ id, data, selected }) {
     </div>
   );
 }
-

@@ -16,41 +16,12 @@ const icons = {
   error:     <XCircle size={14} />,
 };
 
-// Common handle style
-const handleStyle = {
-  width: 15,
-  height: 15,
-  backgroundColor: '#6366f1', // Indigo color for all handles
-  border: '1px solid white',
-  cursor: 'crosshair',
-};
-
-const handleProvisionAction = (nodeId) => {
-  console.log(`[STUB] Provision action for node ${nodeId}`);
-};
-
-const handleStartAction = (nodeId) => {
-  console.log(`[STUB] Start action for node ${nodeId}`);
-};
-
-const handleRebootAction = (nodeId) => {
-  console.log(`[STUB] Reboot action for node ${nodeId}`);
-};
-
-const handleStopAction = (nodeId) => {
-  console.log(`[STUB] Stop action for node ${nodeId}`);
-};
-
-const handleConfigureAction = (nodeId) => {
-  console.log(`[STUB] Configure action for node ${nodeId}`);
-};
-
 const actionHandlers = {
-  Provision: handleProvisionAction,
-  Start: handleStartAction,
-  Reboot: handleRebootAction,
-  Stop: handleStopAction,
-  Configure: handleConfigureAction,
+  Provision: (nodeId) => console.log(`[STUB] Provision action for node ${nodeId}`),
+  Start: (nodeId) => console.log(`[STUB] Start action for node ${nodeId}`),
+  Reboot: (nodeId) => console.log(`[STUB] Reboot action for node ${nodeId}`),
+  Stop: (nodeId) => console.log(`[STUB] Stop action for node ${nodeId}`),
+  Configure: (nodeId) => console.log(`[STUB] Configure action for node ${nodeId}`),
 };
 
 export default function CustomNode({ id, data, selected }) {
@@ -67,13 +38,21 @@ export default function CustomNode({ id, data, selected }) {
     event.preventDefault();
     event.stopPropagation();
 
-    // Use client coordinates for fixed positioning
+    // Get node position to calculate relative menu position
+    const node = getNode(id);
+    if (!node) return;
+
+    // Calculate position for context menu relative to node
+    const rect = nodeRef.current.getBoundingClientRect();
+    
+    // Position the menu near the node, but not too far
     setContextMenuPosition({
       x: event.clientX,
       y: event.clientY
     });
+    
     setContextMenuVisible(true);
-  }, []);
+  }, [getNode, id]);
 
   const handleMenuItemClick = useCallback((action) => {
     actionHandlers[action](id);
@@ -87,7 +66,6 @@ export default function CustomNode({ id, data, selected }) {
   }, [contextMenuVisible]);
 
   useEffect(() => {
-    // Add event listeners for both mousedown and click
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('click', handleClickOutside);
 
@@ -102,8 +80,8 @@ export default function CustomNode({ id, data, selected }) {
       ref={nodeRef}
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
-      } react-flow__node-drag-handle custom-node`} // Added back react-flow__node-drag-handle
-      style={{ minWidth: 100, maxWidth: 160 }}
+      } react-flow__node-draggable custom-node`}
+      style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
     >
       <div className="flex justify-between items-center">
@@ -111,12 +89,12 @@ export default function CustomNode({ id, data, selected }) {
           {icons[status]}
           <span className="truncate font-medium node-label">{data.label}</span>
         </div>
-        <div className="p-1">
+        <div className="p-1 nodrag">
           <MoreHorizontal size={12} className="opacity-60 cursor-pointer" />
         </div>
       </div>
 
-      {/* Handle on left side (source) - positioned center */}
+      {/* Smaller visible handle in center (primarily for source) */}
       <Handle
         type="source"
         position={Position.Center}
@@ -127,7 +105,7 @@ export default function CustomNode({ id, data, selected }) {
         ref={leftHandleRef}
       />
 
-      {/* Handle on right side (target) - positioned center */}
+      {/* Large invisible handle covering the node (primarily for target) */}
       <Handle
         type="target"
         position={Position.Center}
@@ -136,18 +114,28 @@ export default function CustomNode({ id, data, selected }) {
         isConnectable={true}
         isConnectableStart={false}
         ref={rightHandleRef}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          width: '100%', 
+          height: '100%',
+          left: 0, 
+          top: 0,
+          transform: 'none',
+          pointerEvents: 'all'
+        }}
       />
 
       {contextMenuVisible && (
         <div
           ref={contextMenuRef}
-          className="fixed bg-gray-800 text-white rounded shadow-lg z-10 node-context-menu"
+          className="fixed bg-gray-800 text-white rounded shadow-lg z-50"
           style={{
             left: contextMenuPosition.x,
             top: contextMenuPosition.y
           }}
         >
-          {['Provision', 'Run', 'Reboot', 'Stop', 'Configure'].map((action) => (
+          {['Provision', 'Start', 'Reboot', 'Stop', 'Configure'].map((action) => (
             <div
               key={action}
               onClick={() => handleMenuItemClick(action)}

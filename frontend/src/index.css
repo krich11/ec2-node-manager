@@ -2,94 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base React Flow node class - ensure it can be dragged by default */
+/* Make the entire node draggable by default */
 .react-flow__node {
-    pointer-events: auto; /* Allows clicks/drags on the node background */
-    position: relative; /* Needed for z-index and absolute children */
-    z-index: 1; /* Base z-index for nodes */
+  pointer-events: all;
+  position: relative;
+  z-index: 1;
 }
 
-/* Styling to specifically allow dragging by the node content */
-.react-flow__node-drag-handle {
-    cursor: grab; /* Show grab cursor on the draggable area */
-    width: 100%;
-    height: 100%;
+/* Make the draggable class explicitly enable dragging */
+.react-flow__node-draggable {
+  cursor: grab;
+  pointer-events: all;
 }
 
-/* Elements with the nodrag class should not initiate node dragging */
+/* Ensure elements marked with nodrag don't trigger dragging */
 .nodrag {
-  pointer-events: all !important; /* Ensure clicks are captured by these elements */
-  cursor: default !important;
+  pointer-events: all !important;
+  cursor: pointer !important;
 }
 
-/* Basic styling for centered handles */
-.react-flow__handle.center-handle {
+/* Basic styling for the visible source handle at the center */
+.center-handle.source-handle-style {
   position: absolute;
+  width: 10px;
+  height: 10px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #555;
-  pointer-events: all; /* Ensure handles are interactive for connecting */
-  z-index: 10; /* Ensure handles are above text/icons */
-}
-
-/* Styling for the source handle (smaller, visible, can initiate drags) */
-.react-flow__handle.center-handle.source-handle-style {
-  width: 10px;
-  height: 10px;
   background-color: rgba(34, 139, 230, 0.8);
   border-radius: 50%;
-  z-index: 11;
+  border: 1px solid #fff;
+  z-index: 20;
+  /* Make it interact with connections but not block dragging */
+  pointer-events: all;
   cursor: crosshair;
 }
 
-/* Styling for the target handle (fills the node, underneath source) */
-.react-flow__handle.center-handle.target-handle-style {
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transform: none;
-  background-color: transparent; /* Make it invisible */
-  border: none;
-  border-radius: 8px;
-  z-index: 9;
-  pointer-events: none; /* Don't interfere with dragging */
+/* Style for the large invisible target handle that covers the node */
+.center-handle.target-handle-style {
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  /* This is crucial - must allow connections but not block other interactions */
+  pointer-events: all;
+  z-index: 10;
 }
 
-/* Make target handle capture connections but not block dragging */
-.react-flow__handle.center-handle.target-handle-style.connecting {
-  pointer-events: all; /* Only capture events when connecting */
+/* Ensure node content is clickable above handle */
+.node-label, 
+.custom-node .opacity-60.cursor-pointer {
+  position: relative;
+  z-index: 15;
 }
 
-/* Ensure node content is clickable */
-.custom-node .node-label {
-    z-index: 10;
-    position: relative;
-    pointer-events: auto;
-}
-
-/* Ensure the MoreHorizontal icon is clickable */
-.custom-node .p-1 .opacity-60.cursor-pointer {
-    z-index: 10;
-    position: relative;
-    pointer-events: auto;
-}
-
-/* Styling for the context menu - fixed positioning relative to viewport */
-.node-context-menu {
-    position: fixed;
-    z-index: 9999;
-    pointer-events: auto;
-}
-
-/* Ensure connecting edges work properly - improve visibility of connection line */
-.react-flow__connection-path {
-    stroke: #3182ce;
-    stroke-width: 2;
-}
-
-/* Add specific style for active connection handles */
+/* Handle style when connecting - make it highlight */
 .react-flow__handle.connecting {
-    background-color: #3182ce;
+  background-color: #3182ce;
+}
+
+/* Ensure valid drop targets show highlight */
+.react-flow__handle.connectable {
+  cursor: crosshair;
+}
+
+/* Override any React Flow default styles that might interfere */
+.react-flow__handle {
+  pointer-events: all;
+}
+
+/* Fix for ReactFlow edges and connections */
+.react-flow__edge-path,
+.react-flow__connection-path {
+  stroke-width: 2;
+}
+
+/* Ensure edges are under nodes */
+.react-flow__edge {
+  z-index: 5;
+}
+
+/* Make node selected state more visible */
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #3182ce;
 }

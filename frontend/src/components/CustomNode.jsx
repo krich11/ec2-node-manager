@@ -111,7 +111,8 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           left: handlePosition.left,
           width: '100%',
           height: '100%',
-          border: '2px solid #fff',
+	  background: 'transparent',
+          border: 'none',
           borderRadius: '0.5rem',
           zIndex: 19, // Just under source handle
           cursor: 'grab',

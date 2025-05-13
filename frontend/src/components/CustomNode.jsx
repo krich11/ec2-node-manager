@@ -108,7 +108,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         style={{
           position: 'absolute',
           top: 0,
-          left: 0,
+          left: handlePosition.left,
           width: '100%',
           height: '100%',
           border: '2px solid #fff',

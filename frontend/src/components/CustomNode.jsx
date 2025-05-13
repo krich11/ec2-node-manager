@@ -59,6 +59,14 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     left: 75, // Center (150px width / 2)
   };
 
+  // Debug node dimensions
+  useEffect(() => {
+    if (nodeRef.current) {
+      const { width, height } = nodeRef.current.getBoundingClientRect();
+      console.log(`Node ${id}: width=${width}, height=${height}`);
+    }
+  }, [id, selected, data]);
+
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -142,14 +150,14 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         style={{ top: handlePosition.top, left: handlePosition.left }}
       />
 
-      {/* Target handle covering the node */}
+      {/* Target handle covering the node, 50% transparent */}
       <Handle
         type="target"
         id="targetCenterHandle"
         className="center-handle target-handle-style"
         isConnectable={true}
         isConnectableStart={false}
-        style={{ top: 0, left: 0, width: '100%', height: '100%', background: 'transparent' }}
+        style={{ top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 255, 0.5)' }}
       />
 
       {contextMenuVisible && ReactDOM.createPortal(

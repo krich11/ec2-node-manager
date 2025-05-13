@@ -37,18 +37,17 @@ export default function CustomEdge({
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
-  // Adjust coordinates to node centers
+  // Use raw sourceX/Y (should match source handle position)
   const sourceNode = getNode(source);
   const targetNode = getNode(target);
   
-  const adjustedSourceX = sourceNode ? sourceNode.position.x + 75 : sourceX; // Center of 150px width
-  const adjustedSourceY = sourceNode ? sourceNode.position.y + 20 : sourceY; // Center of 40px height
-  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX;
-  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY;
+  // Adjust target coordinates to node center
+  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX; // Center of 150px width
+  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY; // Center of 40px height
 
   const [edgePath] = getStraightPath({
-    sourceX: adjustedSourceX,
-    sourceY: adjustedSourceY,
+    sourceX,
+    sourceY,
     sourcePosition,
     targetX: adjustedTargetX,
     targetY: adjustedTargetY,
@@ -56,7 +55,7 @@ export default function CustomEdge({
   });
 
   useEffect(() => {
-    console.log(`Edge ${id}: sourceX=${adjustedSourceX}, sourceY=${adjustedSourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}`);
+    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
     
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -74,7 +73,7 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [id, source, target, adjustedSourceX, adjustedSourceY, adjustedTargetX, adjustedTargetY, getNode]);
+  }, [id, source, target, sourceX, sourceY, adjustedTargetX, adjustedTargetY, targetX, targetY, getNode]);
 
   return (
     <>

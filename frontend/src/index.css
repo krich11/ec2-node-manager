@@ -32,9 +32,7 @@
   z-index: 20;
   pointer-events: all;
   cursor: crosshair;
-  transform: none;
-  top: 20px;
-  left: 75px;
+  transform: translate(-50%, -50%);
 }
 
 /* Style for the target handle that covers the node */

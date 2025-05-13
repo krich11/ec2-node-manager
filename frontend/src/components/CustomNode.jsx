@@ -150,14 +150,23 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         style={{ top: handlePosition.top, left: handlePosition.left }}
       />
 
-      {/* Target handle covering the node, 50% transparent */}
+      {/* Target handle covering the node, 50% transparent, centered */}
       <Handle
         type="target"
         id="targetCenterHandle"
         className="center-handle target-handle-style"
         isConnectable={true}
         isConnectableStart={false}
-        style={{ top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 255, 0.5)' }}
+        style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          width: '100%', 
+          height: '100%', 
+          background: 'rgba(0, 0, 255, 0.5)', 
+          borderRadius: '0.5rem' // Matches rounded-lg (approx. 8px)
+        }}
       />
 
       {contextMenuVisible && ReactDOM.createPortal(

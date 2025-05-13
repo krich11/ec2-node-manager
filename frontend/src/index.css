@@ -32,7 +32,7 @@
   z-index: 20;
   pointer-events: all;
   cursor: crosshair;
-  transform: none;
+  transform: translate(-50%, -50%);
   top: 20px;
   left: 75px;
 }

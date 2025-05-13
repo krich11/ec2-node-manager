@@ -111,10 +111,10 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'transparent',
-          border: 'none',
+          background: rgba(0,0,200,0.8),
+          border: '2px solid #fff',
           borderRadius: '0.5rem',
-          zIndex: 10, // Just under source handle
+          zIndex: 19, // Just under source handle
           cursor: 'grab',
         }}
         onMouseDown={onDragStart} // Enable dragging

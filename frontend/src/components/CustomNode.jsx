@@ -53,10 +53,10 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   const { getNode, getViewport } = useReactFlow();
   const status = data.status || 'idle';
 
-  // Fixed handle position: center of node (width: 150px, height: ~40px)
+  // Fixed handle position: center of node (width: 300px, height: 80px)
   const handlePosition = {
-    top: 20, // Approximate center (40px height / 2)
-    left: 75, // Center (150px width / 2)
+    top: 40, // Center (80px height / 2)
+    left: 150, // Center (300px width / 2)
   };
 
   // Debug node dimensions
@@ -126,7 +126,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
       } custom-node`}
-      style={{ width: 150, height: 40, cursor: 'grab' }}
+      style={{ width: 300, height: 80, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >
@@ -150,7 +150,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         style={{ top: handlePosition.top, left: handlePosition.left }}
       />
 
-      {/* Target handle covering the node, 50% transparent, centered */}
+      {/* Target handle covering the node, fully transparent */}
       <Handle
         type="target"
         id="targetCenterHandle"
@@ -164,7 +164,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           transform: 'translateX(-50%)', 
           width: '100%', 
           height: '100%', 
-          background: 'rgba(0, 0, 255, 0.5)', 
+          background: 'transparent', 
           borderRadius: '0.5rem' // Matches rounded-lg (approx. 8px)
         }}
       />

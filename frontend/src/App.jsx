@@ -84,7 +84,7 @@ function Flow() {
         x: Math.random() * 500 + 50,
         y: Math.random() * 200 + 200,
       },
-      style: { width: 150, height: 40 },
+      style: { width: 300, height: 80 }, // Match actual rendered size
       isConnectable: true,
     };
 

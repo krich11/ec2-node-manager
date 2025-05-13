@@ -37,17 +37,18 @@ export default function CustomEdge({
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
-  // Use raw sourceX/Y (should match source handle position)
   const sourceNode = getNode(source);
   const targetNode = getNode(target);
   
-  // Adjust target coordinates to node center
-  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX; // Center of 150px width
-  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY; // Center of 40px height
+  // Adjust coordinates to actual node centers (width: 300px, height: 80px)
+  const adjustedSourceX = sourceNode ? sourceNode.position.x + 150 : sourceX; // Center of 300px width
+  const adjustedSourceY = sourceNode ? sourceNode.position.y + 40 : sourceY; // Center of 80px height
+  const adjustedTargetX = targetNode ? targetNode.position.x + 150 : targetX; // Center of 300px width
+  const adjustedTargetY = targetNode ? targetNode.position.y + 40 : targetY; // Center of 80px height
 
   const [edgePath] = getStraightPath({
-    sourceX,
-    sourceY,
+    sourceX: adjustedSourceX,
+    sourceY: adjustedSourceY,
     sourcePosition,
     targetX: adjustedTargetX,
     targetY: adjustedTargetY,
@@ -55,7 +56,7 @@ export default function CustomEdge({
   });
 
   useEffect(() => {
-    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
+    console.log(`Edge ${id}: sourceX=${adjustedSourceX}, sourceY=${adjustedSourceY}, targetX=${adjustedTargetX}, targetY=${adjustedTargetY}, rawSourceX=${sourceX}, rawSourceY=${sourceY}, rawTargetX=${targetX}, rawTargetY=${targetY}`);
     
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -73,7 +74,7 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [id, source, target, sourceX, sourceY, adjustedTargetX, adjustedTargetY, targetX, targetY, getNode]);
+  }, [id, source, target, adjustedSourceX, adjustedSourceY, adjustedTargetX, adjustedTargetY, sourceX, sourceY, targetX, targetY, getNode]);
 
   return (
     <>

@@ -47,7 +47,7 @@
   border-radius: 0.5rem; /* Matches rounded-lg */
   border: none;
   z-index: 10;
-  pointer-events: all;
+  pointer-events: none;
 }
 
 /* Ensure node content is clickable above handle */
@@ -84,6 +84,8 @@
 }
 
 /* Make node selected state more visible */
+/*
 .react-flow__node.selected {
   box-shadow: 0 0 0 2px #3182ce;
 }
+*/

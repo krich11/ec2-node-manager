@@ -86,6 +86,7 @@ function Flow() {
       },
       style: { width: 150, height: 40 },
       isConnectable: true,
+      dragHandle: '.custom-node'
     };
 
     setNodes((nds) => [...nds, newNode]);

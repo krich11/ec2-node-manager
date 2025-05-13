@@ -165,7 +165,10 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           width: '100%', 
           height: '100%', 
           background: 'transparent', 
-          borderRadius: '0.5rem' // Matches rounded-lg (approx. 8px)
+          borderRadius: '0.5rem', // Matches rounded-lg (approx. 8px)
+	  border: 'none',
+	  zIndex: 10,
+	  pointerEvents: 'none'
         }}
       />
 

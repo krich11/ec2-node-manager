@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal } from 'lucide-react';
+import ReactDOM from 'react-dom';
 
 const stateStyles = {
   idle: 'border border-gray-600 bg-gray-800 text-gray-300',
@@ -61,21 +62,25 @@ export default function CustomNode({ id, data, selected }) {
   // Handle refs are defined but not used in the Handle components' ref prop
   const rightHandleRef = useRef(null);
   const leftHandleRef = useRef(null);
-  const { getNode } = useReactFlow();
+  const { getNode, getViewport } = useReactFlow();
   const status = data.status || 'idle';
 
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
     
-    // Instead of calculating offsets, place the menu directly at the mouse position
-    // But position it relative to the viewport using fixed positioning
+    // Get the current viewport transform
+    const { zoom, x: viewportX, y: viewportY } = getViewport();
+    
+    // Calculate the correct position considering the viewport's transform
+    // and the event's position in the client viewport
     setContextMenuPosition({
       x: event.clientX,
       y: event.clientY
     });
+    
     setContextMenuVisible(true);
-  }, []);
+  }, [getViewport]);
 
   const handleMenuItemClick = useCallback((action) => {
     actionHandlers[action](id);
@@ -139,13 +144,15 @@ export default function CustomNode({ id, data, selected }) {
         isConnectableStart={false} // Prevents dragging FROM this handle
       />
 
-      {contextMenuVisible && (
+      {/* Render the context menu using a portal to place it outside the ReactFlow transform context */}
+      {contextMenuVisible && ReactDOM.createPortal(
         <div
           ref={contextMenuRef}
           className="fixed bg-gray-800 text-white rounded shadow-lg z-50"
           style={{
             left: contextMenuPosition.x,
-            top: contextMenuPosition.y
+            top: contextMenuPosition.y,
+            transform: 'translate(0px, 0px)'
           }}
         >
           {['Provision', 'Start', 'Reboot', 'Stop', 'Configure'].map((action) => (
@@ -157,7 +164,8 @@ export default function CustomNode({ id, data, selected }) {
               {action}
             </div>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

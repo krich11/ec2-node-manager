@@ -42,15 +42,17 @@ export default function CustomEdge({
   const targetNode = getNode(target);
   
   // Adjust target coordinates to node center (width: 150px, height: 40px)
-  const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX; // Center of 150px width
-  const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY; // Center of 40px height
+  //const adjustedTargetX = targetNode ? targetNode.position.x + 75 : targetX; // Center of 150px width
+  //const adjustedTargetY = targetNode ? targetNode.position.y + 20 : targetY; // Center of 40px height
 
   const [edgePath] = getStraightPath({
     sourceX,
     sourceY,
     sourcePosition,
-    targetX: adjustedTargetX,
-    targetY: adjustedTargetY,
+//    targetX: adjustedTargetX,
+//    targetY: adjustedTargetY,
+    targetX: targetX,
+    targetY: targetY,
     targetPosition
   });
 

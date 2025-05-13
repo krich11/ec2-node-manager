@@ -3,83 +3,93 @@
 @tailwind utilities;
 
 /* Base React Flow node class - ensure it can be dragged by default */
-/* Ensure default node allows pointer events for dragging */
 .react-flow__node {
     pointer-events: auto; /* Allows clicks/drags on the node background */
     position: relative; /* Needed for z-index and absolute children */
     z-index: 1; /* Base z-index for nodes */
-    cursor: grab; /* Indicate the default draggable area */
+}
+
+/* Styling to specifically allow dragging by the node content */
+.react-flow__node-drag-handle {
+    cursor: grab; /* Show grab cursor on the draggable area */
+    width: 100%;
+    height: 100%;
 }
 
 /* Elements with the nodrag class should not initiate node dragging */
-/* They should capture pointer events for their own interactions */
 .nodrag {
   pointer-events: all !important; /* Ensure clicks are captured by these elements */
-  /* Remove default cursor: grab from nodrag elements if they inherit it */
   cursor: default !important;
 }
 
-/* Basic styling for centered handles (adjust as needed) */
+/* Basic styling for centered handles */
 .react-flow__handle.center-handle {
   position: absolute;
-  top: 50%; /* <-- Ensure this is 50% */
-  left: 50%; /* <-- Ensure this is 50% */
-  transform: translate(-50%, -50%); /* <-- Ensure this is correct for centering */
-  border: 1px solid #555; /* Example border */
-  /* Remove default React Flow handle size/background if they interfere */
-  width: auto;
-  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #555;
   pointer-events: all; /* Ensure handles are interactive for connecting */
-  z-index: 1003; /* Ensure handles are above text/icons (1002) */
-  cursor: crosshair; /* Indicate connectable area */
+  z-index: 10; /* Ensure handles are above text/icons */
 }
 
 /* Styling for the source handle (smaller, visible, can initiate drags) */
 .react-flow__handle.center-handle.source-handle-style {
-  width: 10px;  /* Set desired small size */
-  height: 10px; /* Set desired small size */
-  background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
-  border-radius: 50%; /* Make it round */
-  z-index: 1004; /* Ensure source is visibly on top of the large target */
-  /* pointer-events: all; is inherited */
-  /* cursor: crosshair; is inherited */
+  width: 10px;
+  height: 10px;
+  background-color: rgba(34, 139, 230, 0.8);
+  border-radius: 50%;
+  z-index: 11;
+  cursor: crosshair;
 }
 
-/* Styling for the target handle (fills the node, underneath source, IS A DROP TARGET BUT DOES NOT BLOCK DRAGGING) */
+/* Styling for the target handle (fills the node, underneath source) */
 .react-flow__handle.center-handle.target-handle-style {
-  width: 100%; /* Make it fill the parent node horizontally */
-  height: 100%; /* Make it fill the parent node vertically */
-  top: 0; /* Position from top edge of parent */
-  left: 0; /* Position from left edge of parent */
-  transform: none; /* Remove the centering transform */
-  background-color: rgba(100, 100, 100, 0.1); /* Very light semi-transparent background */
-  border: none; /* Remove border if you want it to blend with node */
-  /* Match node's border-radius if the node is rounded */
-  border-radius: 8px; /* Replace with actual value for Tailwind's 'rounded-lg' */
-  z-index: 1003; /* Set z-index to be same as base handle, still above text/icons */
-  pointer-events: all; /* Set back to all so it's a drop target */
-  cursor: crosshair; /* Indicate connectable area */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: none;
+  background-color: transparent; /* Make it invisible */
+  border: none;
+  border-radius: 8px;
+  z-index: 9;
+  pointer-events: none; /* Don't interfere with dragging */
+}
+
+/* Make target handle capture connections but not block dragging */
+.react-flow__handle.center-handle.target-handle-style.connecting {
+  pointer-events: all; /* Only capture events when connecting */
 }
 
 /* Ensure node content is clickable */
 .custom-node .node-label {
-    z-index: 1002; /* Keep text z-index, now lower than handles */
-    position: relative; /* Ensure z-index works */
-    pointer-events: auto; /* Ensure it receives pointer events */
+    z-index: 10;
+    position: relative;
+    pointer-events: auto;
 }
 
 /* Ensure the MoreHorizontal icon is clickable */
-.custom-node .p-1 .opacity-60.cursor-pointer { /* Targeting the icon container and icon */
-    z-index: 1002; /* Keep icon z-index, now lower than handles */
-    position: relative; /* Ensure z-index works */
-    pointer-events: auto; /* Ensure it receives pointer events */
+.custom-node .p-1 .opacity-60.cursor-pointer {
+    z-index: 10;
+    position: relative;
+    pointer-events: auto;
 }
 
-/* Styling for the context menu to position it relative to the viewport */
-.node-context-menu { /* <-- New rule for the context menu class */
-    position: fixed; /* Position relative to the viewport */
-    /* left and top will be set by inline styles from state */
-    z-index: 9999; /* A very high z-index to ensure it's on top of everything */
-    pointer-events: auto; /* Ensure the menu itself is interactive */
+/* Styling for the context menu - fixed positioning relative to viewport */
+.node-context-menu {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: auto;
 }
 
+/* Ensure connecting edges work properly - improve visibility of connection line */
+.react-flow__connection-path {
+    stroke: #3182ce;
+    stroke-width: 2;
+}
+
+/* Add specific style for active connection handles */
+.react-flow__handle.connecting {
+    background-color: #3182ce;
+}

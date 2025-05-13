@@ -39,10 +39,7 @@ export default function CustomEdge({
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
-  // Customize path based on handle positions
-  const isSameSide = sourcePosition === targetPosition;
-  
-  // Calculate path based on handle positions
+  // Calculate path based on the provided coordinates
   const edgeParams = {
     sourceX,
     sourceY,
@@ -50,57 +47,12 @@ export default function CustomEdge({
     targetX,
     targetY,
     targetPosition,
-    curvature: 0.5, // Default curvature for splines
   };
 
-
-  // Get the path using the modified parameters
+  // Get the path using straight parameters
   const [edgePath] = getStraightPath(edgeParams);
 
-  
-	/*
-
-  // Add special handling for same-side connections
-  if (isSameSide) {
-    // For left-left or right-right connections, create more pronounced curve
-    edgeParams.curvature = 0.8;
-  
-    if (sourcePosition === 'left' && targetPosition === 'left') {
-      // For left-to-left connections, provide offset to left
-      edgeParams.centerX = Math.min(sourceX, targetX) - 80;
-    } else if (sourcePosition === 'right' && targetPosition === 'right') {
-      // For right-to-right connections, provide offset to right
-      edgeParams.centerX = Math.max(sourceX, targetX) + 80;
-    }
-  }
-  */
-
-  // Debugging: Output the assigned endpoint coordinates and handle coordinates
-  const sourceHandleRef = useRef(null);
-  const targetHandleRef = useRef(null);
-  const rightHandleRef = useRef(null);
-
   useEffect(() => {
-
-    const sourceNode = getNode(source);
-    const targetNode = getNode(target);
-
-    if (sourceNode && targetNode) {
-      // Pass refs to the node data
-      sourceNode.data.leftHandleRef = sourceHandleRef;
-      sourceNode.data.rightHandleRef = rightHandleRef;
-      targetNode.data.leftHandleRef = targetHandleRef;
-      targetNode.data.rightHandleRef = rightHandleRef;
-
-      const sourceHandleElement = sourceHandleRef.current;
-      const targetHandleElement = targetHandleRef.current;
-
-      if (sourceHandleElement && targetHandleElement) {
-        const sourceHandleRect = sourceHandleElement.getBoundingClientRect();
-        const targetHandleRect = targetHandleElement.getBoundingClientRect();
-      }
-    }
-
     // Effect to check both nodes' status and update edge styling
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
@@ -121,11 +73,10 @@ export default function CustomEdge({
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [source, target, getNode, id, sourceHandle, targetHandle]);
+  }, [source, target, getNode]);
 
   return (
     <>
-      // Include the animation styles
       <style>{dashAnimation}</style>
       
       <path

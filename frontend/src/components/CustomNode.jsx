@@ -54,7 +54,7 @@ const actionHandlers = {
   Configure: handleConfigureAction,
 };
 
-export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos, dragHandle }) {
+export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
@@ -137,7 +137,6 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
-      dragHandle={dragHandle}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">

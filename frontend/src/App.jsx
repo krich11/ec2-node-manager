@@ -20,7 +20,7 @@ const initialNodes = [];
 const initialEdges = [];
 
 const snapGrid = [15, 15];
-const snapToGrid = true;
+const snapToGrid = false; // Disable snap-to-grid to prevent handle offsets
 
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -90,7 +90,7 @@ function Flow() {
 
     setNodes((nds) => [...nds, newNode]);
 
-    // Force edge refresh to recalculate handle positions
+    // Force edge and node refresh to recalculate handle positions
     setTimeout(() => {
       setEdges((eds) => [...eds]);
       setNodes((nds) => [...nds]);

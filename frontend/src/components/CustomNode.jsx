@@ -48,10 +48,28 @@ const actionHandlers = {
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const [handlePosition, setHandlePosition] = useState({ top: 0, left: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
   const { getNode, getViewport } = useReactFlow();
   const status = data.status || 'idle';
+
+  // Calculate handle position based on node dimensions
+  useEffect(() => {
+    const updateHandlePosition = () => {
+      if (nodeRef.current) {
+        const { width, height } = nodeRef.current.getBoundingClientRect();
+        setHandlePosition({
+          top: height / 2, // Center vertically
+          left: width / 2, // Center horizontally
+        });
+      }
+    };
+
+    updateHandlePosition();
+    window.addEventListener('resize', updateHandlePosition);
+    return () => window.removeEventListener('resize', updateHandlePosition);
+  }, [data, selected]);
 
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
@@ -133,7 +151,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         className="center-handle source-handle-style"
         isConnectable={true}
         isConnectableStart={true}
-        style={{ top: '50%', left: '50%' }}
+        style={{ top: handlePosition.top, left: handlePosition.left }}
       />
 
       {/* Target handle covering the node */}

@@ -32,6 +32,7 @@
   z-index: 20;
   pointer-events: all;
   cursor: crosshair;
+  transform: translate(-50%, -50%); /* Center the handle itself */
 }
 
 /* Style for the large invisible target handle that covers the node */
@@ -82,4 +83,3 @@
 .react-flow__node.selected {
   box-shadow: 0 0 0 2px #3182ce;
 }
-

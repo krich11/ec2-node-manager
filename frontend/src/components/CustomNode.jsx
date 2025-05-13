@@ -54,7 +54,7 @@ const actionHandlers = {
   Configure: handleConfigureAction,
 };
 
-export default function CustomNode({ id, data, selected }) {
+export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos, dragHandle }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
@@ -93,6 +93,29 @@ export default function CustomNode({ id, data, selected }) {
     }
   }, [contextMenuVisible]);
 
+  // Listen for mouse move to detect dragging
+  useEffect(() => {
+    const handleMouseMove = () => {
+      // If the menu is visible and mouse is moving (potentially dragging), close the menu
+      if (contextMenuVisible) {
+        setContextMenuVisible(false);
+      }
+    };
+
+    // Only add listener when menu is open
+    if (contextMenuVisible) {
+      window.addEventListener('dragstart', handleMouseMove);
+      // Also listen for mousedown on the document, which happens when starting a node drag
+      document.addEventListener('mousedown', handleMouseMove, { capture: true });
+    }
+
+    return () => {
+      window.removeEventListener('dragstart', handleMouseMove);
+      document.removeEventListener('mousedown', handleMouseMove, { capture: true });
+    };
+  }, [contextMenuVisible]);
+
+  // Original click outside handler - keep this too as a backup
   useEffect(() => {
     // Add event listeners for both mousedown and click
     document.addEventListener('mousedown', handleClickOutside);
@@ -110,9 +133,11 @@ export default function CustomNode({ id, data, selected }) {
       ref={nodeRef}
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
-      } custom-node`} // <-- react-flow__node-drag-handle removed from here
+      } custom-node`}
       style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
+      onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
+      dragHandle={dragHandle}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">

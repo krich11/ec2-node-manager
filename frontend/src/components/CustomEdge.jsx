@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getStraightPath, useReactFlow } from 'reactflow';
 
 // Define the CSS animation for the dashed line
@@ -31,46 +31,31 @@ export default function CustomEdge({
   style = {},
   source,
   target,
+  sourceHandle,
+  targetHandle,
   markerEnd
 }) {
+
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
-  // Get source and target nodes
-  const sourceNode = getNode(source);
-  const targetNode = getNode(target);
-  
-  // Calculate the center points of the nodes for better alignment
-  let adjustedSourceY = sourceY;
-  let adjustedTargetY = targetY;
-  
-  // If we have node dimensions, adjust the Y coordinates to the node centers
-  if (sourceNode) {
-    const sourceNodeHeight = sourceNode.height || 0;
-    adjustedSourceY = sourceY + (sourceNodeHeight / 2);
-  }
-  
-  if (targetNode) {
-    const targetNodeHeight = targetNode.height || 0;
-    adjustedTargetY = targetY + (targetNodeHeight / 2);
-  }
-  
-  // Calculate the straight path between nodes
+  // Get path directly using the coordinates provided by ReactFlow
   const [edgePath] = getStraightPath({
     sourceX,
-    sourceY: adjustedSourceY,
+    sourceY,
     sourcePosition,
     targetX,
-    targetY: adjustedTargetY,
+    targetY,
     targetPosition
   });
 
   useEffect(() => {
-    // Check if both connected nodes are in "running" status
+    // Effect to check both nodes' status and update edge styling
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
       const targetNode = getNode(target);
       
+      // Check if both connected nodes are in "running" status
       const bothNodesRunning = 
         sourceNode?.data?.status === 'running' && 
         targetNode?.data?.status === 'running';
@@ -81,7 +66,7 @@ export default function CustomEdge({
     // Check immediately
     checkConnectionStatus();
     
-    // Set up an interval to check periodically
+    // Set up an interval to check periodically (helpful for state updates)
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
@@ -89,6 +74,7 @@ export default function CustomEdge({
 
   return (
     <>
+      {/* Include the animation styles */}
       <style>{dashAnimation}</style>
       
       <path

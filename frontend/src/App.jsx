@@ -84,7 +84,7 @@ function Flow() {
         x: Math.random() * 500 + 50,
         y: Math.random() * 200 + 200,
       },
-      style: { width: 300, height: 80 }, // Match actual rendered size
+      style: { width: 300, height: 80 }, // Base dimensions
       isConnectable: true,
     };
 
@@ -114,6 +114,7 @@ function Flow() {
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       fitView
+      fitViewOptions={{ maxZoom: 1, minZoom: 1 }} // Force zoom to 1
       style={{ width: '100%', height: '100%' }}
       defaultEdgeOptions={{
         type: 'custom',
@@ -157,3 +158,4 @@ export default function App() {
     </ReactFlowProvider>
   );
 }
+

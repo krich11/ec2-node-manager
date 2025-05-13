@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Handle, Position, useReactFlow } from 'reactflow';
+import { Handle, Position, useReactFlow, useViewport } from 'reactflow';
 import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal } from 'lucide-react';
 import ReactDOM from 'react-dom';
 
@@ -51,27 +51,36 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
   const { getNode, getViewport } = useReactFlow();
+  const { zoom } = useViewport();
   const status = data.status || 'idle';
 
-  // Fixed handle position: center of node (width: 300px, height: 80px)
+  // Base dimensions (logical pixels)
+  const baseWidth = 300;
+  const baseHeight = 80;
+
+  // Adjust dimensions based on zoom (inverse scaling to maintain visual size)
+  const adjustedWidth = baseWidth / zoom;
+  const adjustedHeight = baseHeight / zoom;
+
+  // Handle position: center of node (base dimensions: 300x80px, actual: 600x160px at zoom=0.5)
   const handlePosition = {
-    top: 40, // Center (80px height / 2)
-    left: 150, // Center (300px width / 2)
+    top: baseHeight / 2, // 40px in base dimensions
+    left: baseWidth / 2,  // 150px in base dimensions
   };
 
   // Debug node dimensions
   useEffect(() => {
     if (nodeRef.current) {
       const { width, height } = nodeRef.current.getBoundingClientRect();
-      console.log(`Node ${id}: width=${width}, height=${height}`);
+      console.log(`Node ${id}: width=${width}, height=${height}, zoom=${zoom}`);
     }
-  }, [id, selected, data]);
+  }, [id, selected, data, zoom]);
 
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
     
-    const { zoom, x: viewportX, y: viewportY } = getViewport();
+    const { zoom: viewportZoom, x: viewportX, y: viewportY } = getViewport();
     
     setContextMenuPosition({
       x: event.clientX,
@@ -126,7 +135,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
       } custom-node`}
-      style={{ width: 300, height: 80, cursor: 'grab' }}
+      style={{ width: adjustedWidth, height: adjustedHeight, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >

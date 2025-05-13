@@ -3,18 +3,20 @@
 @tailwind utilities;
 
 /* Base React Flow node class - ensure it can be dragged by default */
+/* Ensure default node allows pointer events for dragging */
 .react-flow__node {
-    /* Ensure default node allows pointer events for dragging */
-    pointer-events: auto;
-    /* Ensure the node container is positioned for z-index to work */
-    position: relative;
+    pointer-events: auto; /* Allows clicks/drags on the node background */
+    position: relative; /* Needed for z-index and absolute children */
     z-index: 1; /* Base z-index for nodes */
+    cursor: grab; /* Indicate the default draggable area */
 }
 
 /* Elements with the nodrag class should not initiate node dragging */
 /* They should capture pointer events for their own interactions */
 .nodrag {
   pointer-events: all !important; /* Ensure clicks are captured by these elements */
+  /* Remove default cursor: grab from nodrag elements if they inherit it */
+  cursor: default !important;
 }
 
 /* Basic styling for centered handles (adjust as needed) */
@@ -29,6 +31,7 @@
   height: auto;
   pointer-events: all; /* Ensure handles are interactive for connecting */
   z-index: 1003; /* Ensure handles are above text/icons (1002) */
+  cursor: crosshair; /* Indicate connectable area */
 }
 
 /* Styling for the source handle (smaller, visible, can initiate drags) */
@@ -38,7 +41,8 @@
   background-color: rgba(34, 139, 230, 0.8); /* Example semi-transparent color */
   border-radius: 50%; /* Make it round */
   z-index: 1004; /* Ensure source is visibly on top of the large target */
-  /* pointer-events: all; is inherited from .react-flow__handle.center-handle */
+  /* pointer-events: all; is inherited */
+  /* cursor: crosshair; is inherited */
 }
 
 /* Styling for the target handle (fills the node, underneath source, IS A DROP TARGET BUT DOES NOT BLOCK DRAGGING) */
@@ -54,6 +58,7 @@
   border-radius: 8px; /* Replace with actual value for Tailwind's 'rounded-lg' */
   z-index: 1003; /* Set z-index to be same as base handle, still above text/icons */
   pointer-events: all; /* Set back to all so it's a drop target */
+  cursor: crosshair; /* Indicate connectable area */
 }
 
 /* Ensure node content is clickable */
@@ -75,8 +80,6 @@
     position: fixed; /* Position relative to the viewport */
     /* left and top will be set by inline styles from state */
     z-index: 9999; /* A very high z-index to ensure it's on top of everything */
-    /* Ensure it doesn't block clicks on elements behind it when not interacting with the menu itself */
-    /* This is generally handled by handleClickOutside, but pointer-events: auto can be added if needed */
     pointer-events: auto; /* Ensure the menu itself is interactive */
 }
 

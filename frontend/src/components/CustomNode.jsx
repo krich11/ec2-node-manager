@@ -76,8 +76,10 @@
         const rect = nodeRef.current.getBoundingClientRect();
 
         setContextMenuPosition({
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top
+          //x: event.clientX - rect.left,
+          //y: event.clientY - rect.top
+          x: event.clientX,
+          y: event.clientY
         });
         setContextMenuVisible(true);
       }, [id, getNode]);

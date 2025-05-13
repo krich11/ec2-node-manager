@@ -16,41 +16,15 @@
     const nodeTypes = { custom: CustomNode };
     const edgeTypes = { custom: CustomEdge };
 
-    const initialNodes = [
-      { id: 'idle-1', type: 'custom', data: { label: 'Idle Node', status: 'idle' }, position: { x: 50, y: 100 }, style: { width: 150 }, isConnectable: true },
-      { id: 'running-2', type: 'custom', data: { label: 'Running Node', status: 'running' }, position: { x: 250, y: 100 }, style: { width: 150 }, isConnectable: true },
-      { id: 'warning-3', type: 'custom', data: { label: 'Warning Node', status: 'running' }, position: { x: 450, y: 100 }, style: { width: 150 }, isConnectable: true },
-      { id: 'error-4', type: 'custom', data: { label: 'Error Node', status: 'error' }, position: { x: 650, y: 100 }, style: { width: 150 }, isConnectable: true },
-    ];
-
-    // Initial edges with correct handle IDs
-    const initialEdges = [
-      // Standard right-to-left connection
-      {
-        id: 'e1-2',
-        source: 'idle-1',
-        target: 'running-2',
-        sourceHandle: 'sourceCenterHandle',
-        targetHandle: 'targetCenterHandle',
-        type: 'custom',
-      },
-      // Left-to-left connection
-      {
-        id: 'e3-1',
-        source: 'warning-3',
-        target: 'idle-1',
-        sourceHandle: 'sourceCenterHandle',
-        targetHandle: 'targetCenterHandle',
-        type: 'custom',
-      }
-    ];
+    const initialNodes = [];
+    const initialEdges = [];
 
     const snapGrid = [15, 15];
     const snapToGrid = true;
 
     function Flow() {
-      //const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-      //const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+      const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+      const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
       // This trick lets us be able to connect from any handle to any handle
       // Handle can be source or target interchangeably

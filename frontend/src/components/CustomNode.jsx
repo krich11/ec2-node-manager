@@ -69,11 +69,11 @@
         event.stopPropagation();
 
         // Get node dimensions and position
-        const node = getNode(id);
-        if (!node) return;
+        //const node = getNode(id);
+        //if (!node) return;
 
         // Calculate position relative to the node
-        const rect = nodeRef.current.getBoundingClientRect();
+        //const rect = nodeRef.current.getBoundingClientRect();
 
         setContextMenuPosition({
           //x: event.clientX - rect.left,
@@ -82,7 +82,8 @@
           y: event.clientY
         });
         setContextMenuVisible(true);
-      }, [id, getNode]);
+      });
+      //}, [id, getNode]);
 
       const handleMenuItemClick = useCallback((action) => {
         actionHandlers[action](id);

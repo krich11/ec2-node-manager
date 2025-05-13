@@ -11,19 +11,10 @@ const stateStyles = {
 };
 
 const icons = {
-  idle:     <PauseCircle size={14} />,
+  idle: <PauseCircle size={14} />,
   running: <PlayCircle size={14} />,
   warning: <AlertCircle size={14} />,
-  error:     <XCircle size={14} />,
-};
-
-// Common handle style (Note: This object is defined but not used in the Handle components' style prop)
-const handleStyle = {
-  width: 15,
-  height: 15,
-  backgroundColor: '#6366f1', // Indigo color for all handles
-  border: '1px solid white',
-  cursor: 'crosshair',
+  error: <XCircle size={14} />,
 };
 
 const handleProvisionAction = (nodeId) => {
@@ -59,9 +50,6 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
-  // Handle refs are defined but not used in the Handle components' ref prop
-  const rightHandleRef = useRef(null);
-  const leftHandleRef = useRef(null);
   const { getNode, getViewport } = useReactFlow();
   const status = data.status || 'idle';
 
@@ -69,11 +57,8 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     event.preventDefault();
     event.stopPropagation();
     
-    // Get the current viewport transform
     const { zoom, x: viewportX, y: viewportY } = getViewport();
     
-    // Calculate the correct position considering the viewport's transform
-    // and the event's position in the client viewport
     setContextMenuPosition({
       x: event.clientX,
       y: event.clientY
@@ -93,19 +78,15 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     }
   }, [contextMenuVisible]);
 
-  // Listen for mouse move to detect dragging
   useEffect(() => {
     const handleMouseMove = () => {
-      // If the menu is visible and mouse is moving (potentially dragging), close the menu
       if (contextMenuVisible) {
         setContextMenuVisible(false);
       }
     };
 
-    // Only add listener when menu is open
     if (contextMenuVisible) {
       window.addEventListener('dragstart', handleMouseMove);
-      // Also listen for mousedown on the document, which happens when starting a node drag
       document.addEventListener('mousedown', handleMouseMove, { capture: true });
     }
 
@@ -115,9 +96,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     };
   }, [contextMenuVisible]);
 
-  // Original click outside handler - keep this too as a backup
   useEffect(() => {
-    // Add event listeners for both mousedown and click
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('click', handleClickOutside);
 
@@ -127,48 +106,46 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     };
   }, [handleClickOutside]);
 
-
   return (
     <div
       ref={nodeRef}
       className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow ${
         selected ? 'shadow-outline-blue' : 'shadow-sm'
       } custom-node`}
-      style={{ minWidth: 100, maxWidth: 160, cursor: 'grab' }}
+      style={{ width: 150, cursor: 'grab' }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           {icons[status]}
-          <span className="truncate font-medium node-label">{data.label}</span> {/* Added node-label class */}
+          <span className="truncate font-medium node-label">{data.label}</span>
         </div>
         <div className="p-1">
           <MoreHorizontal size={12} className="opacity-60 cursor-pointer" />
         </div>
       </div>
 
-      {/* Handle on left side (source) - positioned center */}
+      {/* Source handle centered */}
       <Handle
         type="source"
-        position={Position.Center}
         id="sourceCenterHandle"
         className="center-handle source-handle-style"
-        isConnectable={true} // Allows this handle to be connected TO
-        isConnectableStart={true} // Allows dragging FROM this handle (default for source)
+        isConnectable={true}
+        isConnectableStart={true}
+        style={{ top: '50%', left: '50%' }}
       />
 
-      {/* Handle on right side (target) - positioned center */}
+      {/* Target handle covering the node */}
       <Handle
         type="target"
-        position={Position.Center}
         id="targetCenterHandle"
         className="center-handle target-handle-style"
-        isConnectable={true} // Allows this handle to be connected TO
-        isConnectableStart={false} // Prevents dragging FROM this handle
+        isConnectable={true}
+        isConnectableStart={false}
+        style={{ top: 0, left: 0, width: '100%', height: '100%' }}
       />
 
-      {/* Render the context menu using a portal to place it outside the ReactFlow transform context */}
       {contextMenuVisible && ReactDOM.createPortal(
         <div
           ref={contextMenuRef}

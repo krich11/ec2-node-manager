@@ -26,14 +26,11 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  // This validates connection logic
   const isValidConnection = useCallback((connection) => {
-    // Prevent connecting a node to itself
     if (connection.source === connection.target) {
       return false;
     }
 
-    // Check if this exact connection already exists
     const connectionExists = edges.some(
       edge => (
         (edge.source === connection.source && edge.target === connection.target) ||
@@ -45,17 +42,13 @@ function Flow() {
       return false;
     }
 
-    // Allow all other connections
     return true;
   }, [edges]);
 
-  // Handle new connections with improved type handling
   const onConnect = useCallback((params) => {
-    // Ensure we're using the custom edge type
     const newEdge = {
       ...params,
       type: 'custom',
-      // Save the handle IDs to use later for positioning
       sourceHandle: params.sourceHandle || 'sourceCenterHandle',
       targetHandle: params.targetHandle || 'targetCenterHandle',
     };
@@ -63,14 +56,11 @@ function Flow() {
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
 
-  // Handle node double-click to change status
   const onNodeDoubleClick = useCallback((event, node) => {
-    // Update the node status
     const newStatus = ['idle', 'running', 'warning', 'error'][
       (['idle', 'running', 'warning', 'error'].indexOf(node.data.status) + 1) % 4
     ];
 
-    // Capitalize the first letter of the new status for the label
     const newLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
 
     setNodes((nds) =>
@@ -79,13 +69,11 @@ function Flow() {
       )
     );
 
-    // Force edge refresh
     setTimeout(() => {
       setEdges((eds) => [...eds.map(e => ({...e}))]);
     }, 50);
   }, [setNodes, setEdges]);
 
-  // Add a new node function
   const addNewNode = useCallback(() => {
     const newNodeId = `node-${Date.now()}`;
     const newNode = {
@@ -100,10 +88,15 @@ function Flow() {
       isConnectable: true,
     };
 
-    setNodes((nds) => nds.concat(newNode));
+    setNodes((nds) => [...nds, newNode]);
+
+    // Force edge refresh to recalculate handle positions
+    setTimeout(() => {
+      setEdges((eds) => [...eds]);
+      setNodes((nds) => [...nds]);
+    }, 50);
   }, [setNodes]);
 
-  // Refresh edges periodically to ensure they reflect current node states
   useEffect(() => {
     const interval = setInterval(() => {
       setEdges((eds) => [...eds.map(e => ({...e}))]);

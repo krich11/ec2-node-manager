@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getStraightPath, useReactFlow } from 'reactflow';
 
-// Define the CSS animation for the dashed line
 const dashAnimation = `
 @keyframes dashedLineAnimation {
   to {
@@ -10,7 +9,7 @@ const dashAnimation = `
 }
 
 .active-edge {
-  stroke: #10B981 !important; /* Green color */
+  stroke: #10B981 !important;
   stroke-width: 2 !important;
   stroke-dasharray: 5 !important;
 }
@@ -35,11 +34,9 @@ export default function CustomEdge({
   targetHandle,
   markerEnd
 }) {
-
   const { getNode } = useReactFlow();
   const [isActive, setIsActive] = useState(false);
   
-  // Get path directly using the coordinates provided by ReactFlow
   const [edgePath] = getStraightPath({
     sourceX,
     sourceY,
@@ -50,12 +47,12 @@ export default function CustomEdge({
   });
 
   useEffect(() => {
-    // Effect to check both nodes' status and update edge styling
+    console.log(`Edge ${id}: sourceX=${sourceX}, sourceY=${sourceY}, targetX=${targetX}, targetY=${targetY}`);
+    
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
       const targetNode = getNode(target);
       
-      // Check if both connected nodes are in "running" status
       const bothNodesRunning = 
         sourceNode?.data?.status === 'running' && 
         targetNode?.data?.status === 'running';
@@ -63,18 +60,15 @@ export default function CustomEdge({
       setIsActive(bothNodesRunning);
     };
     
-    // Check immediately
     checkConnectionStatus();
     
-    // Set up an interval to check periodically (helpful for state updates)
     const interval = setInterval(checkConnectionStatus, 200);
     
     return () => clearInterval(interval);
-  }, [source, target, getNode]);
+  }, [id, source, target, sourceX, sourceY, targetX, targetY, getNode]);
 
   return (
     <>
-      {/* Include the animation styles */}
       <style>{dashAnimation}</style>
       
       <path

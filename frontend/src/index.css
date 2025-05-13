@@ -42,7 +42,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: rgba(0,0,200,0.8);
   border-radius: 0.5rem; /* Matches rounded-lg */
   border: 2px solid #fff;
   z-index: 19;

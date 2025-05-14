@@ -3,32 +3,25 @@
 @tailwind utilities;
 
 /* Make the entire node draggable by default */
-/*
 .react-flow__node {
   pointer-events: all;
   position: relative;
   z-index: 1;
 }
-*/
 
 /* Make the draggable class explicitly enable dragging */
-/*
 .react-flow__node-draggable {
   cursor: grab;
   pointer-events: all;
 }
-*/
 
 /* Ensure elements marked with nodrag don't trigger dragging */
-/*
 .nodrag {
   pointer-events: all !important;
   cursor: pointer !important;
 }
-*/
 
 /* Basic styling for the visible source handle at the center */
-/*
 .center-handle.source-handle-style {
   position: absolute;
   width: 10px;
@@ -41,10 +34,8 @@
   cursor: crosshair;
   transform: translate(-50%, -50%);
 }
-*/
 
 /* Style for the target handle that covers the node */
-/*
 .center-handle.target-handle-style {
   position: absolute;
   width: 100%;
@@ -58,7 +49,6 @@
   pointer-events: all;
   cursor: grab;
 }
-*/
 
 /* Ensure node content is clickable above handle */
 /*

@@ -6,8 +6,26 @@ from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import json
+import queue
+import threading
+import time
 
 app = FastAPI()
+message_queue = queue.Queue()
+
+def handleMessages():
+    while true:
+        msg = message_queue.get()
+        if msg['type'] == "STOP": 
+            print("Handler stopping.")
+            break
+        print("Processing message: {msg['type']} / {msg['message']}")
+        time.sleep(1) # simulate work, can remove
+        message_queue.task_done()
+
+
+handler_thread = threading.Thread(target=handle_messages, daemon=True)
+handler_thread.start()
 
 # Allow frontend connection
 app.add_middleware(
@@ -16,6 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 @app.websocket("/ws")
@@ -34,6 +53,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 match msg['type']:
                     case "node_action":
                         print(f"Node Action: {msg['message']}")
+                        message_queue.put(msg)
                     case _:
                         print("Unknown websocket message")
 

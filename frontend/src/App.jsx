@@ -38,11 +38,12 @@ function Flow() {
 
   // Websocket Handling
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8000/ws'); // Update if using another port or wss
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsHost = window.location.hostname;
+    const wsPort = 8000; // or whatever your backend uses
+    const ws = new WebSocket(`${wsProtocol}://${wsHost}:${wsPort}/ws`);
 
-    ws.onopen = () => {
-      window.debugLog("WebSocket connected.");
-    };
+    ws.onopen = () => { window.debugLog("WebSocket connected."); };
  
     ws.onmessage = (event) => {
       try {
@@ -74,22 +75,16 @@ function Flow() {
         if (msg.type === 'remove_edge') {
           setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
         }
-      } catch (err) {
-        console.error('WebSocket message parse error:', err);
-      }
+
+      } catch (err) { console.error('WebSocket message parse error:', err); }
     };
 
-    ws.onerror = (err) => {
-      console.error("WebSocket error:", err);
-    };
+    ws.onerror = (err) => { console.error("WebSocket error:", err); };
 
-    ws.onclose = () => {
-      console.warn("WebSocket closed");
-    };
+    ws.onclose = () => { console.warn("WebSocket closed"); };
 
-    return () => {
-      ws.close();
-    };
+    return () => { ws.close(); };
+
   }, [setNodes, setEdges]);
 
 

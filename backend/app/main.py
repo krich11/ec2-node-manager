@@ -49,7 +49,7 @@ async def handleMessagesIn():
 
         time.sleep(1) # simulate work, can remove
         print("Message done, removing from queue.")
-        await message_queue_in.task_done()
+        message_queue_in.task_done()
 
 '''
 async def handleMessagesOut():

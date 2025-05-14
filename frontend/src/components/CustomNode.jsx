@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
-import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal } from 'lucide-react';
+import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal, X, Info, Server } from 'lucide-react';
 import ReactDOM from 'react-dom';
 
 const icons = {
@@ -13,9 +13,89 @@ const icons = {
 // Global state to track active context menu
 let activeContextMenuId = null;
 
+// Create a global component for the status window
+const StatusWindow = ({ data, onClose }) => {
+  if (!data) return null;
+  
+  const statusColors = {
+    idle: 'bg-gray-700 text-gray-300',
+    running: 'bg-green-800 text-green-200',
+    warning: 'bg-yellow-800 text-yellow-200',
+    error: 'bg-red-800 text-red-200',
+  };
+  
+  return (
+    <div className="fixed z-50 shadow-lg rounded-lg overflow-hidden" style={{ width: '300px' }}>
+      <div className={`flex justify-between items-center p-3 ${statusColors[data.status]}`}>
+        <div className="flex items-center gap-2">
+          <Server size={16} />
+          <span className="font-medium">{data.label}</span>
+        </div>
+        <button onClick={onClose} className="hover:bg-black hover:bg-opacity-20 rounded p-1">
+          <X size={16} />
+        </button>
+      </div>
+      <div className="bg-gray-800 text-white p-4">
+        <h3 className="text-lg mb-2">Node Status</h3>
+        
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-gray-400">Status</span>
+            <span className={`font-medium ${data.status === 'running' ? 'text-green-400' : 
+              data.status === 'warning' ? 'text-yellow-400' : 
+              data.status === 'error' ? 'text-red-400' : 'text-gray-300'}`}>
+              {data.status.toUpperCase()}
+            </span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-400">ID</span>
+            <span className="font-mono text-xs">{data.id}</span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-400">Last Updated</span>
+            <span>{data.created}</span>
+          </div>
+          
+          <div className="bg-gray-900 p-3 rounded mt-3">
+            <h4 className="text-sm font-medium mb-2 text-gray-300">Resources</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-400">CPU</span>
+                <span>{data.resources.cpu}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Memory</span>
+                <span>{data.resources.memory}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Disk</span>
+                <span>{data.resources.disk}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex justify-end mt-3">
+            <button 
+              onClick={onClose}
+              className="bg-gray-700 hover:bg-gray-600 text-white text-xs py-1 px-3 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const [statusWindowVisible, setStatusWindowVisible] = useState(false);
+  const [statusWindowData, setStatusWindowData] = useState(null);
+  const [statusWindowPosition, setStatusWindowPosition] = useState({ x: 0, y: 0 });
   const nodeRef = useRef(null);
   const { getNode, getViewport, setNodes } = useReactFlow();
   const status = data.status || 'idle';
@@ -97,14 +177,31 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       }
     };
     
+    // Close status window on Escape key
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && statusWindowVisible) {
+        setStatusWindowVisible(false);
+      }
+    };
+    
     document.addEventListener('click', handleClickOutside);
     document.addEventListener('closeContextMenu', handleCloseContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Listen for global status window close events
+    const handleCloseAllStatusWindows = () => {
+      setStatusWindowVisible(false);
+    };
+    
+    document.addEventListener('closeAllStatusWindows', handleCloseAllStatusWindows);
     
     return () => {
       document.removeEventListener('click', handleClickOutside);
       document.removeEventListener('closeContextMenu', handleCloseContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('closeAllStatusWindows', handleCloseAllStatusWindows);
     };
-  }, [contextMenuVisible, id]);
+  }, [contextMenuVisible, statusWindowVisible, id]);
   
   const handleSourceHandleMouseDown = () => {
     window.debugLog(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`);
@@ -176,9 +273,41 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   const handleStatus = () => {
     window.debugLog(`Status action triggered for node ${id}`);
-    // Show node status in an alert
-    alert(`Node ${id} - Status: ${status.toUpperCase()}`);
+    // Show status window on canvas
+    const node = getNode(id);
+    if (node) {
+      // Create status window data
+      const statusData = {
+        id: id,
+        label: data.label,
+        status: status,
+        position: node.position,
+        created: new Date().toLocaleTimeString(),
+        resources: {
+          cpu: Math.floor(Math.random() * 100) + '%',
+          memory: Math.floor(Math.random() * 8192) + ' MB',
+          disk: Math.floor(Math.random() * 500) + ' GB'
+        }
+      };
+      
+      // Calculate position for status window - right side of the node
+      const { x, y } = node.position;
+      const { zoom, x: panX, y: panY } = getViewport();
+      
+      // Convert node position to screen coordinates
+      const screenX = x * zoom + panX + 160; // 160 = node width + slight offset
+      const screenY = y * zoom + panY;
+      
+      setStatusWindowPosition({ x: screenX, y: screenY });
+      setStatusWindowData(statusData);
+      setStatusWindowVisible(true);
+    }
     setContextMenuVisible(false);
+  };
+
+  // Close the status window
+  const handleCloseStatusWindow = () => {
+    setStatusWindowVisible(false);
   };
 
   return (
@@ -231,7 +360,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         onMouseDown={handleSourceHandleMouseDown}
       />
 
-      {/* Context menu - now rendered to the document body */}
+      {/* Context menu - rendered to the document body */}
       {contextMenuVisible && ReactDOM.createPortal(
         <div 
           className="node-context-menu"
@@ -247,6 +376,22 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           <div className="context-menu-item" onClick={handleReboot}>Reboot</div>
           <div className="context-menu-item" onClick={handleConfigure}>Configure</div>
           <div className="context-menu-item" onClick={handleStatus}>Status</div>
+        </div>,
+        document.body
+      )}
+      
+      {/* Status Window - rendered to the document body */}
+      {statusWindowVisible && statusWindowData && ReactDOM.createPortal(
+        <div style={{
+          position: 'fixed',
+          left: statusWindowPosition.x,
+          top: statusWindowPosition.y,
+          zIndex: 1000
+        }}>
+          <StatusWindow 
+            data={statusWindowData}
+            onClose={handleCloseStatusWindow}
+          />
         </div>,
         document.body
       )}

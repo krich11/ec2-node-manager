@@ -3,8 +3,8 @@ import React, {
 	useContext, 
 	useEffect, 
 	useRef,
-	useNodeState,
-	useEdgeState,
+	useNodesState,
+	useEdgesState,
 	addNode
 } from 'react';
 

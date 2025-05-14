@@ -14,7 +14,7 @@ export const WebSocketProvider = ({ children }) => {
     ws.onclose = () => { console.warn("WebSocket closed."); };
 
     ws.onmessage = (event) => { 
-      msg = JSON.parse(event.data);
+      const msg = JSON.parse(event.data);
       console.log("WebSocket message (raw):", msg); 
               // Handle WebSocket Messages
       switch (msg.type) {

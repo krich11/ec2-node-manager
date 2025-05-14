@@ -53,30 +53,27 @@ function Flow() {
         window.debugLog('WS message received:');
         window.debugLog(msg);
 
-        if (msg.type === 'add_node') {
-          setNodes((nds) => [...nds, msg.node]);
-        }
-
-        if (msg.type === 'update_node') {
-          setNodes((nds) =>
-            nds.map((n) =>
-              n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n
-            )
-          );
-        }
-
-        if (msg.type === 'add_edge') {
-          setEdges((eds) => [...eds, msg.edge]);
-        }
-
-        if (msg.type === 'remove_node') {
-          setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
-          setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
-        }
-
-        if (msg.type === 'remove_edge') {
-          setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
-        }
+	// Handle WebSocket Messages
+	switch (msg.type) {
+		case "add_node":
+          		setNodes((nds) => [...nds, msg.node]);
+			break;
+		case "update_node":
+          		setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
+			break;
+		case "add_edge":
+          		setEdges((eds) => [...eds, msg.edge]);
+			break;
+		case "remove_node:
+          		setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
+          		setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
+			break;
+		case "remove_edge:
+          		setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
+			break;
+		default:
+			console.log("Unhandled websocket message: ${msg.type}");
+	}
 
       } catch (err) { console.error('WebSocket message parse error:', err); }
     };

@@ -38,8 +38,6 @@ function Flow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
 
-  // Websocket Handling
-  const ws = useMemo(() => new WebSocket(`ws://${window.location.hostname}:8000/ws`), []);
   useEffect(() => {
 
     ws.onopen = () => { window.debugLog("WebSocket connected."); };

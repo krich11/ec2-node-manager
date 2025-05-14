@@ -21,7 +21,7 @@ def handleNodePropertySet(msg):
     message_queue_in.put(msg)
 
 
-def handleNodeAction(msg):
+async def handleNodeAction(msg):
     match msg['message']:
         case "start":
             print(f"Node Action: {msg['message']}")

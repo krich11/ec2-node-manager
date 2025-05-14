@@ -13,8 +13,8 @@ export const useWebSocket = () => useContext(WebSocketContext);
 export const WebSocketProvider = ({ children }) => {
 
 
-const [nodes, setNodes, onNodesChange] = useNodesState();
-const [edges, setEdges, onEdgesChange] = useEdgesState();
+//const [nodes, setNodes, onNodesChange] = useNodesState();
+//const [edges, setEdges, onEdgesChange] = useEdgesState();
 
 
 const wsRef = useRef(null);
@@ -25,8 +25,8 @@ const wsRef = useRef(null);
     wsRef.current = ws;
 
     ws.onopen = () => { console.log("WebSocket connected!"); };
-    ws.onerror = (err) => { console.error("WebSocket error:", err); };
-    ws.onclose = () => { console.warn("WebSocket closed."); };
+    ws.onerror = (err) => { console.error("WebSocket errori!:", err); };
+    ws.onclose = () => { console.warn("WebSocket closed!"); };
 
     ws.onmessage = (event) => { 
       const msg = JSON.parse(event.data);
@@ -34,20 +34,20 @@ const wsRef = useRef(null);
               // Handle WebSocket Messages
       switch (msg.type) {
         case "add_node":
-          setNodes((nds) => [...nds, msg.node]);
+          //setNodes((nds) => [...nds, msg.node]);
           break;
         case "update_node":
-          setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
+          //setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
           break;
         case "add_edge":
-          setEdges((eds) => [...eds, msg.edge]);
+          //setEdges((eds) => [...eds, msg.edge]);
           break;
         case "remove_node":
-          setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
-          setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
+          //setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
+          //setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
           break;
         case "remove_edge":
-          setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
+          //setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
           break;
         default:
           console.log("Unhandled websocket message: ${msg.type}");

@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 /* Make the entire node draggable by default */
+/*
 .react-flow__node {
   pointer-events: all;
   position: relative;
   z-index: 1;
 }
+*/
 
 /* Make the draggable class explicitly enable dragging */
 /*

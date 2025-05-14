@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   useNodesState,
@@ -31,17 +32,18 @@ const initialEdges = [];
 const snapGrid = [15, 15];
 const snapToGrid = false;
 
+// Set up websocket context
+export const WebSocketContext = createContext(null);
+export const useWebSocket = () => useContext(WebSocketContext);
+
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
 
   // Websocket Handling
+  const ws = useMemo(() => new WebSocket(`ws://${window.location.hostname}:8000/ws`), []);
   useEffect(() => {
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const wsHost = window.location.hostname;
-    const wsPort = 8000; // or whatever your backend uses
-    const ws = new WebSocket(`${wsProtocol}://${wsHost}:${wsPort}/ws`);
 
     ws.onopen = () => { window.debugLog("WebSocket connected."); };
  

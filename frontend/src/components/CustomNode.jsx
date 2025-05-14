@@ -164,6 +164,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   const nodeRef = useRef(null);
   const { getNode, getViewport, setNodes } = useReactFlow();
   const status = data.status || 'idle';
+  const ws = useWebSocket();
 
   const handlePosition = {
     top: 20, // Center (40px height / 2)
@@ -282,18 +283,17 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   const handleStart = () => {
     window.debugLog(`Start action triggered for node ${id}`);
-    // Websocket Reference
-    const wsRef = useRef(null);
 
     // Send Websocket update to backend
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
         type: 'node_action',
         message: 'start',
       }));
     } else {
       console.warn('WebSocket not open');
     }
+
     // Set node status to running
     setNodes((nds) =>
       nds.map((n) =>

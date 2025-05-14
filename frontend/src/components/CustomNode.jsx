@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal, X, Info, Server } from 'lucide-react';
 import ReactDOM from 'react-dom';
-import WebSocketContext from './WebSocketContext';
+import { WebSocketContext } from './WebSocketContext';
 
 
 const icons = {

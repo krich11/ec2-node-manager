@@ -17,7 +17,7 @@ def handleNodeAction(msg):
     match msg['message']:
         case "start":
             print(f"Node Action: {msg['message']}")
-        case "provisioning":
+        case "provision":
             print(f"Node Action: {msg['message']}")
         case _:
             print(f"Unknown Node Action message: {msg['message']}")

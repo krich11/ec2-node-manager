@@ -13,9 +13,6 @@ const icons = {
 // Global state to track active context menu
 let activeContextMenuId = null;
 
-// Websocket Reference
-const wsRef = useRef(null);
-
 // Create a global component for the status window
 const StatusWindow = ({ data, onClose, initialPosition }) => {
   if (!data) return null;
@@ -285,6 +282,9 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   const handleStart = () => {
     window.debugLog(`Start action triggered for node ${id}`);
+    // Websocket Reference
+    const wsRef = useRef(null);
+
     // Send Websocket update to backend
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({

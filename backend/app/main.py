@@ -31,9 +31,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 msg = json.loads(data)
                 print(f"Message: {msg}")
 
-                match msg.type:
+                match msg['type']:
                     case "node_action":
-                        print(f"Node Action: {msg.message}")
+                        print(f"Node Action: {msg['message']}")
                     case _:
                         print("Unknown websocket message")
 

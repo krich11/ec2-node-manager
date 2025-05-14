@@ -36,6 +36,63 @@ function Flow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
 
+  // Websocket Handling
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8000/ws'); // Update if using another port or wss
+
+    ws.onopen = () => {
+      window.debugLog("WebSocket connected.");
+    };
+ 
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        window.debugLog('WS message received:');
+        window.debugLog(msg);
+
+        if (msg.type === 'add_node') {
+          setNodes((nds) => [...nds, msg.node]);
+        }
+
+        if (msg.type === 'update_node') {
+          setNodes((nds) =>
+            nds.map((n) =>
+              n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n
+            )
+          );
+        }
+
+        if (msg.type === 'add_edge') {
+          setEdges((eds) => [...eds, msg.edge]);
+        }
+
+        if (msg.type === 'remove_node') {
+          setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
+          setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
+        }
+
+        if (msg.type === 'remove_edge') {
+          setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
+        }
+      } catch (err) {
+        console.error('WebSocket message parse error:', err);
+      }
+    };
+
+    ws.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
+
+    ws.onclose = () => {
+      console.warn("WebSocket closed");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [setNodes, setEdges]);
+
+
   // Toggle debug mode
   const toggleDebug = useCallback(() => {
     const newDebugMode = !debugMode;

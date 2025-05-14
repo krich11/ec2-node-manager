@@ -166,7 +166,8 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   const nodeRef = useRef(null);
   const { getNode, getViewport, setNodes } = useReactFlow();
   const status = data.status || 'idle';
-  const ws = useWebSocket();
+  const wsRef = useWebSocket();
+  const ws = wsRef.current;
 
   const handlePosition = {
     top: 20, // Center (40px height / 2)

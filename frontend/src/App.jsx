@@ -230,9 +230,11 @@ function Flow() {
 export default function App() {
   return (
     <ReactFlowProvider>
-      <div style={{ width: '100vw', height: '100vh' }}>
-        <Flow />
-      </div>
+      <WebSocketProvider>
+        <div style={{ width: '100vw', height: '100vh' }}>
+          <Flow />
+        </div>
+      </WebSocketProvider>
     </ReactFlowProvider>
   );
 }

@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Make the entire node draggable by default */
+/*
+.react-flow__node {
+  pointer-events: all;
+  position: relative;
+  z-index: 1;
+}
+*/
+
+/* Make the draggable class explicitly enable dragging */
+/*
+.react-flow__node-draggable {
+  cursor: grab;
+  pointer-events: all;
+}
+*/
+
+/* Ensure elements marked with nodrag don't trigger dragging */
+/*
+.nodrag {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+*/
+
+/* Basic styling for the visible source handle at the center */
+/*
+.center-handle.source-handle-style {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(34, 139, 230, 0.5);
+  border-radius: 50%;
+  border: 1px solid #fff;
+  z-index: 20;
+  pointer-events: all;
+  cursor: crosshair;
+  transform: translate(-50%, -50%);
+}
+*/
+
+/* Style for the target handle that covers the node */
+/*
+.center-handle.target-handle-style {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,200,0.8);
+  border-radius: 0.5rem;
+  border: 2px solid #fff;
+  z-index: 19;
+  pointer-events: all;
+  cursor: grab;
+}
+*/
+
+/* Ensure node content is clickable above handle */
+/*
+.node-label, 
+.custom-node .opacity-60.cursor-pointer {
+  position: relative;
+  z-index: 15;
+}
+*/
+
+/* Handle style when connecting - make it highlight */
+/*
+.react-flow__handle.connecting {
+  background-color: #3182ce;
+}
+*/
+
+/* Ensure valid drop targets show highlight */
+/*
+.react-flow__handle.connectable {
+  cursor: crosshair;
+}
+*/
+
+/* Override any React Flow default styles that might interfere */
+/*
+.react-flow__handle {
+  pointer-events: all;
+}
+*/
+
+/* Fix for ReactFlow edges and connections */
+/*
+.react-flow__edge-path,
+.react-flow__connection-path {
+  stroke-width: 2;
+}
+*/
+
+/* Ensure edges are under nodes */
+/*
+.react-flow__edge {
+  z-index: 5;
+}
+*/
+
+/* Make node selected state more visible */
+/*
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #3182ce;
+}
+*/

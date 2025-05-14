@@ -5,6 +5,7 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+import json
 
 app = FastAPI()
 
@@ -26,6 +27,15 @@ async def websocket_endpoint(websocket: WebSocket):
             try:
                 data = await asyncio.wait_for(websocket.receive_text(), timeout=5.0)
                 print("Received from frontend:", data)
+
+                msg = json.loads(data)
+
+                match msg.type:
+                    case "node_action":
+                        print(f"Node Action: {msg.action}")
+                    case _:
+                        print("Unknown websocket message")
+
             except asyncio.TimeoutError:
                 # Timeout just means no message from frontend — that's fine
                 pass

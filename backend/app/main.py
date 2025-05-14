@@ -19,7 +19,7 @@ def handleMessages():
         if msg['type'] == "STOP": 
             print("Handler stopping.")
             break
-        print("Processing message: {msg['type']} / {msg['message']}")
+        print(f"Processing message: {msg['type']} / {msg['message']}")
         time.sleep(1) # simulate work, can remove
         message_queue.task_done()
 

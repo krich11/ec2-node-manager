@@ -20,7 +20,7 @@ def handleNodeAction(msg):
         case "provisioning":
             print(f"Node Action: {msg['message']}")
         case _:
-            print("Unknown Node Action message")
+            print(f"Unknown Node Action message: {msg['message']}")
 
 
 def handleMessagesIn():

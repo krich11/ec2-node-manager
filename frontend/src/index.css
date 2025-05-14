@@ -16,10 +16,12 @@
 }
 
 /* Ensure elements marked with nodrag don't trigger dragging */
+/*
 .nodrag {
   pointer-events: all !important;
   cursor: pointer !important;
 }
+*/
 
 /* Basic styling for the visible source handle at the center */
 /*

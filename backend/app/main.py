@@ -9,9 +9,11 @@ import json
 import queue
 import threading
 import time
+from starlette.websockets import WebSocketDisconnect
 
 app = FastAPI()
-message_queue_in = queue.Queue()
+message_queue_in = asyncio.Queue()
+message_queue_out = asyncio.Queue()
 
 def handleNodeAction(msg):
     match msg['message']:
@@ -22,6 +24,10 @@ def handleNodeAction(msg):
         case _:
             print(f"Unknown Node Action message: {msg['message']}")
 
+def handleNodePropertySet(msg):
+    message_queue_in.put(msg)
+
+
 
 def handleMessagesIn():
     while True:
@@ -29,7 +35,7 @@ def handleMessagesIn():
         if msg['type'] == "STOP": 
             print("Handler stopping.")
             break
-        print(f"Processing message: {msg['type']} / {msg['message']}")
+        print(f"Processing inbound message: {msg['type']} / {msg['message']}")
         match msg['type']:
             case "node_action":
                 print("Handling Node Action")
@@ -41,9 +47,22 @@ def handleMessagesIn():
         print("Message done, removing from queue.")
         message_queue_in.task_done()
 
+def handleMessagesOut():
+    while True:
+        if msg['type'] == "STOP": 
+            print("Handler stopping.")
+            break
+        print(f"Processing outbound message: {msg['type']} / {msg['message']}")
+        handlePropertySet('{ "status": "warning" }')
+        time.sleep(1) # simulate work, can remove
+        print("Message queued for sending.")
+        message_queue_out.put()
 
-handler_thread = threading.Thread(target=handleMessagesIn, daemon=True)
-handler_thread.start()
+
+handler_thread_in = threading.Thread(target=handleMessagesIn, daemon=True)
+handler_thread_in.start()
+handler_thread_out = threading.Thread(target=handleMessagesOut, daemon=True)
+handler_thread_out.start()
 
 # Allow frontend connection
 app.add_middleware(
@@ -53,43 +72,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            # Listen for messages from the frontend (even if you ignore them)
+            # 1. Try receiving a message from frontend
             try:
                 data = await asyncio.wait_for(websocket.receive_text(), timeout=5.0)
-                print("Received from frontend:", data)
-
                 msg = json.loads(data)
-                print(f"Message: {msg}")
 
-                match msg['type']:
-                    case "node_action":
-                        print(f"Node Action: {msg['message']}")
-                        message_queue_in.put(msg)
+                match msg.get('type'):
+                    case "node_action" | "another message type" | "yet another type":
+                        await message_queue_in.put(msg)
                     case _:
-                        print("Unknown websocket message")
+                        print("Unknown message type:", msg)
 
             except asyncio.TimeoutError:
-                # Timeout just means no message from frontend — that's fine
+                # No message received within timeout — that's fine
                 pass
 
-            # Send a node update every 5 seconds
-            #await websocket.send_json({
-            #    "type": "add_node",
-            #    "node": {
-            #        "id": "node-123",
-            #        "data": {"label": "Live Node"},
-            #        "position": {"x": 100, "y": 100}
-            #    }
-            #})
+            # 2. Check if there's a message to send back
+            try:
+                msg_out = message_queue_out.get_nowait()
+                await websocket.send_json(msg_out)
+            except asyncio.QueueEmpty:
+                pass
 
+    except WebSocketDisconnect:
+        print("WebSocket disconnected.")
     except Exception as e:
         print("WebSocket error:", e)
-
-

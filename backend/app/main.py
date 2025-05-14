@@ -27,7 +27,7 @@ def handleNodeAction(msg):
             print(f"Node Action: {msg['message']}")
         case "provision":
             print(f"Node Action: {msg['message']}")
-            message_queue_out.put("provision return message")
+            await message_queue_out.put("provision return message")
         case _:
             print(f"Unknown Node Action message: {msg['message']}")
 
@@ -35,7 +35,7 @@ def handleNodeAction(msg):
 
 async def handleMessagesIn():
     while True:
-        msg = message_queue_in.get()
+        msg = await message_queue_in.get()
         if msg['type'] == "STOP": 
             print("Handler stopping.")
             break

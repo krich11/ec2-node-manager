@@ -1,8 +1,22 @@
-import React, { createContext, useContext, useEffect, useRef } from 'react';
+import React, { 
+	createContext, 
+	useContext, 
+	useEffect, 
+	useRef,
+	useNodeState,
+	useEdgeState,
+	addNode
+} from 'react';
+
 const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);
 export const WebSocketProvider = ({ children }) => {
-  const wsRef = useRef(null);
+
+const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+
+const wsRef = useRef(null);
 
   useEffect(() => {
     const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws`);

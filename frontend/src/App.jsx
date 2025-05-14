@@ -42,9 +42,9 @@ function Flow() {
   //const wsRef = useWebSocket();
   //const ws = wsRef?.current;
 
+	/*
   useEffect(() => {
 
-	  /*
     if (!ws) { return }
     ws.onopen = () => { window.debugLog("WebSocket connected."); };
  

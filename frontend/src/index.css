@@ -36,6 +36,7 @@
 }
 
 /* Style for the target handle that covers the node */
+/*
 .center-handle.target-handle-style {
   position: absolute;
   width: 100%;
@@ -49,6 +50,7 @@
   pointer-events: all;
   cursor: grab;
 }
+*/
 
 /* Ensure node content is clickable above handle */
 /*

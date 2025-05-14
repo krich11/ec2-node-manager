@@ -14,8 +14,13 @@ const icons = {
 let activeContextMenuId = null;
 
 // Create a global component for the status window
-const StatusWindow = ({ data, onClose }) => {
+const StatusWindow = ({ data, onClose, initialPosition }) => {
   if (!data) return null;
+  
+  const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const statusWindowRef = useRef(null);
   
   const statusColors = {
     idle: 'bg-gray-700 text-gray-300',
@@ -24,9 +29,69 @@ const StatusWindow = ({ data, onClose }) => {
     error: 'bg-red-800 text-red-200',
   };
   
+  // Handle mouse down for dragging
+  const handleMouseDown = (e) => {
+    if (e.target.closest('.drag-handle')) {
+      setIsDragging(true);
+      
+      // Calculate the offset between mouse position and window position
+      const rect = statusWindowRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      
+      // Prevent text selection during drag
+      e.preventDefault();
+    }
+  };
+  
+  // Handle mouse move for dragging
+  const handleMouseMove = useCallback((e) => {
+    if (isDragging) {
+      // Update position based on mouse position and original offset
+      setPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y
+      });
+    }
+  }, [isDragging, dragOffset]);
+  
+  // Handle mouse up to stop dragging
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+  
+  // Add and remove event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    } else {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    }
+    
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+  
   return (
-    <div className="fixed z-50 shadow-lg rounded-lg overflow-hidden" style={{ width: '300px' }}>
-      <div className={`flex justify-between items-center p-3 ${statusColors[data.status]}`}>
+    <div 
+      ref={statusWindowRef}
+      className="fixed z-50 shadow-lg rounded-lg overflow-hidden" 
+      style={{ 
+        width: '300px',
+        left: position.x,
+        top: position.y,
+        cursor: isDragging ? 'grabbing' : 'auto'
+      }}
+      onMouseDown={handleMouseDown}
+    >
+      <div className={`flex justify-between items-center p-3 ${statusColors[data.status]} drag-handle`} 
+           style={{ cursor: 'grab' }}>
         <div className="flex items-center gap-2">
           <Server size={16} />
           <span className="font-medium">{data.label}</span>
@@ -382,17 +447,11 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       
       {/* Status Window - rendered to the document body */}
       {statusWindowVisible && statusWindowData && ReactDOM.createPortal(
-        <div style={{
-          position: 'fixed',
-          left: statusWindowPosition.x,
-          top: statusWindowPosition.y,
-          zIndex: 1000
-        }}>
-          <StatusWindow 
-            data={statusWindowData}
-            onClose={handleCloseStatusWindow}
-          />
-        </div>,
+        <StatusWindow 
+          data={statusWindowData}
+          onClose={handleCloseStatusWindow}
+          initialPosition={statusWindowPosition}
+        />,
         document.body
       )}
     </div>

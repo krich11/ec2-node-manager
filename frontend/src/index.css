@@ -191,3 +191,19 @@
 .debug-toggle.active {
   background-color: #10B981;
 }
+
+
+/* Status window styles for draggable functionality */
+.drag-handle {
+  cursor: grab;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Visual indicator that the header is draggable */
+.drag-handle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}

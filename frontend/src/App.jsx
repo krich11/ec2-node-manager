@@ -47,6 +47,7 @@ function Flow() {
     if (!ws) { return }
     ws.onopen = () => { window.debugLog("WebSocket connected."); };
  
+    console.log("WebSocket event captured in App.jsx");
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);

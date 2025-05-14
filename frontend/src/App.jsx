@@ -12,6 +12,8 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
+import WebSocketContext from './components/WebSocketContext';
+
 
 // Initialize debug utility
 // This will be attached to the window object for global access
@@ -30,10 +32,6 @@ const initialEdges = [];
 
 const snapGrid = [15, 15];
 const snapToGrid = false;
-
-// Set up websocket context
-export const WebSocketContext = createContext(null);
-export const useWebSocket = () => useContext(WebSocketContext);
 
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

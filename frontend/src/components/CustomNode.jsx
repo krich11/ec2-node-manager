@@ -10,6 +10,9 @@ const icons = {
   error: <XCircle size={14} />,
 };
 
+// Global state to track active context menu
+let activeContextMenuId = null;
+
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
@@ -59,6 +62,16 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     event.preventDefault();
     event.stopPropagation();
     
+    // Close any existing context menu
+    if (activeContextMenuId && activeContextMenuId !== id) {
+      // Broadcast event to close other menus
+      const closeEvent = new CustomEvent('closeContextMenu', {
+        detail: { exceptId: id }
+      });
+      document.dispatchEvent(closeEvent);
+    }
+    
+    activeContextMenuId = id;
     setContextMenuVisible(true);
     
     // Display the context menu directly at the cursor position
@@ -74,15 +87,98 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       // Close the context menu when clicking anywhere
       if (contextMenuVisible) {
         setContextMenuVisible(false);
+        activeContextMenuId = null;
+      }
+    };
+    
+    const handleCloseContextMenu = (event) => {
+      if (event.detail.exceptId !== id) {
+        setContextMenuVisible(false);
       }
     };
     
     document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [contextMenuVisible]);
+    document.addEventListener('closeContextMenu', handleCloseContextMenu);
+    
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('closeContextMenu', handleCloseContextMenu);
+    };
+  }, [contextMenuVisible, id]);
   
   const handleSourceHandleMouseDown = () => {
     window.debugLog(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`);
+  };
+
+  // Menu action handlers
+  const handleProvision = () => {
+    window.debugLog(`Provision action triggered for node ${id}`);
+    // Implement provision logic here
+    alert(`Node ${id} - Provision action triggered`);
+    setContextMenuVisible(false);
+  };
+
+  const handleStart = () => {
+    window.debugLog(`Start action triggered for node ${id}`);
+    // Set node status to running
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id ? { ...n, data: { ...n.data, status: 'running', label: 'Running' } } : n
+      )
+    );
+    setContextMenuVisible(false);
+  };
+
+  const handleStop = () => {
+    window.debugLog(`Stop action triggered for node ${id}`);
+    // Set node status to idle
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id ? { ...n, data: { ...n.data, status: 'idle', label: 'Idle' } } : n
+      )
+    );
+    setContextMenuVisible(false);
+  };
+
+  const handleReboot = () => {
+    window.debugLog(`Reboot action triggered for node ${id}`);
+    // Implement reboot logic - briefly set to error then running
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id ? { ...n, data: { ...n.data, status: 'error', label: 'Rebooting' } } : n
+      )
+    );
+    
+    setTimeout(() => {
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === id ? { ...n, data: { ...n.data, status: 'running', label: 'Running' } } : n
+        )
+      );
+    }, 1000);
+    
+    setContextMenuVisible(false);
+  };
+
+  const handleConfigure = () => {
+    window.debugLog(`Configure action triggered for node ${id}`);
+    // Implement configuration logic here
+    const newLabel = prompt("Enter new node name:", data.label);
+    if (newLabel) {
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === id ? { ...n, data: { ...n.data, label: newLabel } } : n
+        )
+      );
+    }
+    setContextMenuVisible(false);
+  };
+
+  const handleStatus = () => {
+    window.debugLog(`Status action triggered for node ${id}`);
+    // Show node status in an alert
+    alert(`Node ${id} - Status: ${status.toUpperCase()}`);
+    setContextMenuVisible(false);
   };
 
   return (
@@ -145,12 +241,12 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="context-menu-item">Provision</div>
-          <div className="context-menu-item">Start</div>
-          <div className="context-menu-item">Stop</div>
-          <div className="context-menu-item">Reboot</div>
-          <div className="context-menu-item">Configure</div>
-          <div className="context-menu-item">Status</div>
+          <div className="context-menu-item" onClick={handleProvision}>Provision</div>
+          <div className="context-menu-item" onClick={handleStart}>Start</div>
+          <div className="context-menu-item" onClick={handleStop}>Stop</div>
+          <div className="context-menu-item" onClick={handleReboot}>Reboot</div>
+          <div className="context-menu-item" onClick={handleConfigure}>Configure</div>
+          <div className="context-menu-item" onClick={handleStatus}>Status</div>
         </div>,
         document.body
       )}

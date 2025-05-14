@@ -11,20 +11,38 @@ import threading
 import time
 
 app = FastAPI()
-message_queue = queue.Queue()
+message_queue_in = queue.Queue()
 
-def handleMessages():
+def handleNodeAction(msg):
+    match msg['message']:
+        case "start":
+            print(f"Node Action: {msg['message']}")
+        case "provisioning":
+            print(f"Node Action: {msg['message']}")
+        case _:
+            print("Unknown Node Action message")
+
+
+def handleMessagesIn():
     while True:
-        msg = message_queue.get()
+        msg = message_queue_in.get()
         if msg['type'] == "STOP": 
             print("Handler stopping.")
             break
         print(f"Processing message: {msg['type']} / {msg['message']}")
+        match msg['type']:
+            case "node_action":
+                print("Handling Node Action")
+                handleNodeAction(msg)
+            case _:
+                print("Unknown websocket message")
+
         time.sleep(1) # simulate work, can remove
-        message_queue.task_done()
+        print("Message done, removing from queue.")
+        message_queue_in.task_done()
 
 
-handler_thread = threading.Thread(target=handleMessages, daemon=True)
+handler_thread = threading.Thread(target=handleMessagesIn, daemon=True)
 handler_thread.start()
 
 # Allow frontend connection
@@ -53,7 +71,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 match msg['type']:
                     case "node_action":
                         print(f"Node Action: {msg['message']}")
-                        message_queue.put(msg)
+                        message_queue_in.put(msg)
                     case _:
                         print("Unknown websocket message")
 

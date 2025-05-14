@@ -78,8 +78,8 @@
   width: 10px;
   height: 10px;
   background-color: rgba(34, 139, 230, 0.5);
-  border-radius: 50%;
-  border: 1px solid #fff;
+  border-radius: 70%;
+  border: none;
   z-index: 20;
   pointer-events: all;
   cursor: crosshair;
@@ -110,7 +110,7 @@
 
 /* Handle style when connecting - make it highlight */
 .react-flow__handle.connecting {
-  background-color: #3182ce;
+  background-color: rgba(34, 139, 230, 0.5);
 }
 
 /* Ensure valid drop targets show highlight */
@@ -137,6 +137,7 @@
 /* Make node selected state more visible */
 .react-flow__node.selected {
   box-shadow: 0 0 0 2px #3182ce;
+  border-radius: 0.5rem;
 }
 
 /* Context menu styles */
@@ -152,7 +153,7 @@
   padding: 6px 12px;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 16px;
   color: white;
 }
 

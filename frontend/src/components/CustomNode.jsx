@@ -13,7 +13,6 @@ const icons = {
 export default function CustomNode({ id, data, selected, isConnectable, xPos, yPos }) {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-  const contextMenuRef = useRef(null);
   const nodeRef = useRef(null);
   const { getNode, getViewport, setNodes } = useReactFlow();
   const status = data.status || 'idle';
@@ -58,26 +57,28 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   const handleContextMenu = (event) => {
     event.preventDefault();
-    const rect = nodeRef.current.getBoundingClientRect();
-    setContextMenuPosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+    event.stopPropagation();
+    
     setContextMenuVisible(true);
+    
+    // Display the context menu directly at the cursor position
+    setContextMenuPosition({
+      x: event.clientX,
+      y: event.clientY
+    });
   };
 
+  // Handle clicks outside the context menu to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close the context menu when clicking anywhere in the document
-      setContextMenuVisible(false);
+      // Close the context menu when clicking anywhere
+      if (contextMenuVisible) {
+        setContextMenuVisible(false);
+      }
     };
     
-    // Only add the listener when the context menu is open
-    if (contextMenuVisible) {
-      // Use setTimeout to ensure this fires after the current click event
-      setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-      }, 0);
-    }
-    
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [contextMenuVisible]);
   
   const handleSourceHandleMouseDown = () => {
@@ -134,18 +135,21 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         onMouseDown={handleSourceHandleMouseDown}
       />
 
-      {contextMenuVisible &&
-        ReactDOM.createPortal(
-          <div
-            ref={contextMenuRef}
-            className="absolute bg-gray-700 text-white text-xs rounded shadow-lg p-2"
-            style={{ top: contextMenuPosition.y, left: contextMenuPosition.x }}
-          >
-            <div className="cursor-pointer hover:bg-gray-600 p-1 rounded">Edit</div>
-            <div className="cursor-pointer hover:bg-gray-600 p-1 rounded">Delete</div>
-          </div>,
-          nodeRef.current
-        )}
+      {/* Context menu - now rendered to the document body */}
+      {contextMenuVisible && ReactDOM.createPortal(
+        <div 
+          className="node-context-menu"
+          style={{
+            left: contextMenuPosition.x,
+            top: contextMenuPosition.y
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="context-menu-item">Edit</div>
+          <div className="context-menu-item">Delete</div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

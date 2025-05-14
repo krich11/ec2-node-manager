@@ -35,14 +35,6 @@
   animation: dashedLineAnimation 1s linear infinite;
 }
 
-/* Make the entire node draggable by default */
-/*
-.react-flow__node {
-  position: relative;
-  z-index: 1;
-}
-*/
-
 /* Make the draggable class explicitly enable dragging */
 .react-flow__node-draggable {
   cursor: grab;
@@ -145,6 +137,27 @@
 /* Make node selected state more visible */
 .react-flow__node.selected {
   box-shadow: 0 0 0 2px #3182ce;
+}
+
+/* Context menu styles */
+.node-context-menu {
+  position: fixed;
+  background-color: #374151;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.context-menu-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 12px;
+  color: white;
+}
+
+.context-menu-item:hover {
+  background-color: #4B5563;
 }
 
 /* Debug panel styles */

@@ -29,7 +29,7 @@ def handleNodePropertySet(msg):
 
 
 
-def handleMessagesIn():
+async def handleMessagesIn():
     while True:
         msg = message_queue_in.get()
         if msg['type'] == "STOP": 
@@ -47,7 +47,7 @@ def handleMessagesIn():
         print("Message done, removing from queue.")
         message_queue_in.task_done()
 
-def handleMessagesOut():
+async def handleMessagesOut():
     while True:
         if msg['type'] == "STOP": 
             print("Handler stopping.")

@@ -205,5 +205,5 @@
 
 /* Visual indicator that the header is draggable */
 .drag-handle:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.7);
 }

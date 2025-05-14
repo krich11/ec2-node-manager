@@ -16,7 +16,7 @@ export const WebSocketProvider = ({ children }) => {
     ws.onmessage = (event) => { 
       console.log("WebSocket message (raw):", event.data); 
               // Handle WebSocket Messages
-      switch (msg.type) {
+      switch (event.data..type) {
         case "add_node":
           setNodes((nds) => [...nds, msg.node]);
           break;

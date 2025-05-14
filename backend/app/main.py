@@ -15,17 +15,21 @@ app = FastAPI()
 message_queue_in = asyncio.Queue()
 message_queue_out = asyncio.Queue()
 
+
+
+def handleNodePropertySet(msg):
+    message_queue_in.put(msg)
+
+
 def handleNodeAction(msg):
     match msg['message']:
         case "start":
             print(f"Node Action: {msg['message']}")
         case "provision":
             print(f"Node Action: {msg['message']}")
+            message_queue_out.put("provision return message")
         case _:
             print(f"Unknown Node Action message: {msg['message']}")
-
-def handleNodePropertySet(msg):
-    message_queue_in.put(msg)
 
 
 
@@ -47,19 +51,18 @@ async def handleMessagesIn():
         print("Message done, removing from queue.")
         message_queue_in.task_done()
 
+'''
 async def handleMessagesOut():
     while True:
-        if msg['type'] == "STOP": 
-            print("Handler stopping.")
-            break
+        msg = message_queue_out.get()
         print(f"Processing outbound message: {msg['type']} / {msg['message']}")
         handlePropertySet('{ "status": "warning" }')
         time.sleep(1) # simulate work, can remove
         print("Message queued for sending.")
-        message_queue_out.put()
+'''
 
 asyncio.create_task(handleMessagesIn())
-asyncio.create_task(handleMessagesOut())
+#asyncio.create_task(handleMessagesOut())
 
 # Allow frontend connection
 app.add_middleware(

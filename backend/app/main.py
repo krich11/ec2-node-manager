@@ -31,14 +31,14 @@ async def websocket_endpoint(websocket: WebSocket):
                 pass
 
             # Send a node update every 5 seconds
-            await websocket.send_json({
-                "type": "add_node",
-                "node": {
-                    "id": "node-123",
-                    "data": {"label": "Live Node"},
-                    "position": {"x": 100, "y": 100}
-                }
-            })
+            #await websocket.send_json({
+            #    "type": "add_node",
+            #    "node": {
+            #        "id": "node-123",
+            #        "data": {"label": "Live Node"},
+            #        "position": {"x": 100, "y": 100}
+            #    }
+            #})
 
     except Exception as e:
         print("WebSocket error:", e)

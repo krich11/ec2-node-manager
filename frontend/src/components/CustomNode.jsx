@@ -145,8 +145,12 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="context-menu-item">Edit</div>
-          <div className="context-menu-item">Delete</div>
+          <div className="context-menu-item">Provision</div>
+          <div className="context-menu-item">Start</div>
+          <div className="context-menu-item">Stop</div>
+          <div className="context-menu-item">Reboot</div>
+          <div className="context-menu-item">Configure</div>
+          <div className="context-menu-item">Status</div>
         </div>,
         document.body
       )}

@@ -110,7 +110,7 @@
 
 /* Handle style when connecting - make it highlight */
 .react-flow__handle.connecting {
-  background-color: rgba(34, 139, 230, 0.5);
+  background-color: rgba(34, 139, 230, 0.8);
 }
 
 /* Ensure valid drop targets show highlight */

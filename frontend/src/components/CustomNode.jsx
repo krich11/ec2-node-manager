@@ -284,7 +284,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   };
 
   const handleStart = () => {
-    window.debugLog(`Start action triggered for node ${id}`);
+    window.debugLog(`Start action triggered for node ${id} with websocket: ${ws}`);
 
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {

@@ -39,11 +39,12 @@ function Flow() {
   const [debugMode, setDebugMode] = useState(false);
 
   // Init Websocket
-  const wsRef = useWebSocket();
-  const ws = wsRef?.current;
+  //const wsRef = useWebSocket();
+  //const ws = wsRef?.current;
 
   useEffect(() => {
 
+	  /*
     if (!ws) { return }
     ws.onopen = () => { window.debugLog("WebSocket connected."); };
  
@@ -86,7 +87,7 @@ function Flow() {
     return () => { ws.close(); };
 
   }, [setNodes, setEdges]);
-
+*/
 
   // Toggle debug mode
   const toggleDebug = useCallback(() => {

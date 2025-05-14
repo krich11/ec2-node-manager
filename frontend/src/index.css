@@ -1,11 +1,29 @@
+```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Dashboard animation */
+@keyframes dashedLineAnimation {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Edge styles */
+.active-edge {
+  stroke: #10B981 !important;
+  stroke-width: 2 !important;
+  stroke-dasharray: 5 !important;
+}
+
+.animated-edge {
+  animation: dashedLineAnimation 1s linear infinite;
+}
+
 /* Make the entire node draggable by default */
 /*
 .react-flow__node {
-  pointer-events: all;
   position: relative;
   z-index: 1;
 }
@@ -21,6 +39,31 @@
 .nodrag {
   pointer-events: all !important;
   cursor: pointer !important;
+}
+
+/* Node status styles */
+.node-idle {
+  border: 1px solid #4B5563;
+  background-color: #1F2937;
+  color: #D1D5DB;
+}
+
+.node-running {
+  border: 1px solid #10B981;
+  background-color: #065F46;
+  color: #A7F3D0;
+}
+
+.node-warning {
+  border: 1px solid #F59E0B;
+  background-color: #92400E;
+  color: #FDE68A;
+}
+
+.node-error {
+  border: 1px solid #EF4444;
+  background-color: #991B1B;
+  color: #FCA5A5;
 }
 
 /* Basic styling for the visible source handle at the center */
@@ -44,9 +87,9 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,200,0.8);
+  background-color: transparent;
   border-radius: 0.5rem;
-  border: 2px solid #fff;
+  border: none;
   z-index: 19;
   pointer-events: all;
   cursor: grab;
@@ -89,3 +132,35 @@
 .react-flow__node.selected {
   box-shadow: 0 0 0 2px #3182ce;
 }
+
+/* Debug panel styles */
+.debug-panel {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
+  z-index: 100;
+}
+
+.debug-toggle {
+  background-color: #4B5563;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.debug-toggle:hover {
+  background-color: #6B7280;
+}
+
+.debug-toggle.active {
+  background-color: #10B981;
+}
+```

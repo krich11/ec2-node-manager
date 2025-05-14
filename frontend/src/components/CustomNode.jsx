@@ -3,13 +3,6 @@ import { Handle, Position, useReactFlow } from 'reactflow';
 import { PlayCircle, PauseCircle, AlertCircle, XCircle, MoreHorizontal } from 'lucide-react';
 import ReactDOM from 'react-dom';
 
-const stateStyles = {
-  idle: 'border border-gray-600 bg-gray-800 text-gray-300',
-  running: 'border border-green-500 bg-green-900 text-green-200',
-  warning: 'border border-yellow-500 bg-yellow-900 text-yellow-200',
-  error: 'border border-red-500 bg-red-900 text-red-200',
-};
-
 const icons = {
   idle: <PauseCircle size={14} />,
   running: <PlayCircle size={14} />,
@@ -79,11 +72,15 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+  
+  const handleSourceHandleMouseDown = () => {
+    window.debugLog(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`);
+  };
 
   return (
     <div
       ref={nodeRef}
-      className={`${stateStyles[status]} relative rounded-lg p-1 text-xs select-none transition-shadow custom-node`}
+      className={`node-${status} relative rounded-lg p-1 text-xs select-none transition-shadow custom-node`}
       style={{ width: 150, height: 40 }}
       onContextMenu={handleContextMenu}
       onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
@@ -111,11 +108,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           left: handlePosition.left,
           width: '100%',
           height: '100%',
-	  background: 'transparent',
-          border: 'none',
-          borderRadius: '0.5rem',
           zIndex: 19, // Just under source handle
-          cursor: 'grab',
         }}
         onMouseDown={onDragStart} // Enable dragging
       />
@@ -132,7 +125,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           left: handlePosition.left,
           zIndex: 20, // On top of target handle
         }}
-	onMouseDown={() => console.log(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`)}
+        onMouseDown={handleSourceHandleMouseDown}
       />
 
       {contextMenuVisible &&

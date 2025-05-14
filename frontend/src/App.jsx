@@ -13,6 +13,15 @@ import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 
+// Initialize debug utility
+// This will be attached to the window object for global access
+window.debugEnabled = false;
+window.debugLog = function(message) {
+  if (window.debugEnabled) {
+    console.log(message);
+  }
+};
+
 const nodeTypes = { custom: CustomNode };
 const edgeTypes = { custom: CustomEdge };
 
@@ -25,6 +34,15 @@ const snapToGrid = false;
 function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [debugMode, setDebugMode] = useState(false);
+
+  // Toggle debug mode
+  const toggleDebug = useCallback(() => {
+    const newDebugMode = !debugMode;
+    setDebugMode(newDebugMode);
+    window.debugEnabled = newDebugMode;
+    window.debugLog('Debug mode ' + (newDebugMode ? 'enabled' : 'disabled'));
+  }, [debugMode]);
 
   const isValidConnection = useCallback((connection) => {
     if (connection.source === connection.target) {
@@ -63,6 +81,8 @@ function Flow() {
 
     const newLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
 
+    window.debugLog(`Node ${node.id} status changed from ${node.data.status} to ${newStatus}`);
+
     setNodes((nds) =>
       nds.map((n) =>
         n.id === node.id ? { ...n, data: { ...n.data, status: newStatus, label: newLabel } } : n
@@ -89,12 +109,8 @@ function Flow() {
       dragHandle: '.custom-node'
     };
 
+    window.debugLog(`Adding new node with ID ${newNodeId}`);
     setNodes((nds) => [...nds, newNode]);
-
-    //setTimeout(() => {
-    //  setEdges((eds) => [...eds]);
-    //  setNodes((nds) => [...nds]);
-    //}, 50);
   }, [setNodes]);
 
   useEffect(() => {
@@ -120,8 +136,6 @@ function Flow() {
         type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
-      //snapGrid={snapGrid}
-      //snapToGrid={snapToGrid}
       onNodeDoubleClick={onNodeDoubleClick}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
@@ -130,6 +144,19 @@ function Flow() {
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
       <Background color="#aaa" size={1} />
+      
+      {/* Debug Mode Toggle Panel */}
+      <Panel position="top-right">
+        <div className="debug-panel">
+          <button 
+            onClick={toggleDebug} 
+            className={`debug-toggle ${debugMode ? 'active' : ''}`}
+          >
+            Debug: {debugMode ? 'ON' : 'OFF'}
+          </button>
+        </div>
+      </Panel>
+      
       <Panel position="top-left">
         <div className="flex flex-col gap-2">
           <button

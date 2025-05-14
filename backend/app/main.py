@@ -24,7 +24,7 @@ def handleMessages():
         message_queue.task_done()
 
 
-handler_thread = threading.Thread(target=handle_messages, daemon=True)
+handler_thread = threading.Thread(target=handleMessages, daemon=True)
 handler_thread.start()
 
 # Allow frontend connection

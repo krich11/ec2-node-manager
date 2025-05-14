@@ -17,7 +17,10 @@ export default function CustomEdge({
   markerEnd
 }) {
   const { getNode } = useReactFlow();
-  const [isActive, setIsActive] = useState(false);
+  const [edgeStatus, setEdgeStatus] = useState({
+    isActive: false,
+    statusClass: 'idle-edge'
+  });
   
   // Get nodes for position adjustments
   const sourceNode = getNode(source);
@@ -45,12 +48,36 @@ export default function CustomEdge({
     const checkConnectionStatus = () => {
       const sourceNode = getNode(source);
       const targetNode = getNode(target);
+
+      if (!sourceNode || !targetNode) return;
       
-      const bothNodesRunning = 
-        sourceNode?.data?.status === 'running' && 
-        targetNode?.data?.status === 'running';
+      const sourceStatus = sourceNode.data.status;
+      const targetStatus = targetNode.data.status;
+      window.debugLog(`Edge ${id}: sourceStatus=${sourceStatus}, targetStatus=${targetStatus}`);
       
-      setIsActive(bothNodesRunning);
+      // Check if both nodes are running for active animation
+      const bothNodesRunning = sourceStatus === 'running' && targetStatus === 'running';
+      
+      // Determine edge status class based on priority: error > warning > running > idle
+      let statusClass = 'idle-edge';
+      
+      // Error has highest priority
+      if (sourceStatus === 'error' || targetStatus === 'error') {
+        statusClass = 'error-edge';
+      }
+      // Warning has second priority
+      else if (sourceStatus === 'warning' || targetStatus === 'warning') {
+        statusClass = 'warning-edge';
+      }
+      // Running status only applies when both nodes are running
+      else if (bothNodesRunning) {
+        statusClass = 'active-edge';
+      }
+      
+      setEdgeStatus({
+        isActive: bothNodesRunning,
+        statusClass
+      });
     };
     
     checkConnectionStatus();
@@ -65,11 +92,9 @@ export default function CustomEdge({
       id={id}
       style={{
         ...style,
-        stroke: '#888',
-        strokeWidth: 2.5,
         transition: 'stroke 0.3s ease'
       }}
-      className={`react-flow__edge-path ${isActive ? 'active-edge animated-edge' : ''}`}
+      className={`react-flow__edge-path ${edgeStatus.statusClass} ${edgeStatus.isActive ? 'animated-edge' : ''}`}
       d={edgePath}
       markerEnd={markerEnd}
     />

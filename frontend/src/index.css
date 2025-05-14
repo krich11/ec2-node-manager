@@ -1,3 +1,4 @@
+```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +15,21 @@
   stroke: #10B981 !important;
   stroke-width: 2 !important;
   stroke-dasharray: 5 !important;
+}
+
+.error-edge {
+  stroke: #EF4444 !important;
+  stroke-width: 2 !important;
+}
+
+.warning-edge {
+  stroke: #F59E0B !important;
+  stroke-width: 2 !important;
+}
+
+.idle-edge {
+  stroke: #888 !important;
+  stroke-width: 2 !important;
 }
 
 .animated-edge {
@@ -162,3 +178,4 @@
 .debug-toggle.active {
   background-color: #10B981;
 }
+```

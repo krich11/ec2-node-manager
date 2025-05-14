@@ -65,13 +65,20 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (contextMenuRef.current && !contextMenuRef.current.contains(event.target)) {
-        setContextMenuVisible(false);
-      }
+      // Close the context menu when clicking anywhere in the document
+      setContextMenuVisible(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    
+    // Only add the listener when the context menu is open
+    if (contextMenuVisible) {
+      // Use setTimeout to ensure this fires after the current click event
+      setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 0);
+    }
+    
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [contextMenuVisible]);
   
   const handleSourceHandleMouseDown = () => {
     window.debugLog(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`);
@@ -83,7 +90,6 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       className={`node-${status} relative rounded-lg p-1 text-xs select-none transition-shadow custom-node`}
       style={{ width: 150, height: 40 }}
       onContextMenu={handleContextMenu}
-      onMouseDown={() => contextMenuVisible && setContextMenuVisible(false)}
     >
       <div className="flex justify-between items-center h-full">
         <div className="flex items-center gap-1">

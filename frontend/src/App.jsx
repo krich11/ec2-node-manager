@@ -12,8 +12,11 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
-import { WebSocketProvider } from './components/WebSocketContext';
+import { useWebSocket, WebSocketProvider } from './components/WebSocketContext';
 
+// Init Websocket
+const wsRef = useWebSocket();
+const ws = wsRef.current;
 
 // Initialize debug utility
 // This will be attached to the window object for global access

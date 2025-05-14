@@ -12,8 +12,9 @@ const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);
 export const WebSocketProvider = ({ children }) => {
 
-const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+const [nodes, setNodes, onNodesChange] = useNodesState();
+const [edges, setEdges, onEdgesChange] = useEdgesState();
 
 
 const wsRef = useRef(null);

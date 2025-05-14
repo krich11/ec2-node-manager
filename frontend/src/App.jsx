@@ -14,9 +14,6 @@ import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 import { useWebSocket, WebSocketProvider } from './components/WebSocketContext';
 
-// Init Websocket
-const wsRef = useWebSocket();
-const ws = wsRef.current;
 
 // Initialize debug utility
 // This will be attached to the window object for global access
@@ -40,6 +37,10 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
+
+  // Init Websocket
+  const wsRef = useWebSocket();
+  const ws = wsRef?.current;
 
   useEffect(() => {
 

@@ -17,8 +17,8 @@ message_queue_out = asyncio.Queue()
 
 
 
-def handleNodePropertySet(msg):
-    message_queue_in.put(msg)
+async def handleNodePropertySet(msg):
+    await message_queue_in.put(msg)
 
 
 async def handleNodeAction(msg):
@@ -43,13 +43,13 @@ async def handleMessagesIn():
         match msg['type']:
             case "node_action":
                 print("Handling Node Action")
-                handleNodeAction(msg)
+                await handleNodeAction(msg)
             case _:
                 print("Unknown websocket message")
 
         time.sleep(1) # simulate work, can remove
         print("Message done, removing from queue.")
-        message_queue_in.task_done()
+        await message_queue_in.task_done()
 
 '''
 async def handleMessagesOut():

@@ -14,7 +14,7 @@ app = FastAPI()
 message_queue = queue.Queue()
 
 def handleMessages():
-    while true:
+    while True:
         msg = message_queue.get()
         if msg['type'] == "STOP": 
             print("Handler stopping.")

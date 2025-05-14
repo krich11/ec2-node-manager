@@ -58,8 +58,8 @@ def handleMessagesOut():
         print("Message queued for sending.")
         message_queue_out.put()
 
-asyncio.create_task(handle_messages_in())
-asyncio.create_task(handle_messages_out())
+asyncio.create_task(handleMessagesIn())
+asyncio.create_task(handleMessagesOut())
 
 # Allow frontend connection
 app.add_middleware(

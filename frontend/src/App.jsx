@@ -64,11 +64,11 @@ function Flow() {
 		case "add_edge":
           		setEdges((eds) => [...eds, msg.edge]);
 			break;
-		case "remove_node:
+		case "remove_node":
           		setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
           		setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
 			break;
-		case "remove_edge:
+		case "remove_edge":
           		setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
 			break;
 		default:

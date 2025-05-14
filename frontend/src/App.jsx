@@ -44,6 +44,7 @@ function Flow() {
 
   useEffect(() => {
 
+    if (!ws) { return }
     ws.onopen = () => { window.debugLog("WebSocket connected."); };
  
     ws.onmessage = (event) => {

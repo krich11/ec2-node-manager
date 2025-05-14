@@ -278,9 +278,25 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   // Menu action handlers
   const handleProvision = () => {
-    window.debugLog(`Provision action triggered for node ${id}`);
-    // Implement provision logic here
-    alert(`Node ${id} - Provision action triggered`);
+    window.debugLog(`Provision action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Provision action triggered for node ${id} with websocket: ${ws}`);
+
+    // Send Websocket update to backend
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        type: 'node_action',
+        message: 'provision',
+      }));
+    } else {
+      console.warn('WebSocket not open');
+    }
+
+    // Set node status to running
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
+      )
+    );
     setContextMenuVisible(false);
   };
 

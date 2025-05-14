@@ -10,10 +10,12 @@
 }
 
 /* Make the draggable class explicitly enable dragging */
+/*
 .react-flow__node-draggable {
   cursor: grab;
   pointer-events: all;
 }
+*/
 
 /* Ensure elements marked with nodrag don't trigger dragging */
 /*

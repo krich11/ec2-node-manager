@@ -12,7 +12,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
-import WebSocketContext from './components/WebSocketContext';
+import { WebSocketContext } from './components/WebSocketContext';
 
 
 // Initialize debug utility

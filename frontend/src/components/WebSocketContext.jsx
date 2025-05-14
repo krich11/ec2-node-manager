@@ -14,9 +14,10 @@ export const WebSocketProvider = ({ children }) => {
     ws.onclose = () => { console.warn("WebSocket closed."); };
 
     ws.onmessage = (event) => { 
-      console.log("WebSocket message (raw):", event.data); 
+      msg = JSON.parse(event.data);
+      console.log("WebSocket message (raw):", msg); 
               // Handle WebSocket Messages
-      switch (event.data.type) {
+      switch (msg.type) {
         case "add_node":
           setNodes((nds) => [...nds, msg.node]);
           break;

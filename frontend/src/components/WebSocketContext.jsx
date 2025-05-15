@@ -8,7 +8,7 @@ import React, {
 	addNode,
 	setNodes,
 } from 'react';
-import useReactFlow from 'reactflow';
+import {useReactFlow} from 'reactflow';
 
 const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);

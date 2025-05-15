@@ -6,6 +6,7 @@ import React, {
 	useNodesState,
 	useEdgesState,
 	addNode
+	setNodes
 } from 'react';
 
 const WebSocketContext = createContext(null);

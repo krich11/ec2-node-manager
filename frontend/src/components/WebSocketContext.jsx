@@ -14,16 +14,16 @@ const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);
 export const WebSocketProvider = ({ children }) => {
 
+//const { getNode, getViewport, setNodes } = useReactFlow();
 
-//const [nodes, setNodes, onNodesChange] = useNodesState();
-//const [edges, setEdges, onEdgesChange] = useEdgesState();
+const [nodes, setNodes, onNodesChange] = useNodesState();
+const [edges, setEdges, onEdgesChange] = useEdgesState();
 
 
 const wsRef = useRef(null);
 
   useEffect(() => {
     const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws`);
-    const { getNode, getViewport, setNodes } = useReactFlow();
 
     wsRef.current = ws;
 

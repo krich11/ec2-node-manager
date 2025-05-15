@@ -40,7 +40,6 @@ const wsRef = useRef(null);
               n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
             )
           );
-
           break;
         case "update_node":
           //setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
@@ -56,7 +55,7 @@ const wsRef = useRef(null);
           //setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
           break;
         default:
-          console.log("Unhandled websocket message: ", msg);
+          console.log("Unhandled websocket message: ", msg.type);
       }
 
     };

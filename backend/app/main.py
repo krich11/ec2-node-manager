@@ -27,7 +27,8 @@ async def handleNodeAction(msg):
             print(f"Node Action: {msg['message']}")
         case "provision":
             print(f"Node Action: {msg['message']}")
-            await message_queue_out.put("provision return message")
+            rtnmsg = '{'type': 'set-status', 'message': 'warning'}'
+            await message_queue_out.put(rtnmsg)
         case _:
             print(f"Unknown Node Action message: {msg['message']}")
 
@@ -51,15 +52,6 @@ async def handleMessagesIn():
         print("Message done, removing from queue.")
         message_queue_in.task_done()
 
-'''
-async def handleMessagesOut():
-    while True:
-        msg = message_queue_out.get()
-        print(f"Processing outbound message: {msg['type']} / {msg['message']}")
-        handlePropertySet('{ "status": "warning" }')
-        time.sleep(1) # simulate work, can remove
-        print("Message queued for sending.")
-'''
 
 asyncio.create_task(handleMessagesIn())
 #asyncio.create_task(handleMessagesOut())

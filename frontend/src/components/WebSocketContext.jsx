@@ -8,6 +8,7 @@ import React, {
 	addNode,
 	setNodes,
 } from 'react';
+import useReactFlow from 'reactflow';
 
 const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);
@@ -22,6 +23,7 @@ const wsRef = useRef(null);
 
   useEffect(() => {
     const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws`);
+    const { getNode, getViewport, setNodes } = useReactFlow();
 
     wsRef.current = ws;
 

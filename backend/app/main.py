@@ -27,7 +27,7 @@ async def handleNodeAction(msg):
             print(f"Node Action: {msg['message']}")
         case "provision":
             print(f"Node Action: {msg['message']}")
-            rtnmsg = '{"type": "set-status", "message": "warning"};
+            rtnmsg = '{"type": "set-status", "message": "warning"}';
             await message_queue_out.put(rtnmsg)
         case _:
             print(f"Unknown Node Action message: {msg['message']}")

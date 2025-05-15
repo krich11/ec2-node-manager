@@ -291,12 +291,12 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
       console.warn('WebSocket not open');
     }
 
-    // Set node status to running
-    setNodes((nds) =>
-      nds.map((n) =>
-        n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
-      )
-    );
+    // Set node status to provisioning
+    //setNodes((nds) =>
+    //  nds.map((n) =>
+    //    n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
+    //  )
+    //);
     setContextMenuVisible(false);
   };
 

@@ -33,8 +33,14 @@ const wsRef = useRef(null);
       console.log("WebSocket message (raw):", msg); 
               // Handle WebSocket Messages
       switch (msg.type) {
-        case "add_node":
-          //setNodes((nds) => [...nds, msg.node]);
+        case "set-status":
+	  // Set node status to warning
+          setNodes((nds) =>
+            nds.map((n) =>
+              n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
+            )
+          );
+
           break;
         case "update_node":
           //setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));

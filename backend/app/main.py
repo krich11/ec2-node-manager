@@ -16,18 +16,13 @@ message_queue_in = asyncio.Queue()
 message_queue_out = asyncio.Queue()
 
 
-
-async def handleNodePropertySet(msg):
-    await message_queue_in.put(msg)
-
-
 async def handleNodeAction(msg):
     match msg['message']:
         case "start":
             print(f"Node Action: {msg['message']}")
         case "provision":
             print(f"Node Action: {msg['message']}")
-            rtnmsg = {"type": "set-status", "message": "warning"};
+            rtnmsg = {"type": "set-status", "id": msg['id'], "message": "warning"};
             await message_queue_out.put(rtnmsg)
         case _:
             print(f"Unknown Node Action message: {msg['message']}")

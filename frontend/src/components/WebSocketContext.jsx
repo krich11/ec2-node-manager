@@ -40,7 +40,7 @@ const wsRef = useRef(null);
 	  // Set node status to warning
           setNodes((nds) =>
             nds.map((n) =>
-              n.id === id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
+              n.id === msg.id ? { ...n, data: { ...n.data, status: 'warning', label: 'Provisioning' } } : n
             )
           );
           break;

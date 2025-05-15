@@ -284,6 +284,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
+	id: id,
         type: 'node_action',
         message: 'provision',
       }));

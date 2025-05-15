@@ -5,8 +5,8 @@ import React, {
 	useRef,
 	useNodesState,
 	useEdgesState,
-	addNode
-	setNodes
+	addNode,
+	setNodes,
 } from 'react';
 
 const WebSocketContext = createContext(null);

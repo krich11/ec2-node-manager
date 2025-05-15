@@ -38,7 +38,7 @@ const wsRef = useRef(null);
       switch (msg.type) {
         case "set-status":
 	  // Set node status to warning
-	  nodename = msg.message.charAt(0).toUpperCase() + msg.message.slice(1);
+	  const nodename = msg.message.charAt(0).toUpperCase() + msg.message.slice(1);
           setNodes((nds) =>
             nds.map((n) =>
               n.id === msg.id ? { ...n, data: { ...n.data, status: msg.message, label: nodename } } : n

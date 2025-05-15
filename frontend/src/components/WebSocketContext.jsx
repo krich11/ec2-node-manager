@@ -14,10 +14,10 @@ const WebSocketContext = createContext(null);
 export const useWebSocket = () => useContext(WebSocketContext);
 export const WebSocketProvider = ({ children }) => {
 
-//const { getNode, getViewport, setNodes } = useReactFlow();
+const { getNode, getViewport, setNodes } = useReactFlow();
 
-const [nodes, setNodes, onNodesChange] = useNodesState();
-const [edges, setEdges, onEdgesChange] = useEdgesState();
+//const [nodes, setNodes, onNodesChange] = useNodesState();
+//const [edges, setEdges, onEdgesChange] = useEdgesState();
 
 
 const wsRef = useRef(null);

@@ -308,6 +308,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
+	id: id,
         type: 'node_action',
         message: 'start',
       }));
@@ -316,11 +317,11 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     }
 
     // Set node status to running
-    setNodes((nds) =>
-      nds.map((n) =>
-        n.id === id ? { ...n, data: { ...n.data, status: 'running', label: 'Running' } } : n
-      )
-    );
+    //setNodes((nds) =>
+    //  nds.map((n) =>
+    //    n.id === id ? { ...n, data: { ...n.data, status: 'running', label: 'Running' } } : n
+    //  )
+    //);
     setContextMenuVisible(false);
   };
 

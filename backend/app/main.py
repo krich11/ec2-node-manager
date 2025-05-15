@@ -20,6 +20,8 @@ async def handleNodeAction(msg):
     match msg['message']:
         case "start":
             print(f"Node Action: {msg['message']}")
+            rtnmsg = {"type": "set-status", "id": msg['id'], "message": "running"};
+            await message_queue_out.put(rtnmsg)
         case "provision":
             print(f"Node Action: {msg['message']}")
             rtnmsg = {"type": "set-status", "id": msg['id'], "message": "warning"};

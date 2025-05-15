@@ -50,7 +50,7 @@ const wsRef = useRef(null);
           //setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
           break;
         default:
-          console.log("Unhandled websocket message: ", $msg);
+          console.log("Unhandled websocket message: ", msg);
       }
 
     };

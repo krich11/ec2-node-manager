@@ -61,6 +61,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+'''
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -87,6 +88,43 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_json(msg_out)
             except asyncio.QueueEmpty:
                 pass
+
+    except WebSocketDisconnect:
+        print("WebSocket disconnected.")
+    except Exception as e:
+        print("WebSocket error:", e)
+'''
+
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            # Check for both incoming and outgoing messages concurrently
+            receive_task = asyncio.create_task(websocket.receive_text())
+
+            while True:
+                # Check outgoing messages continuously
+                try:
+                    msg_out = message_queue_out.get_nowait()
+                    await websocket.send_json(msg_out)
+                except asyncio.QueueEmpty:
+                    # No outgoing messages, check if receive_task is done
+                    if receive_task.done():
+                        break
+                    # Brief pause to avoid CPU spinning
+                    await asyncio.sleep(0.01)
+
+            # Process the received message
+            try:
+                data = await receive_task
+                msg = json.loads(data)
+                match msg.get('type'):
+                    case "node_action" | "another message type" | "yet another type":
+                        await message_queue_in.put(msg)
+                    case _:
+                        print("Unknown message type:", msg)
+            except Exception as e:
+                print(f"Error processing message: {e}")
 
     except WebSocketDisconnect:
         print("WebSocket disconnected.")

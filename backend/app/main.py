@@ -61,7 +61,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.websocket("/ws")
 '''
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -95,6 +94,7 @@ async def websocket_endpoint(websocket: WebSocket):
         print("WebSocket error:", e)
 '''
 
+@app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:

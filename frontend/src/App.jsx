@@ -8,14 +8,15 @@ import ReactFlow, {
   Background,
   ConnectionLineType,
   Panel,
-  useReactFlow,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 import { useWebSocket, WebSocketProvider } from './components/WebSocketContext';
 
+
 // Initialize debug utility
+// This will be attached to the window object for global access
 window.debugEnabled = false;
 window.debugLog = function(message) {
   if (window.debugEnabled) {
@@ -36,9 +37,57 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [showNodeInfo, setShowNodeInfo] = useState(false);
-  const reactFlowInstance = useReactFlow();
+
+  // Init Websocket
+  //const wsRef = useWebSocket();
+  //const ws = wsRef?.current;
+
+	/*
+  useEffect(() => {
+
+    if (!ws) { return }
+    ws.onopen = () => { window.debugLog("WebSocket connected."); };
+ 
+    console.log("WebSocket event captured in App.jsx");
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        window.debugLog('WS message received:');
+        window.debugLog(msg);
+
+	// Handle WebSocket Messages
+	switch (msg.type) {
+		case "add_node":
+          		setNodes((nds) => [...nds, msg.node]);
+			break;
+		case "update_node":
+          		setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
+			break;
+		case "add_edge":
+          		setEdges((eds) => [...eds, msg.edge]);
+			break;
+		case "remove_node":
+          		setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
+          		setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
+			break;
+		case "remove_edge":
+          		setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
+			break;
+		default:
+			console.log("Unhandled websocket message: ${msg.type}");
+	}
+
+      } catch (err) { console.error('WebSocket message parse error:', err); }
+    };
+
+    ws.onerror = (err) => { console.error("WebSocket error:", err); };
+
+    ws.onclose = () => { console.warn("WebSocket closed"); };
+
+    return () => { ws.close(); };
+
+  }, [setNodes, setEdges]);
+*/
 
   // Toggle debug mode
   const toggleDebug = useCallback(() => {
@@ -74,7 +123,7 @@ function Flow() {
       sourceHandle: params.sourceHandle || 'sourceCenterHandle',
       targetHandle: params.targetHandle || 'targetCenterHandle',
     };
-
+    
     setEdges((eds) => addEdge(newEdge, eds));
   }, [setEdges]);
 
@@ -125,40 +174,6 @@ function Flow() {
     return () => clearInterval(interval);
   }, [setEdges]);
 
-  // New handler for node selection
-  const onNodeClick = useCallback((event, node) => {
-    setSelectedNode(node);
-    setShowNodeInfo(true);
-    window.debugLog(`Selected node: ${node.id}`);
-  }, []);
-
-  // Function to get connected nodes and edges for the selected node
-  const getNodeConnections = useCallback((nodeId) => {
-    if (!nodeId) return { connectedNodes: [], incomingEdges: [], outgoingEdges: [] };
-
-    const outgoingEdges = edges.filter(edge => edge.source === nodeId);
-    const incomingEdges = edges.filter(edge => edge.target === nodeId);
-    
-    // Get the connected nodes (both incoming and outgoing)
-    const connectedNodeIds = new Set([
-      ...outgoingEdges.map(edge => edge.target),
-      ...incomingEdges.map(edge => edge.source)
-    ]);
-    
-    const connectedNodes = nodes.filter(node => connectedNodeIds.has(node.id));
-    
-    return {
-      connectedNodes,
-      incomingEdges,
-      outgoingEdges
-    };
-  }, [nodes, edges]);
-
-  // Close the node info panel
-  const closeNodeInfo = useCallback(() => {
-    setShowNodeInfo(false);
-  }, []);
-
   return (
     <ReactFlow
       nodes={nodes}
@@ -175,7 +190,6 @@ function Flow() {
         style: { strokeWidth: 2.5 },
       }}
       onNodeDoubleClick={onNodeDoubleClick}
-      onNodeClick={onNodeClick}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
       connectionLineType={ConnectionLineType.Straight}
@@ -183,19 +197,19 @@ function Flow() {
     >
       <MiniMap style={{ width: 100, height: 80, right: 20, bottom: 20 }} />
       <Background color="#aaa" size={1} />
-
+      
       {/* Debug Mode Toggle Panel */}
       <Panel position="top-right">
         <div className="debug-panel">
-          <button
-            onClick={toggleDebug}
+          <button 
+            onClick={toggleDebug} 
             className={`debug-toggle ${debugMode ? 'active' : ''}`}
           >
             Debug: {debugMode ? 'ON' : 'OFF'}
           </button>
         </div>
       </Panel>
-
+      
       <Panel position="top-left">
         <div className="flex flex-col gap-2">
           <button
@@ -207,93 +221,10 @@ function Flow() {
           <div className="bg-gray-800 text-white p-2 rounded">
             <p>Double-click on node to change status</p>
             <p>Connect any node to any other node</p>
-            <p>Click on a node to view its connections</p>
+            <p>Right-click for context menu</p>
           </div>
         </div>
       </Panel>
-
-      {/* Node Status Information Panel */}
-      {showNodeInfo && selectedNode && (
-        <Panel position="bottom-right" className="node-info-panel">
-          <div className="bg-white p-4 rounded shadow-lg max-w-md">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-bold">Node Information</h3>
-              <button 
-                onClick={closeNodeInfo}
-                className="text-gray-600 hover:text-gray-800"
-              >
-                ✕
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <p className="font-semibold">ID: <span className="font-normal">{selectedNode.id}</span></p>
-              <p className="font-semibold">Label: <span className="font-normal">{selectedNode.data.label}</span></p>
-              <p className="font-semibold">Status: <span className="font-normal">{selectedNode.data.status}</span></p>
-              <p className="font-semibold">Position: <span className="font-normal">x: {Math.round(selectedNode.position.x)}, y: {Math.round(selectedNode.position.y)}</span></p>
-            </div>
-
-            {(() => {
-              const { connectedNodes, incomingEdges, outgoingEdges } = getNodeConnections(selectedNode.id);
-              
-              return (
-                <>
-                  <div className="mb-3">
-                    <h4 className="font-bold mb-1">Connected Nodes ({connectedNodes.length})</h4>
-                    {connectedNodes.length === 0 ? (
-                      <p className="text-gray-500 italic">No connected nodes</p>
-                    ) : (
-                      <ul className="list-disc pl-5">
-                        {connectedNodes.map(node => (
-                          <li key={node.id} className="mb-1">
-                            {node.data.label} ({node.id}) - Status: {node.data.status}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
-                  <div className="mb-3">
-                    <h4 className="font-bold mb-1">Incoming Connections ({incomingEdges.length})</h4>
-                    {incomingEdges.length === 0 ? (
-                      <p className="text-gray-500 italic">No incoming connections</p>
-                    ) : (
-                      <ul className="list-disc pl-5">
-                        {incomingEdges.map(edge => {
-                          const sourceNode = nodes.find(n => n.id === edge.source);
-                          return (
-                            <li key={edge.id} className="mb-1">
-                              From: {sourceNode ? sourceNode.data.label : edge.source} ({edge.id})
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold mb-1">Outgoing Connections ({outgoingEdges.length})</h4>
-                    {outgoingEdges.length === 0 ? (
-                      <p className="text-gray-500 italic">No outgoing connections</p>
-                    ) : (
-                      <ul className="list-disc pl-5">
-                        {outgoingEdges.map(edge => {
-                          const targetNode = nodes.find(n => n.id === edge.target);
-                          return (
-                            <li key={edge.id} className="mb-1">
-                              To: {targetNode ? targetNode.data.label : edge.target} ({edge.id})
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-        </Panel>
-      )}
     </ReactFlow>
   );
 }
@@ -309,4 +240,3 @@ export default function App() {
     </ReactFlowProvider>
   );
 }
-

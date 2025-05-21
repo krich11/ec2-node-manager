@@ -40,7 +40,6 @@ function Flow() {
   // Set up websocket reference
   const wsRef = useWebSocket();
   const ws = wsRef.current;
-  console.log(ws);
 
   // Toggle debug mode
   const toggleDebug = useCallback(() => {
@@ -134,7 +133,7 @@ function Flow() {
     }
 
     setNodes((nds) => [...nds, newNode]);
-  }, [setNodes]);
+  }, [setNodes, ws]);
 
   useEffect(() => {
     const interval = setInterval(() => {

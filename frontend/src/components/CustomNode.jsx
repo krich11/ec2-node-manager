@@ -441,6 +441,10 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         position: node.position,
         created: new Date().toLocaleTimeString()
       };
+      console.log("Getting status of node id ${id}");
+      console.log(JSON.stringify(node, null, 2));
+      console.log("====> statusData:");
+      console.log(JSON.stringify(statusData, null, 2));
 
       // Calculate position for status window - right side of the node
       const { x, y } = node.position;

@@ -182,7 +182,7 @@ const StatusWindow = ({ data, onClose, initialPosition }) => {
 			  Connection to:
                         </span>
                       </div>
-                      <span className="text-xs text-gray-700">Edge ID: {conn.edgeId.substring(0, 8)}</span>
+                      <span className="text-xs text-gray-400">Edge ID: {conn.edgeId}</span>
                     </div>
                     <div className="flex items-center gap-1 ml-4">
                       <Server size={12} className="text-gray-400" />

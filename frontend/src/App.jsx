@@ -116,18 +116,17 @@ function Flow() {
       dragHandle: '.custom-node'
     };
 
-    window.debugLog(`Adding new node with ID ${newNodeId}`);
+    console.log(`Adding new node with ID ${newNodeId}`);
     // Node Creation in the back end
-    window.debugLog(`Add node action triggered for node ${id} with websocket: ${ws}`);
-    console.log(`Add node action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Add node action triggered for node ${newNode.id} with websocket: ${ws}`);
 
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
-        id: id,
+        id: newNodeId,
         type: 'node_action',
         message: 'add_node',
-        data: JSON.stringify(getNode(id), null, 2),
+        data: JSON.stringify(newNode, null, 2),
       }));
     } else {
       console.warn('WebSocket not open');

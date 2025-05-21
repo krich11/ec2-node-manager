@@ -173,21 +173,17 @@ const StatusWindow = ({ data, onClose, initialPosition }) => {
                   <div key={conn.edgeId} className="bg-gray-800 p-2 rounded">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1">
-                        {conn.direction === 'outgoing' ? (
-                          <ArrowRightCircle size={12} className="text-blue-400" />
-                        ) : (
-                          <ArrowRightCircle size={12} className="text-green-400 transform rotate-180" />
-                        )}
                         <span className="text-xs font-medium">
 			  Connection to:
                         </span>
                       </div>
                       <span className="text-xs text-gray-400">Edge ID: {conn.edgeId}</span>
                     </div>
-                    <div className="flex items-center gap-1 ml-4">
-                      <Server size={12} className="text-gray-400" />
-                      <span className="text-sm">{conn.nodeName}</span>
-                      <span className="text-xs text-gray-500 ml-1">({conn.nodeId.substring(0, 8)})</span>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs font-medium">{conn.nodeName}</span>
+                      </div>
+                      <span className="text-xs text-gray-400">Node ID: {conn.nodeId}</span>
                     </div>
                   </div>
                 ))}

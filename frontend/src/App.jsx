@@ -66,8 +66,10 @@ function Flow() {
   }, [edges]);
 
   const onConnect = useCallback((params) => {
+    const newEdgeId = `edge-${Date.now()}`;
     const newEdge = {
       ...params,
+      id: newEdgeId,
       type: 'custom',
       sourceHandle: params.sourceHandle || 'sourceCenterHandle',
       targetHandle: params.targetHandle || 'targetCenterHandle',

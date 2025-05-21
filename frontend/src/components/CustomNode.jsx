@@ -179,7 +179,6 @@ const StatusWindow = ({ data, onClose, initialPosition }) => {
                           <ArrowRightCircle size={12} className="text-green-400 transform rotate-180" />
                         )}
                         <span className="text-xs font-medium">
-                          //{conn.direction === 'outgoing' ? 'Output to:' : 'Input from:'}
 			  Connection to:
                         </span>
                       </div>

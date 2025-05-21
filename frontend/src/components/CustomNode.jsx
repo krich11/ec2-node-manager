@@ -334,6 +334,24 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   };
 
   // Menu action handlers
+  const handleLaunch = () => {
+    window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Launch action triggered for node ${id} with websocket: ${ws}`);
+
+    // Send Websocket update to backend
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        id: id,
+        type: 'node_action',
+        message: 'launch',
+      }));
+    } else {
+      console.warn('WebSocket not open');
+    }
+
+    setContextMenuVisible(false);
+  };
+
   const handleProvision = () => {
     window.debugLog(`Provision action triggered for node ${id} with websocket: ${ws}`);
     console.log(`Provision action triggered for node ${id} with websocket: ${ws}`);
@@ -509,6 +527,7 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
           }}
           onClick={(e) => e.stopPropagation()}
         >
+          <div className="context-menu-item" onClick={handleLaunch}>Launch</div>
           <div className="context-menu-item" onClick={handleProvision}>Provision</div>
           <div className="context-menu-item" onClick={handleStart}>Start</div>
           <div className="context-menu-item" onClick={handleStop}>Stop</div>

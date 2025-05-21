@@ -40,6 +40,7 @@ function Flow() {
   // Set up websocket reference
   const wsRef = useWebSocket();
   const ws = wsRef.current;
+  console.log("Websocket: ${ws}");
 
   // Toggle debug mode
   const toggleDebug = useCallback(() => {

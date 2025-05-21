@@ -16,10 +16,6 @@ export const WebSocketProvider = ({ children }) => {
 
 const { getNode, getViewport, setNodes } = useReactFlow();
 
-//const [nodes, setNodes, onNodesChange] = useNodesState();
-//const [edges, setEdges, onEdgesChange] = useEdgesState();
-
-
 const wsRef = useRef(null);
 
   useEffect(() => {
@@ -45,21 +41,21 @@ const wsRef = useRef(null);
             )
           );
           break;
-        case "add_node":
-	  console.log("Got add_node message");
+        case "load-nodes":
+	  console.log("Got load-nodes message");
           //setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
           break;
-        case "add_edge":
-	  console.log("Got add_edge message");
+        case "load-edges":
+	  console.log("Got  message");
           //setEdges((eds) => [...eds, msg.edge]);
           break;
-        case "del_node":
-	  console.log("Got del_node message");
+        case "del-node":
+	  console.log("Got del-node message");
           //setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
           //setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
           break;
-        case "del_edge":
-	  console.log("Got del_edge message");
+        case "del-edge":
+	  console.log("Got del-edge message");
           //setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
           break;
         default:

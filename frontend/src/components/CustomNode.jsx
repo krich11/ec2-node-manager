@@ -518,7 +518,6 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
         </div>,
         document.body
       )}
-      {/* Status Window - rendered to the document body */}
       {statusWindowVisible && statusWindowData && ReactDOM.createPortal(
         <StatusWindow
           data={statusWindowData}

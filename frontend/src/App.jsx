@@ -38,57 +38,6 @@ function Flow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
 
-  // Init Websocket
-  //const wsRef = useWebSocket();
-  //const ws = wsRef?.current;
-
-	/*
-  useEffect(() => {
-
-    if (!ws) { return }
-    ws.onopen = () => { window.debugLog("WebSocket connected."); };
- 
-    console.log("WebSocket event captured in App.jsx");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        window.debugLog('WS message received:');
-        window.debugLog(msg);
-
-	// Handle WebSocket Messages
-	switch (msg.type) {
-		case "add_node":
-          		setNodes((nds) => [...nds, msg.node]);
-			break;
-		case "update_node":
-          		setNodes((nds) => nds.map((n) => n.id === msg.node.id ? { ...n, data: { ...n.data, ...msg.node.data } } : n));
-			break;
-		case "add_edge":
-          		setEdges((eds) => [...eds, msg.edge]);
-			break;
-		case "remove_node":
-          		setNodes((nds) => nds.filter((n) => n.id !== msg.nodeId));
-          		setEdges((eds) => eds.filter((e) => e.source !== msg.nodeId && e.target !== msg.nodeId));
-			break;
-		case "remove_edge":
-          		setEdges((eds) => eds.filter((e) => e.id !== msg.edgeId));
-			break;
-		default:
-			console.log("Unhandled websocket message: ${msg.type}");
-	}
-
-      } catch (err) { console.error('WebSocket message parse error:', err); }
-    };
-
-    ws.onerror = (err) => { console.error("WebSocket error:", err); };
-
-    ws.onclose = () => { console.warn("WebSocket closed"); };
-
-    return () => { ws.close(); };
-
-  }, [setNodes, setEdges]);
-*/
-
   // Toggle debug mode
   const toggleDebug = useCallback(() => {
     const newDebugMode = !debugMode;
@@ -189,7 +138,7 @@ function Flow() {
         type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
-      onNodeDoubleClick={onNodeDoubleClick}
+	  {/*onNodeDoubleClick={onNodeDoubleClick}*/}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
       connectionLineType={ConnectionLineType.Straight}
@@ -218,11 +167,6 @@ function Flow() {
           >
             Add New Node
           </button>
-          <div className="bg-gray-800 text-white p-2 rounded">
-            <p>Double-click on node to change status</p>
-            <p>Connect any node to any other node</p>
-            <p>Right-click for context menu</p>
-          </div>
         </div>
       </Panel>
     </ReactFlow>

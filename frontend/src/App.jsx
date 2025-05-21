@@ -37,6 +37,10 @@ function Flow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [debugMode, setDebugMode] = useState(false);
 
+  // Set up websocket reference
+  const wsRef = useWebSocket();
+  const ws = wsRef.current;
+
   // Toggle debug mode
   const toggleDebug = useCallback(() => {
     const newDebugMode = !debugMode;
@@ -111,10 +115,6 @@ function Flow() {
       isConnectable: true,
       dragHandle: '.custom-node'
     };
-
-    // Set up websocket reference
-    const wsRef = useWebSocket();
-    const ws = wsRef.current;
 
     window.debugLog(`Adding new node with ID ${newNodeId}`);
     // Node Creation in the back end

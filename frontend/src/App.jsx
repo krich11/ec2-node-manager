@@ -138,7 +138,6 @@ function Flow() {
         type: 'custom',
         style: { strokeWidth: 2.5 },
       }}
-	  {/*onNodeDoubleClick={onNodeDoubleClick}*/}
       zoomOnDoubleClick={false}
       isValidConnection={isValidConnection}
       connectionLineType={ConnectionLineType.Straight}

@@ -14,10 +14,6 @@ import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 import { useWebSocket, WebSocketProvider } from './components/WebSocketContext';
 
-// Set up websocket reference
-const wsRef = useWebSocket();
-const ws = wsRef.current;
-
 // Initialize debug utility
 // This will be attached to the window object for global access
 window.debugEnabled = false;
@@ -115,6 +111,10 @@ function Flow() {
       isConnectable: true,
       dragHandle: '.custom-node'
     };
+
+    // Set up websocket reference
+    const wsRef = useWebSocket();
+    const ws = wsRef.current;
 
     window.debugLog(`Adding new node with ID ${newNodeId}`);
     // Node Creation in the back end

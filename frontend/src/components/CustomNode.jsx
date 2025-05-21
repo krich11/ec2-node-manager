@@ -330,8 +330,8 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
 
   // Node Creation Handlers
   const handleAddNode = () => {
-    window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);
-    console.log(`Launch action triggered for node ${id} with websocket: ${ws}`);
+    window.debugLog(`Add node action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Add node action triggered for node ${id} with websocket: ${ws}`);
 
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {
@@ -349,8 +349,8 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
   };
 
   const handleDelNode = () => {
-    window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);
-    console.log(`Launch action triggered for node ${id} with websocket: ${ws}`);
+    window.debugLog(`Delete node action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Delete action triggered for node ${id} with websocket: ${ws}`);
 
     // Send Websocket update to backend
     if (ws && ws.readyState === WebSocket.OPEN) {

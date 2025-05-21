@@ -14,6 +14,9 @@ import CustomNode from './components/CustomNode';
 import CustomEdge from './components/CustomEdge';
 import { useWebSocket, WebSocketProvider } from './components/WebSocketContext';
 
+// Set up websocket reference
+const wsRef = useWebSocket();
+const ws = wsRef.current;
 
 // Initialize debug utility
 // This will be attached to the window object for global access
@@ -115,7 +118,20 @@ function Flow() {
 
     window.debugLog(`Adding new node with ID ${newNodeId}`);
     // Node Creation in the back end
-    newNode.handleAddNode();
+    window.debugLog(`Add node action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Add node action triggered for node ${id} with websocket: ${ws}`);
+
+    // Send Websocket update to backend
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        id: id,
+        type: 'node_action',
+        message: 'add_node',
+        data: JSON.stringify(getNode(id), null, 2),
+      }));
+    } else {
+      console.warn('WebSocket not open');
+    }
 
     setNodes((nds) => [...nds, newNode]);
   }, [setNodes]);

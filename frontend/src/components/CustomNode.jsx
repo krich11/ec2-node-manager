@@ -328,6 +328,45 @@ export default function CustomNode({ id, data, selected, isConnectable, xPos, yP
     window.debugLog(`Source handle position: x=${xPos + 75}, y=${yPos + 20}`);
   };
 
+  // Node Creation Handlers
+  const handleAddNode = () => {
+    window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Launch action triggered for node ${id} with websocket: ${ws}`);
+
+    // Send Websocket update to backend
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        id: id,
+        type: 'node_action',
+        message: 'add_node',
+	data: JSON.stringify(getNode(id), null, 2),
+      }));
+    } else {
+      console.warn('WebSocket not open');
+    }
+
+    setContextMenuVisible(false);
+  };
+
+  const handleDelNode = () => {
+    window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);
+    console.log(`Launch action triggered for node ${id} with websocket: ${ws}`);
+
+    // Send Websocket update to backend
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        id: id,
+        type: 'node_action',
+        message: 'del_node',
+      }));
+    } else {
+      console.warn('WebSocket not open');
+    }
+
+    setContextMenuVisible(false);
+  };
+
+
   // Menu action handlers
   const handleLaunch = () => {
     window.debugLog(`Launch action triggered for node ${id} with websocket: ${ws}`);

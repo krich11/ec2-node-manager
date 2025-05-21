@@ -13,6 +13,9 @@ app = FastAPI()
 message_queue_in = asyncio.Queue()
 message_queue_out = asyncio.Queue()
 
+nodeList = []
+edgeList = []
+
 
 async def handleNodeAction(msg):
     match msg['message']:
@@ -22,6 +25,11 @@ async def handleNodeAction(msg):
             await message_queue_out.put(rtnmsg)
         case "provision":
             print(f"Node Action: {msg['message']}")
+            rtnmsg = {"type": "set-status", "id": msg['id'], "message": "warning"}
+            await message_queue_out.put(rtnmsg)
+        case "add_node":
+            print(f"Node Action: {msg['message']}")
+
             rtnmsg = {"type": "set-status", "id": msg['id'], "message": "warning"}
             await message_queue_out.put(rtnmsg)
         case _:

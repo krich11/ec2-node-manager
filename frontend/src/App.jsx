@@ -114,6 +114,9 @@ function Flow() {
     };
 
     window.debugLog(`Adding new node with ID ${newNodeId}`);
+    // Node Creation in the back end
+    handleAddNode();
+
     setNodes((nds) => [...nds, newNode]);
   }, [setNodes]);
 

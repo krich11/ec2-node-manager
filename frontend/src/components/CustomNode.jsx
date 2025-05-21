@@ -121,7 +121,7 @@ const StatusWindow = ({ data, onClose, initialPosition }) => {
       ref={statusWindowRef}
       className="fixed z-50 shadow-lg rounded-lg overflow-hidden"
       style={{
-        width: '530px',
+        width: '430px',
         left: position.x,
         top: position.y,
         cursor: isDragging ? 'grabbing' : 'auto'

@@ -169,6 +169,7 @@ function Flow() {
             Add New Node
           </button>
         </div>
+	<br />
         <div className="flex flex-col gap-2">
           <button
             onClick={addNewNode}
